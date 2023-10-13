@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Milestone1;
+package Ignore;
 
 public class Card {
     private final Color lightColor;
@@ -19,18 +19,22 @@ public class Card {
     }
 
     public Color getLightColor() {
+
         return this.lightColor;
     }
 
     public Value getLightValue() {
+
         return this.lightValue;
     }
 
     public Color getDarkColor() {
+
         return this.darkColor;
     }
 
     public Value getDarkValue() {
+
         return this.darkValue;
     }
 

@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Milestone1;
+package Ignore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +17,7 @@ public class Deck {
     }
 
     public void addCardToBottom(Card card) {
+
         this.cards.add(card);
     }
 
@@ -46,14 +47,17 @@ public class Deck {
     }
 
     public void shuffleDeck() {
+
         Collections.shuffle(this.cards);
     }
 
     public Card draw() {
+
         return (Card)this.cards.remove(this.cards.size() - 1);
     }
 
     public boolean isEmpty() {
+
         return this.cards.isEmpty();
     }
 

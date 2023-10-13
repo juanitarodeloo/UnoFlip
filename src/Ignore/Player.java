@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Milestone1;
+package Ignore;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,18 +19,22 @@ public class Player {
     }
 
     public String getName() {
+
         return this.name;
     }
 
     public List<Card> getHand() {
+
         return this.hand;
     }
 
     public void drawCard(Card card) {
+
         this.hand.add(card);
     }
 
     public Card playCard(int index) {
+
         return (Card)this.hand.remove(index);
     }
 
