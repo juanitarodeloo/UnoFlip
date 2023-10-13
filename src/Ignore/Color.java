@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Milestone1;
+package Ignore;
 
 public enum Color {
     RED,

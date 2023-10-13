@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Milestone1;
+package Ignore;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -15,25 +15,29 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UnoGame {
+
     private Deck deck = new Deck();
     private List<Card> discardPile = new ArrayList();
     private List<Player> players = this.initializePlayers();
     private static Side currentSide;
     private int currentPlayerIndex = 0;
-    private Color temporaryChosenColor = null;
+    private Color temporaryChosenColor = null; //TODO: not sure what this does
     private static final int INITIAL_NUM_CARDS = 7;
 
     public UnoGame() {
         Card startingCard;
+        //starting card is the card at the top/bottom of the deck
+        //if the card drawn is a wild card or a pick up two card, add it to the bottom and keep drawing
         for(startingCard = this.deck.draw(); startingCard.getLightValue() == Value.WILD || startingCard.getLightValue() == Value.WILD_DRAW_TWO; startingCard = this.deck.draw()) {
             this.deck.addCardToBottom(startingCard);
         }
-
+        //once the starting card is valid, add it to the discard pile
         this.discardPile.add(startingCard);
         System.out.println("Starting card: " + this.discardPile.get(0));
     }
 
     public void start() {
+        //rotate between players to control whos turn it is
         while(true) {
             this.takeTurn((Player)this.players.get(this.currentPlayerIndex));
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
@@ -63,6 +67,7 @@ public class UnoGame {
     }
 
     public static Side getCurrentSide() {
+
         return currentSide;
     }
 
