@@ -11,7 +11,7 @@ public class Card {
      *
      */
     public enum Color{
-        RED, YELLOW, GREEN, BLUE
+        RED, YELLOW, GREEN, BLUE, NONE
     }
 
     /**Define enum for card types
