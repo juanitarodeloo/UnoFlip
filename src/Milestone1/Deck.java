@@ -26,25 +26,36 @@ public class Deck {
     }
 
     /** Method createDeck to fill the cards list with card objects representing the deck
+     * 108 cards, 76 number cards, 24 action cards, and 8 wild cards.
      *
      */
     private void createDeck() {
 
-        for (Card.Color color : Card.Color.values()) {
-            for (Card.Type type : Card.Type.values()) {
-                if (!type.equals(Card.Type.WILD) && !type.equals(Card.Type.WILD_DRAW_TWO)) {
-                    for (int i = 0; i < 2; i++) {
-                        cards.add(new Card(color, type));
+        for (int i = 0; i < 2; i++) {
+            for (Card.Color color : Card.Color.values()) {
+                if (color != Card.Color.NONE) {
+                    for (int val = 0; val <= 9; val++) {
+                        this.cards.add(new Card(color, Card.Type.values()[val]));
                     }
                 }
             }
         }
-        for (int i = 0; i < 4; i++) {
-            cards.add(new Card(null, Card.Type.WILD));
-            cards.add(new Card(null, Card.Type.WILD_DRAW_TWO));
+        for (Card.Color color : Card.Color.values()) {
+            if (color != Card.Color.NONE) {
+                for (int i = 0; i < 2; i++) {
+                    this.cards.add(new Card(color, Card.Type.SKIP));
+                    this.cards.add(new Card(color, Card.Type.REVERSE));
+                    this.cards.add(new Card(color, Card.Type.WILD_DRAW_TWO));
+                }
+            }
         }
 
+        for (int i = 0; i < 4; i++) {
+            this.cards.add(new Card(Card.Color.NONE, Card.Type.WILD));
+            this.cards.add(new Card(Card.Color.NONE, Card.Type.WILD_DRAW_TWO));
+        }
     }
+
 
     /** Method draw to remove and retunr the top card form the deck
      *
