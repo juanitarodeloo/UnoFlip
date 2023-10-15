@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainGame {
+public class XMainGame {
 
     private Deck myDeck;
     private List<Card> discardPile;
@@ -34,17 +34,51 @@ public class MainGame {
         Card currCard;
         System.out.println("Welcome to our UNO Game!");
         players = initPlayers();
-        //TODO: display starting card
+        // Displaying starting card
+        currCard = myDeck.draw();
+        discardPile.add(currCard);
+        System.out.println("Starting card: " + currCard);
+
+        //TODO: display starting card DONE!
 
         while(!gameDone){
-            //TODO: pick first player and have them take their turn
-            // scan player's response (i.e BLUE NINE)
-            // currCard = card played by player
-            //  validate player's card
+            // Pick first player and prompt them to take their turn
+            Player currentPlayer = players.get(currPlayer);
+            System.out.println(currentPlayer.getName() + ", it's your turn.");
+            // Scans player response
+            Scanner sc = new Scanner(System.in);
+            boolean validCardPlayed = false;
+            while(!validCardPlayed){
+                System.out.print("Enter the card you wish to play (i.e BLUE NINE)");
+                String cardResponse = sc.nextLine();
+                Card chosenCard = currentPlayer.getCard(cardResponse);
+                // Validate player's card
+                validCardPlayed = validateCard(currCard, chosenCard);
+
+                if(validCardPlayed){
+                    discardPile.add(chosenCard);
+                    currCard = chosenCard;
+                    System.out.println(currentPlayer.getName() + " played " + chosenCard);
+                    currentPlayer.removeCard(chosenCard); //Assuming player has removeCard method, can be adjusted
+
+                } else{
+                    System.out.println("Invalid card, please try again!");
+                }
+            }
+
+            //TODO: pick first player and have them take their turn DONE!
+            // scan player's response (i.e BLUE NINE) DONE!
+            // currCard = card played by player DONE!
+            //  validate player's card DONE!
         }
 
         //have the rest of players go
-
+        if(currentPlayer.getHandSize() == 0) { // Assuming Player class has getHandSize method, can be adjusted
+            gameDone = true;
+            System.out.println(currentPlayer.getName() + " has won the game!");
+        }else{
+            currPlayer = (currPlayer + 1) % players.size(); //Cycle through players
+        }
 
     }
 
@@ -75,8 +109,23 @@ public class MainGame {
 
     private boolean validateCard(Card prevCard, Card cardPlayed){
         //TODO: check if card is basic or action then validate accordingly, use switch case
-        // if valid, return true, else return false
+        // if valid, return true, else return false DONE!
 
+        if(cardPlayed.getType() == Card.Type.WILD){
+            return True;
+        }
+        if(cardPlayed.getType() == Card.Type.WILD_DRAW_TWO){
+            return True;
+        }
+        // if types match, valid
+        if(cardPlayed.getType() == prevCard.getType()){
+            return True;
+        }
+        // if colors match, valid
+        if (cardPlayed.getColor() == prevCard.getColor()){
+            return True;
+        }
+        // none conditions apply
         return false;
     }
 
