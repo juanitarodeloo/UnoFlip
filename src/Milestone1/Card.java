@@ -77,6 +77,7 @@ public class Card {
      * @return
      */
     public String toString(){
+
         return color + " " + type;
     }
 

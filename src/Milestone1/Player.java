@@ -7,33 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    /** Players name and cards in players hands
-     *
+    /**
+     * Players name and cards in players hands
      */
     private String name;
     private List<Card> hand;
 
-    /** Constructor that initializes the players with a name and a new hand of cards
-     *
-      * @param name
+    /**
+     * Constructor that initializes the players with a name and a new hand of cards
+     * @param name
      */
     public Player(String name){
         this.name = name;
         this.hand = new ArrayList<>();
     }
 
-    /** Plays a card from players hand, true if card was in players hand and is removed
-     *
+    /**
+     * Removes a card from players hand
      * @param card
-     * @return
      */
-    public boolean playCard(Card card){
-        return hand.remove(card);
+    public void playCard(Card card){
+        hand.remove(card);
 
     }
 
-    /** Adds a card to the players hand
-     *
+    /**
+     * Adds a card to the players hand
      * @param card
      */
     public void pickUpCard(Card card){
@@ -41,8 +40,8 @@ public class Player {
 
     }
 
-    /**Returns a string representation of the player and their hand of cards
-     *
+    /**
+     * Returns a string representation of the player and their hand of cards
      * @return
      */
     public String toString(){
@@ -64,6 +63,10 @@ public class Player {
      */
     public List<Card> getHand(){
         return hand;
+    }
+
+    public void printHand(){
+        System.out.println("Your cards: \n" + getHand());
     }
 
 
