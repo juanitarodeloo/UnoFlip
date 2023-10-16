@@ -182,7 +182,7 @@ public class MainGame {
         Player currPlayer = null;
         Scanner sc = new Scanner(System.in); //TODO: close sc at the end 
 
-        System.out.print("Enter number of players (2-10): ");
+        System.out.print("Enter number of players (2-4): ");
         numOfPlayers = sc.nextInt(); //TODO: there should be a try-catch around this
         sc.nextLine();
 
