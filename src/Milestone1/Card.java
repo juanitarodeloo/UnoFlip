@@ -18,7 +18,7 @@ public class Card {
      *
      */
     public enum Type{
-        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, REVERSE, SKIP, WILD, WILD_DRAW_TWO
+        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, REVERSE, SKIP, WILD, WILD_DRAW_TWO
 
         }
 
@@ -76,9 +76,12 @@ public class Card {
      *
      * @return
      */
-    public String toString(){
-
-        return color + " " + type;
+    public String toString() {
+        if (color == Color.NONE) {
+            return type.toString();
+        } else {
+            return color + " " + type;
+        }
     }
 
 
