@@ -66,7 +66,7 @@ public class Player {
     }
 
     public void printHand(){
-        System.out.println("Your cards: \n" + getHand());
+        System.out.println("Your cards are: \n" + getHand());
     }
 
 
