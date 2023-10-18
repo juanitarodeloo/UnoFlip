@@ -13,6 +13,8 @@ public class Player {
     private String name;
     private List<Card> hand;
 
+    private int score;
+
     /**
      * Constructor that initializes the players with a name and a new hand of cards
      * @param name
@@ -20,6 +22,7 @@ public class Player {
     public Player(String name){
         this.name = name;
         this.hand = new ArrayList<>();
+        this.score = 0;
     }
 
     /**
@@ -67,6 +70,18 @@ public class Player {
 
     public void printHand(){
         System.out.println("Your cards: \n" + getHand());
+    }
+
+    public void emptyHand(){
+        this.hand = new ArrayList<Card>();
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+
+    public void increaseScore(int addedScore){
+        this.score += addedScore;
     }
 
 
