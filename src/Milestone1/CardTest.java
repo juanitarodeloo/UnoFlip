@@ -1,5 +1,6 @@
 package Milestone1;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,9 +12,28 @@ class CardTest {
     /** Testing for getter getColor
      *
      */
+
+    private Card card;
+    private Card wild;
+
+    @BeforeEach
+    void setUp(){
+        card = new Card(Card.Color.RED, Card.Type.FIVE);
+        wild = new Card(Card.Color.NONE, Card.Type.WILD);
+
+    }
+
+    @Test
+    void wildCardColor(){
+        assertEquals(Card.Color.NONE, wild.getColor(), "Wild card should have NONE color.");
+
+    }
+    @Test
+    void wildCardType(){
+        assertEquals(Card.Type.WILD, wild.getType(), "Card type should be WILD ");
+    }
     @Test
     void testGetColor() {
-        Card card = new Card(Card.Color.RED, Card.Type.FIVE);
         assertEquals(Card.Color.RED, card.getColor());
     }
 
@@ -22,7 +42,6 @@ class CardTest {
      */
     @Test
     void testGetType() {
-        Card card = new Card(Card.Color.RED, Card.Type.FIVE);
         assertEquals(Card.Type.FIVE, card.getType());
     }
 
@@ -31,7 +50,6 @@ class CardTest {
      */
     @Test
     void testToString() {
-        Card card = new Card(Card.Color.RED, Card.Type.FIVE);
         String expected = "RED FIVE";
         assertEquals(expected, card.toString());
     }
