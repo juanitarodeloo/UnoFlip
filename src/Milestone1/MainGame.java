@@ -129,163 +129,6 @@ public class MainGame {
         }
     }
 
-//    /**
-//     * run() will initiate the game by prompting the user with number of players and their names,
-//     * initializing the players, displaying the starting card, controlling the current player,...
-//     * @return void
-//     */
-//    public void run(){
-//        int currPlayerIndex = 0;
-//        boolean gameDone = false;
-//        Card currCard;
-//        Player currentPlayer = null;
-//        boolean validCardPlayed;
-//        Scanner sc = new Scanner(System.in); //TODO: close sc at the end
-//        String cardResponse;
-//        Card chosenCard;
-//        Card pickUpCard;
-//        String playPickUpCardResponse;
-//        boolean skipCurrentPlayer; //this var holds whether the current player is not playing after picking up a card because they
-//        //did not have a matching card
-//        boolean skipNextPlayer; //this var holds whether the current player has a SKIP card
-//        boolean goBackToLastPerson; //this var holds whether the current player has a REVERSE card
-//
-//
-//        System.out.println("\nWelcome to our UNO Game!\n");
-//        // initialize players
-//        players = initPlayers();
-//
-//        // display starting card
-//        currCard = myDeck.draw();
-//        discardPile.add(currCard);
-//        this.targetColor = currCard.getColor();  // Assign current card color to targetColor
-//
-//
-//        // Pick first player and display their hand to them
-//        currentPlayer = players.get(currPlayerIndex);
-//
-//        // iterate through players to allow them to take their turn
-//        while(!gameDone){
-//            validCardPlayed = false;
-//            skipCurrentPlayer = false;
-//            chosenCard = null;
-//            skipNextPlayer = false;
-//            goBackToLastPerson = false;
-//
-//            System.out.println("\nTop card: " + currCard);
-//            System.out.println("Target color: " + this.targetColor);
-//            System.out.println(myDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
-//            System.out.println(currentPlayer.getName() + ", it's your turn.");
-//            currentPlayer.printHand();
-//
-//
-//            while(!validCardPlayed) {
-//                System.out.println("Enter the card you wish to play (i.e BLUE NINE) or enter 'None' to pick up a card: ");
-//                cardResponse = sc.nextLine();
-//
-//
-//                if (cardResponse.equalsIgnoreCase("None")) {
-//                    pickUpCard = myDeck.draw(); //draw from top of the deck
-//                    currentPlayer.getHand().add(pickUpCard);
-//                    currentPlayer.printHand();
-//                    System.out.println("Would you like to play the card you just picked up? (Enter yes/no)");
-//                    playPickUpCardResponse = sc.nextLine();
-//                    if (playPickUpCardResponse.equalsIgnoreCase("yes")) {
-//                        chosenCard = pickUpCard;
-//                    } else {
-//                        skipCurrentPlayer = true;
-//                        validCardPlayed = true;
-//                    }
-//
-//                } else {
-//                    //else player played a card in their hand without picking up
-//                    for (Card card : currentPlayer.getHand()) {
-//                        // check that the card they played exists in their hand
-//                        if (cardResponse.equalsIgnoreCase(card.toString())) {
-//                            chosenCard = card;
-//                            break;
-//                        }
-//                    }
-//
-//
-//                    if (chosenCard == null) {
-//                        System.out.println("Invalid card. Try again.");
-//                        continue;
-//                    }
-//                }
-//
-//                if (!skipCurrentPlayer) {
-//                    // Validate players' card
-//                    validCardPlayed = validateCard(currCard, chosenCard);
-//                    if (validCardPlayed) {
-//                        currentPlayer.playCard(chosenCard);
-//                        discardPile.add(chosenCard);
-//                        currCard = chosenCard;
-//                        System.out.println(currentPlayer.getName() + " played " + chosenCard); //TODO: take this out at the end - helpful for us to debug
-//                        //checking if card is an action card:
-//                        //TODO: first check if card is a WILD card and handle that
-//                        skipNextPlayer = handleSkip(chosenCard);
-//
-//                        if(!skipNextPlayer){
-//                            goBackToLastPerson = handleReverse(chosenCard);
-//                            //if player played a REVERSE and there are only two players, treat it like a SKIP
-//                            if(goBackToLastPerson && players.size() == 2){ //TODO: idk if this should be equals instead
-//                                skipNextPlayer = true;
-//                            }
-//
-//                        }
-//
-//                    } else {
-//                        System.out.println("Invalid card, please try again!"); //TODO: you should only have one of these messages
-//                    }
-//                }
-//            } //end of validate while loop
-//
-//            if (chosenCard != null){
-//                currentPlayer.playCard(chosenCard);
-//                discardPile.add(chosenCard);
-//                currCard = chosenCard;
-//                System.out.println(currentPlayer.getName() + " played " + chosenCard); //TODO: take this out at the end - helpful for us to debug
-//                //checking if card is an action card:
-//                //TODO: first check if card is a WILD card and handle that
-//                skipNextPlayer = handleSkip(chosenCard);
-//                if(!skipNextPlayer){
-//                    goBackToLastPerson = handleReverse(chosenCard);
-//                    //if player played a REVERSE and there are only two players, treat it like a SKIP
-//                    if(goBackToLastPerson && players.size() == 2){ //TODO: idk if this should be equals instead
-//                        skipNextPlayer = true;
-//                    }
-//                }
-//            }
-//
-//
-//            //have the rest of players go
-//            if(currentPlayer.getHand().isEmpty()) { // Assuming Player class has getHandSize method, can be adjusted
-//                //System.out.println("here1");
-//                gameDone = true;
-//                System.out.println(currentPlayer.getName() + " has won the game!");
-//            }else{
-//
-//                if(skipNextPlayer){ //if player played a SKIP
-//
-//                    currPlayerIndex = (players.indexOf(currentPlayer) + 2) % players.size(); //Cycle through players - skip the next player
-//
-//                }else if(goBackToLastPerson){ //if player played a REVERSE
-//
-//                    currPlayerIndex = (players.indexOf(currentPlayer) - 1) % players.size(); //Cycle through players - go back to prev player
-//                    if(currPlayerIndex < 0){
-//                        currPlayerIndex = players.size() - 1;
-//                    }
-//
-//                }else{
-//                    currPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size(); //Cycle through players - go back to prev player
-//                }
-//
-//                System.out.println("currplayerIndex = " + currPlayerIndex); //TODO: take out at the end
-//                currentPlayer = players.get(currPlayerIndex);
-//            }
-//        } //end of game while loop
-//    }
 
     /**
      * The player draws one or two card from the deck
@@ -353,6 +196,7 @@ public class MainGame {
                         // If the player plays the invalid drawn card, he finishes his term without play a card
                         validCard = true;
                         playedCard = null;
+                        System.out.println("Invalid card! Your turn has finished!");
                     }else { // If the player doesn't draw a card in this term, continue the loop
                         System.out.println("Invalid card, please try again!"); //TODO: you should only have one of these messages
                     }
@@ -505,7 +349,7 @@ public class MainGame {
             }
         }
         System.out.println(winner.getName() + " get " + points + "points in this turn.");
-        winner.increaseScore(points);  // All the total points to the winner
+        winner.increaseScore(points);  // Add the total points to the winner
         System.out.println(winner.getName() + " has " + winner.getScore() + "points in total.");
     }
 
@@ -527,11 +371,6 @@ public class MainGame {
             System.out.print("Enter name for Player " + (i+1) + ": ");
             playerName = sc.nextLine();
             currPlayer = new Player(playerName);
-
-//            for(int j = 0; j < initNumOfCards; j++) {
-//                currPlayer.pickUpCard(myDeck.draw()); //TODO: player and deck should have respective methods
-//            }
-
             players.add(currPlayer);
         }
 
@@ -551,8 +390,9 @@ public class MainGame {
         if (this.targetColor == Card.Color.NONE){
             return true;
         }
-        //if card played is a wild card, return true
-        if(cardPlayed.getType() == Card.Type.WILD || cardPlayed.getType() == Card.Type.WILD_DRAW_TWO){
+
+        // if card played has no color, return true
+        if(cardPlayed.getColor() == Card.Color.NONE){
             return true;
         }
 
@@ -565,62 +405,8 @@ public class MainGame {
         return false;
     }
 
-    /**
-     * handleSkip() determines whether the given card is of type SKIP
-     * @param cardPlayed
-     * @return true if yes, false if no
-     */
-    private boolean handleSkip(Card cardPlayed){
-        
-        if(cardPlayed.getType().equals(Card.Type.SKIP)){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * handleRever() determines whether the given card is of typpe REVERSE
-     * @param cardPlayed
-     * @return true if yes, false if no
-     */
-    private boolean handleReverse(Card cardPlayed){
-
-        if(cardPlayed.getType().equals(Card.Type.REVERSE)){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * handleWild() determines whether the given card is of type WIlD
-     * @param cardPlayed
-     * @return true if yes, false if no
-     */
-    private boolean handleWild(Card cardPlayed){
-        if(cardPlayed.getType().equals(Card.Type.WILD)){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * handleWild() determines whether the given card is of type WILD_DRAW_TWO
-     * @param cardPlayed
-     * @return true if yes, false if no
-     */
-    private boolean handleWildDrawTwo(Card cardPlayed){
-        if(cardPlayed.getType().equals(Card.Type.WILD_DRAW_TWO)){
-            return true;
-        }
-        return false;
-    }
-
-
-
     public static void main(String[] args) {
         MainGame myGame = new MainGame();
-//        myGame.run();
         myGame.playGame();
-
     }
 }

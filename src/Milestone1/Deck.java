@@ -45,7 +45,7 @@ public class Deck {
                 for (int i = 0; i < 2; i++) {
                     this.cards.add(new Card(color, Card.Type.SKIP));
                     this.cards.add(new Card(color, Card.Type.REVERSE));
-                    this.cards.add(new Card(color, Card.Type.WILD_DRAW_TWO));
+                    this.cards.add(new Card(color, Card.Type.DRAW_ONE));
                 }
             }
         }
