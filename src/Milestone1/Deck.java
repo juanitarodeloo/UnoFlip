@@ -31,18 +31,19 @@ public class Deck {
      */
     private void createDeck() {
 
-        for (int i = 0; i < 2; i++) {
-            for (Card.Color color : Card.Color.values()) {
-                if (color != Card.Color.NONE) {
-                    for (int val = 0; val <= 9; val++) {
-                        this.cards.add(new Card(color, Card.Type.values()[val]));
-                    }
-                }
-            }
-        }
+        cards.clear();
+
+
         for (Card.Color color : Card.Color.values()) {
             if (color != Card.Color.NONE) {
+
+                this.cards.add(new Card(color, Card.Type.ZERO));
+
                 for (int i = 0; i < 2; i++) {
+                    for (int val = 1; val <= 9; val++) { // 1-9
+                        this.cards.add(new Card(color, Card.Type.values()[val]));
+                    }
+
                     this.cards.add(new Card(color, Card.Type.SKIP));
                     this.cards.add(new Card(color, Card.Type.REVERSE));
                     this.cards.add(new Card(color, Card.Type.WILD_DRAW_TWO));
