@@ -9,7 +9,7 @@ import java.util.*;
 
 public class MainGame {
 
-     private Deck myDeck;
+    private Deck myDeck;
     private List<Card> discardPile;
     private List<Player> players;
 
@@ -28,7 +28,7 @@ public class MainGame {
 
 
     public MainGame(){
-        //myDeck = new Deck();
+        myDeck = new Deck();
         discardPile = new ArrayList<Card>();
         players = new ArrayList<Player>();
         this.isClockWise = true;
@@ -76,7 +76,8 @@ public class MainGame {
     private void playARound(int roundNum, Scanner sc){
         System.out.println("   UNO GAME ROUND " + roundNum + "!");
         boolean roundDone = false;
-        Deck currDeck = new Deck();  // Initialize the deck
+        //Deck currDeck = new Deck();  // Initialize the deck
+        this.myDeck.createDeck();  // Create a new deck
 
         Random random = new Random();
         int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
@@ -85,28 +86,28 @@ public class MainGame {
         Card currCard;
         Card chosenCard;
 
-        dealCards(currDeck);  // Deals cards to each player
+        dealCards();  // Deals cards to each player
         // display starting card
-        currCard = currDeck.draw();
+        currCard = this.myDeck.draw();
         discardPile.add(currCard);
         this.targetColor = currCard.getColor();  // Assign current card color to targetColor
 
         while(!roundDone) {
             System.out.println("\nTop card: " + currCard);
             System.out.println("Target color: " + this.targetColor);
-            System.out.println(currDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
+            System.out.println(this.myDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
             System.out.println(currentPlayer.getName() + ", it's your turn.");
             currentPlayer.printHand();
 
             // This method must return a valid card or null!
-            chosenCard = pickOrPlay(sc, currentPlayer, currCard, currDeck);  // The card player wants to play
+            chosenCard = pickOrPlay(sc, currentPlayer, currCard);  // The card player wants to play
 
             if (chosenCard == null){  // If the player draw a card without play, get next player index
                 currPlayerIndex = nextPlayer(players.indexOf(currentPlayer), false);
             }else {  // If the player play a card-> do the card action and get next player index
                 currCard = chosenCard;  // updates the top card
                 System.out.println(currentPlayer.getName() + " played " + chosenCard); //TODO: take this out at the end - helpful for us to debug
-                currPlayerIndex = playACard(chosenCard, currentPlayer, sc, currDeck);
+                currPlayerIndex = playACard(chosenCard, currentPlayer, sc);
             }
 
             if (currentPlayer.getHand().isEmpty()){
@@ -123,31 +124,32 @@ public class MainGame {
     /**
      * dealCard() deal initial cards to each player. This method only called at the beginning of each round
      */
-    private void dealCards(Deck deck){
+    private void dealCards(){
         for (Player player: this.players){
-            drawCards(player, this.initNumOfCards, deck);
+            drawCards(player, this.initNumOfCards);
         }
     }
 
 
     /**
-     * The player draws one or two card from the deck
+     * drawCards() implements when a player draws one or two card from the deck
      * @param player
      * @param NumOfCards
      */
-    private void drawCards(Player player, int NumOfCards, Deck deck){
+    private void drawCards(Player player, int NumOfCards){
         for (int i = 0; i < NumOfCards; i++){
-            Card drawnCard = deck.draw();
+//            Card drawnCard = deck.draw();
+            Card drawnCard = this.myDeck.draw();
             player.getHand().add(drawnCard);
             discardPile.add(drawnCard);
         }
     }
 
     /**
-     * The current player try to play a card until the valid one or just pick a card
+     * pickOrPlay() implements if the current player try to play a card until the valid one or just pick a card
      * @return  returns null if the player only pick a card, otherwise returns the valid card played by the player.
      */
-    private Card pickOrPlay(Scanner sc, Player currentPlayer, Card currCard, Deck deck) {
+    private Card pickOrPlay(Scanner sc, Player currentPlayer, Card currCard) {
         boolean validCard = false;
         String actionResponse;
         Card playedCard = null;
@@ -162,7 +164,7 @@ public class MainGame {
 
             // If the player choose to draw a card
             if (actionResponse.equalsIgnoreCase("None")) {
-                pickUpCard = deck.draw(); //draw from top of the deck
+                pickUpCard = this.myDeck.draw(); //draw from top of the deck
                 currentPlayer.getHand().add(pickUpCard);
                 currentPlayer.printHand();
                 alreadyPick = true;
@@ -213,7 +215,7 @@ public class MainGame {
      * @param sc
      * @return  the next player's index
      */
-    private int playACard(Card playedCard, Player currPlayer, Scanner sc, Deck deck){
+    private int playACard(Card playedCard, Player currPlayer, Scanner sc){
         boolean skipNext = false;  // If the next player need to be skipped
         int currPlayerIndex = this.players.indexOf(currPlayer);
         currPlayer.playCard(playedCard);  // Remove played card from player
@@ -233,13 +235,13 @@ public class MainGame {
             case WILD_DRAW_TWO:  // Wild draw two card -> chose target color, next player draw 2 cards, skip next player
                 chooseColor(sc);  // player chooses a color
                 // Next player draw two cards
-                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 2, deck);
+                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 2);
                 skipNext = true;  // skip next player
                 break;
             case DRAW_ONE: // Draw one card -> next player draw a card, skip next player
                 skipNext = true;  // skip next player
                 // Next player draw a card
-                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 1, deck);
+                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 1);
                 break;
             //default:  // All other cards (number cards)
         }
@@ -273,7 +275,7 @@ public class MainGame {
      * @param selectedColor   the color input by player
      * @return  true if color is valid otherwise false.
      */
-    private boolean validColor(String selectedColor){
+    public boolean validColor(String selectedColor){
         if (selectedColor.equalsIgnoreCase("g")){
             this.targetColor = Card.Color.GREEN;
             return true;
@@ -336,7 +338,7 @@ public class MainGame {
     }
 
     /**
-     *
+     * updatePlayerPoint() updates the score of the player who won the current round
      * @param winner player who won current round
      */
     private void updatePlayerPoint(Player winner){
