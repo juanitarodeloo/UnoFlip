@@ -56,7 +56,7 @@ public class Card {
         this.color = color;
     }
 
-    /**Getter method to retrieve card's type
+    /**Getter method to retrieve card's type.
      *
      * @return
      */

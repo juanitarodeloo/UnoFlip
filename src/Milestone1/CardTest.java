@@ -56,13 +56,11 @@ class CardTest {
         assertEquals(Card.Type.FIVE, card.getType());
     }
 
-    /** Testing case for setting color
+    /** Testing case for setting colors
      *
      */
     @Test
     void testSetColor() {
-        Card card = new Card(Card.Color.RED, Card.Type.FIVE);
-
         card.setColor(Card.Color.BLUE);
         assertEquals(Card.Color.BLUE, card.getColor(), "Card color should be updated to BLUE.");
     }
@@ -70,9 +68,8 @@ class CardTest {
     /**Testing case for setting Type
      *
      */
-        @Test
+    @Test
     void testSetType() {
-        Card card = new Card(Card.Color.RED, Card.Type.FIVE);
         card.setType(Card.Type.ZERO);
         assertEquals(Card.Type.ZERO, card.getType(), "Card type should be updated to ZERO.");
     }
@@ -85,3 +82,4 @@ class CardTest {
         assertEquals(expected, card.toString());
     }
 }
+

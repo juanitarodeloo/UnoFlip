@@ -59,7 +59,7 @@ public class Deck {
 
 
     /**
-     * draw() removes and retunr the top card form the deck
+     * draw() removes and retunr the top card form the deck.
      * @return
      */
     public Card draw() {

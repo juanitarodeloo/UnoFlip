@@ -67,7 +67,7 @@ public class Player {
         this.name = newName;
     }
 
-    /** Getter method for the player's hand of cards
+    /** Getter method for the player's hand of cards.
      *
      * @return
      */

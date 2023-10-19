@@ -25,7 +25,6 @@ class PlayerTest {
     }
     @Test
     void testSetName() {
-        Player player = new Player("Ayman");
         assertEquals("Ayman", player.getName(), "Initial name should be Ayman.");
         player.setName("John");
         assertEquals("John", player.getName(), "The name should be updated to John.");
@@ -39,7 +38,7 @@ class PlayerTest {
         assertEquals(0, player.getHand().size(), "Ayman's hand should be initially empty.");
     }
 
-    /**Testing case for when mutliple cards are picked up
+    /**Testing case for when multiple cards are picked up
      *
      */
     @Test
@@ -77,7 +76,7 @@ class PlayerTest {
         String expected = "Player: Ayman\nHand: [RED FIVE]";
         assertEquals(expected, player.toString());
     }
-    /**Testing case for toString method when a WILD card is picked up from deck
+    /**Testing case for toString method when a WILD card is picked up from deck.
      *
      */
     @Test
