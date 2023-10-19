@@ -12,10 +12,13 @@ class DeckTest {
      *
      */
     private Deck deck;
+    private Deck shuffledDeck;
+
 
     @BeforeEach
     void setUp(){
         deck = new Deck();
+        shuffledDeck = new Deck();
     }
 
     /**Testing case for when a card is drawn the decksize is decremented
@@ -87,13 +90,10 @@ class DeckTest {
      */
     @Test
     void testShuffleChangesOrder() {
-        Deck originalDeck = new Deck();
-        Deck shuffledDeck = new Deck();
         shuffledDeck.shuffle();
-
         boolean differentOrder = false;
-        for (int i = 0; i < originalDeck.getSize(); i++) {
-            if (!originalDeck.draw().toString().equals(shuffledDeck.draw().toString())) {
+        for (int i = 0; i < deck.getSize(); i++) {
+            if (!deck.draw().toString().equals(shuffledDeck.draw().toString())) {
                 differentOrder = true;
                 break;
             }
