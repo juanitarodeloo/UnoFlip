@@ -12,7 +12,6 @@ public class Player {
      */
     private String name;
     private List<Card> hand;
-
     private int score;
 
     /**
@@ -60,6 +59,14 @@ public class Player {
         return name;
     }
 
+    /**Setter for setting a players name
+     *
+     * @param newName
+     */
+    public void setName(String newName){
+        this.name = newName;
+    }
+
     /** Getter method for the player's hand of cards
      *
      * @return
@@ -68,28 +75,36 @@ public class Player {
         return hand;
     }
 
-    public void printHand(){
-        System.out.println("Your cards: \n" + getHand());
-    }
-
+    /** Empties a players hand
+     *
+     */
     public void emptyHand(){
         this.hand = new ArrayList<Card>();
     }
 
+    /**Getter gets the players score
+     *
+     * @return
+     */
     public int getScore(){
         return this.score;
     }
 
+    /** Increases the Original score
+     *
+     * @param addedScore
+     */
     public void increaseScore(int addedScore){
         this.score += addedScore;
     }
 
-
-
-
-
-
-
+    /**Prints the hand of the Player
+     *
+     */
+    public void printHand(){
+        System.out.println("Your cards: \n" + getHand());
+    }
 }
+
 
 

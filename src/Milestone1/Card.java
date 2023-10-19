@@ -18,9 +18,9 @@ public class Card {
      *
      */
     public enum Type{
-        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, REVERSE, SKIP, WILD, WILD_DRAW_TWO, DRAW_ONE
+        ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, REVERSE, SKIP, WILD, WILD_DRAW_TWO, DRAW_ONE
 
-        }
+    }
 
     /**Private instance variables to store card color and type
      *
@@ -76,10 +76,15 @@ public class Card {
      *
      * @return
      */
+    @Override
     public String toString(){
-
-        return color + " " + type;
+        if(color == Color.NONE) {
+            return type.toString();
+        } else {
+            return color + " " + type;
+        }
     }
+
 
 
 
