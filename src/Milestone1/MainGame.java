@@ -9,7 +9,7 @@ import java.util.*;
 
 public class MainGame {
 
-     private Deck myDeck;
+    private Deck myDeck;
     private List<Card> discardPile;
     private List<Player> players;
 
@@ -28,7 +28,7 @@ public class MainGame {
 
 
     public MainGame(){
-        //myDeck = new Deck();
+        myDeck = new Deck();
         discardPile = new ArrayList<Card>();
         players = new ArrayList<Player>();
         this.isClockWise = true;
@@ -50,13 +50,13 @@ public class MainGame {
         while (!gameDone){
             playARound(roundNum, sc);
             for (Player player: this.players){
-                if (player.getScore() >= 500){
+                if (player.getScore() >= 500){  // If a player has more than 500 points -> close the game
                     System.out.println(player.getName() + " has won the game!");
                     gameDone = true;
                     break;
                 }
             }
-            if (!gameDone) {
+            if (!gameDone) { // If the game continues -> start a new round
                 // Empty all players' hand, get ready for the next round
                 for (Player player : this.players) {
                     player.emptyHand();
@@ -76,37 +76,37 @@ public class MainGame {
     private void playARound(int roundNum, Scanner sc){
         System.out.println("   UNO GAME ROUND " + roundNum + "!");
         boolean roundDone = false;
-        Deck currDeck = new Deck();  // Initialize the deck
+        this.myDeck.createDeck();  // Generate a new deck
 
         Random random = new Random();
         int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
         Player currentPlayer = players.get(currPlayerIndex);
 
-        Card currCard;
-        Card chosenCard;
+        Card currCard;  // the top card
+        Card chosenCard;  // the card that current player wants to play
 
-        dealCards(currDeck);  // Deals cards to each player
+        dealCards();  // Deals cards to each player
         // display starting card
-        currCard = currDeck.draw();
+        currCard = this.myDeck.draw();
         discardPile.add(currCard);
         this.targetColor = currCard.getColor();  // Assign current card color to targetColor
 
         while(!roundDone) {
             System.out.println("\nTop card: " + currCard);
             System.out.println("Target color: " + this.targetColor);
-            System.out.println(currDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
+            System.out.println(this.myDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
             System.out.println(currentPlayer.getName() + ", it's your turn.");
             currentPlayer.printHand();
 
             // This method must return a valid card or null!
-            chosenCard = pickOrPlay(sc, currentPlayer, currCard, currDeck);  // The card player wants to play
+            chosenCard = pickOrPlay(sc, currentPlayer, currCard);  // The card player wants to play
 
             if (chosenCard == null){  // If the player draw a card without play, get next player index
                 currPlayerIndex = nextPlayer(players.indexOf(currentPlayer), false);
             }else {  // If the player play a card-> do the card action and get next player index
                 currCard = chosenCard;  // updates the top card
                 System.out.println(currentPlayer.getName() + " played " + chosenCard); //TODO: take this out at the end - helpful for us to debug
-                currPlayerIndex = playACard(chosenCard, currentPlayer, sc, currDeck);
+                currPlayerIndex = playACard(chosenCard, currentPlayer, sc);
             }
 
             if (currentPlayer.getHand().isEmpty()){
@@ -123,31 +123,34 @@ public class MainGame {
     /**
      * dealCard() deal initial cards to each player. This method only called at the beginning of each round
      */
-    private void dealCards(Deck deck){
+    private void dealCards(){
         for (Player player: this.players){
-            drawCards(player, this.initNumOfCards, deck);
+            drawCards(player, this.initNumOfCards);
         }
     }
 
 
     /**
-     * The player draws one or two card from the deck
-     * @param player
-     * @param NumOfCards
+     * drawCards() implements when a player draws one or two card from the deck
+     * @param player  the player who will draw card
+     * @param NumOfCards  the number of cards that player wants to draw
      */
-    private void drawCards(Player player, int NumOfCards, Deck deck){
+    private void drawCards(Player player, int NumOfCards){
         for (int i = 0; i < NumOfCards; i++){
-            Card drawnCard = deck.draw();
+            Card drawnCard = this.myDeck.draw();
             player.getHand().add(drawnCard);
             discardPile.add(drawnCard);
         }
     }
 
     /**
-     * The current player try to play a card until the valid one or just pick a card
+     * pickOrPlay() implements if the current player try to play a card until the valid one or just pick a card
+     * @param sc  the scanner
+     * @param currentPlayer   the player who will play or draw a card
+     * @param currCard the last played card
      * @return  returns null if the player only pick a card, otherwise returns the valid card played by the player.
      */
-    private Card pickOrPlay(Scanner sc, Player currentPlayer, Card currCard, Deck deck) {
+    private Card pickOrPlay(Scanner sc, Player currentPlayer, Card currCard) {
         boolean validCard = false;
         String actionResponse;
         Card playedCard = null;
@@ -162,7 +165,7 @@ public class MainGame {
 
             // If the player choose to draw a card
             if (actionResponse.equalsIgnoreCase("None")) {
-                pickUpCard = deck.draw(); //draw from top of the deck
+                pickUpCard = this.myDeck.draw(); //draw from top of the deck
                 currentPlayer.getHand().add(pickUpCard);
                 currentPlayer.printHand();
                 alreadyPick = true;
@@ -208,12 +211,12 @@ public class MainGame {
 
     /**
      * playACard() implement the corresponding card action
-     * @param playedCard
+     * @param playedCard the card which will be implemented
      * @param currPlayer current player
-     * @param sc
+     * @param sc the scanner
      * @return  the next player's index
      */
-    private int playACard(Card playedCard, Player currPlayer, Scanner sc, Deck deck){
+    public int playACard(Card playedCard, Player currPlayer, Scanner sc){
         boolean skipNext = false;  // If the next player need to be skipped
         int currPlayerIndex = this.players.indexOf(currPlayer);
         currPlayer.playCard(playedCard);  // Remove played card from player
@@ -233,13 +236,13 @@ public class MainGame {
             case WILD_DRAW_TWO:  // Wild draw two card -> chose target color, next player draw 2 cards, skip next player
                 chooseColor(sc);  // player chooses a color
                 // Next player draw two cards
-                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 2, deck);
+                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 2);
                 skipNext = true;  // skip next player
                 break;
             case DRAW_ONE: // Draw one card -> next player draw a card, skip next player
                 skipNext = true;  // skip next player
                 // Next player draw a card
-                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 1, deck);
+                drawCards(this.players.get(nextPlayer(currPlayerIndex, false)), 1);
                 break;
             //default:  // All other cards (number cards)
         }
@@ -252,12 +255,11 @@ public class MainGame {
 
     /**
      * chooseColor() allows the player to choose the target color, it updates the targetColor
-     * @param sc
+     * @param sc the scanner
      */
     private void chooseColor(Scanner sc){
         String selectedColor;
         System.out.println("Enter the color you want - type g for GREEN, r for RED, b for BLUE, y for YELLOW");
-
         while (true) {
             selectedColor = sc.nextLine();
             if (validColor(selectedColor)){
@@ -273,7 +275,7 @@ public class MainGame {
      * @param selectedColor   the color input by player
      * @return  true if color is valid otherwise false.
      */
-    private boolean validColor(String selectedColor){
+    public boolean validColor(String selectedColor){
         if (selectedColor.equalsIgnoreCase("g")){
             this.targetColor = Card.Color.GREEN;
             return true;
@@ -295,9 +297,9 @@ public class MainGame {
 
     /**
      * nextPlayer() calculate and return the next player's index
-     * @param curPlayIndex
-     * @param skipNext
-     * @return
+     * @param curPlayIndex  the current player's index in
+     * @param skipNext  if the next player is skipped
+     * @return  the index of the player who play the next turn
      */
     private int nextPlayer(int curPlayIndex, boolean skipNext){
         // clockwise : (index + 1) % size
@@ -316,10 +318,10 @@ public class MainGame {
 
     /**
      * getCardPoint() returns the point for a input card type
-     * @param cardType
-     * @return
+     * @param cardType  the type of the uno card
+     * @return the point of the uno card
      */
-    private int getCardPoint(Card.Type cardType){
+    public int getCardPoint(Card.Type cardType){
         return switch (cardType) {
             case SKIP, REVERSE ->  // Skip, reverse card
                     20;
@@ -331,15 +333,15 @@ public class MainGame {
                     10;
             default ->  // all other cards (number cards)
                 // Get the value of the number card by the type index!!! Do not change the order of the Type in Card!
-                    Card.Type.valueOf(cardType.toString()).ordinal() + 1;
+                    Card.Type.valueOf(cardType.toString()).ordinal();
         };
     }
 
     /**
-     *
+     * updatePlayerPoint() updates the score of the player who won the current round
      * @param winner player who won current round
      */
-    private void updatePlayerPoint(Player winner){
+    public void updatePlayerPoint(Player winner){
         int points = 0;  // The points which need to be added
         for (Player player: this.players){
             if (!player.equals(winner)){  // If the player is not the winner
@@ -384,7 +386,8 @@ public class MainGame {
      * @param cardPlayed The card that the player wishes to play.
      * @return true if the cardPlayed is a valid move, otherwise false.
      */
-    private boolean validateCard(Card prevCard, Card cardPlayed){ //TODO: this isn't working
+    public
+    boolean validateCard(Card prevCard, Card cardPlayed){ //TODO: this isn't working
 
         // If the first card is Wild card, the player can play any card
         if (this.targetColor == Card.Color.NONE){
@@ -403,6 +406,42 @@ public class MainGame {
 
         // none conditions apply return false
         return false;
+    }
+
+    /**
+     * setTargetColor() assigns the new color to targetTarget.
+     * This method only used in MainGameTest
+     * @param newColor  the color which will be assigned to the target color
+     */
+    public void setTargetColor(Card.Color newColor){
+       this.targetColor = newColor;
+    }
+
+    /**
+     * addPlayer() adds player to the player list
+     * This method only used in MainGameTest
+     * @param player  the player which will be added to the player list
+     */
+    public void addPlayer(Player player){
+        this.players.add(player);
+    }
+
+    /**
+     * getPlayer() returns a list of players in this game.
+     * Only used in MainGameTest
+     * @return a list of players in this game
+     */
+    public List<Player> getPlayer(){
+        return this.players;
+    }
+
+    /**
+     * getDeck() returns the deck using in this game.
+     * Only used in MainGameTest
+     * @return the deck which is used in this game
+     */
+    public Deck getDeck(){
+        return this.myDeck;
     }
 
     public static void main(String[] args) {

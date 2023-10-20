@@ -29,7 +29,9 @@ public class Deck {
      * createDeck() fill the cards list with card objects representing the deck
      * 108 cards, 76 number cards, 24 action cards, and 8 wild cards.
      */
-    private void createDeck() {
+    public void createDeck() {
+
+        this.cards.clear();  // make sure cards are empty
 
         cards.clear();
 
