@@ -33,9 +33,6 @@ public class Deck {
 
         this.cards.clear();  // make sure cards are empty
 
-        cards.clear();
-
-
         for (Card.Color color : Card.Color.values()) {
             if (color != Card.Color.NONE) {
 

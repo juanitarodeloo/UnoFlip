@@ -77,6 +77,7 @@ public class MainGame {
         System.out.println("   UNO GAME ROUND " + roundNum + "!");
         boolean roundDone = false;
         this.myDeck.createDeck();  // Generate a new deck
+        this.myDeck.shuffle(); //shuffle it
 
         Random random = new Random();
         int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
@@ -161,6 +162,7 @@ public class MainGame {
 
         while (!validCard) {
             System.out.println("Enter the card you wish to play (i.e BLUE NINE) or enter 'None' to pick up a card: ");
+
             actionResponse = sc.nextLine();
 
             // If the player choose to draw a card
@@ -201,11 +203,15 @@ public class MainGame {
                         playedCard = null;
                         System.out.println("Invalid card! Your turn has finished!");
                     }else { // If the player doesn't draw a card in this term, continue the loop
-                        System.out.println("Invalid card, please try again!"); //TODO: you should only have one of these messages
+                        System.out.println("Invalid card, please try again!");
                     }
                 }
             }
         }
+        if(playedCard != null){
+            System.out.println("PLAYED CARD: " + playedCard.toString());
+        }
+
         return playedCard;
     }
 
@@ -361,13 +367,29 @@ public class MainGame {
      */
     private List<Player> initPlayers(){
         int numOfPlayers = 0;
+        boolean validNumOfPlayers = false;
         String playerName = null;
         Player currPlayer = null;
         Scanner sc = new Scanner(System.in); //TODO: close sc at the end 
 
-        System.out.print("Enter number of players (2-4): ");
-        numOfPlayers = sc.nextInt(); //TODO: there should be a try-catch around this
-        sc.nextLine();
+        while(!validNumOfPlayers){
+            System.out.print("Enter number of players (2-4): ");
+            try{
+                numOfPlayers = sc.nextInt();
+                sc.nextLine();
+
+                if(numOfPlayers >= 2 && numOfPlayers <= 4){
+                    validNumOfPlayers = true;
+                }else{
+                    System.out.println("Invalid # of players. Please enter a number between 2 and 4: ");
+                }
+            }catch(Exception e){
+                System.out.println("Invalid input. Try again: ");
+                sc.nextLine();
+            }
+        }
+
+
 
         for(int i = 0; i < numOfPlayers; i++) {
             System.out.print("Enter name for Player " + (i+1) + ": ");
