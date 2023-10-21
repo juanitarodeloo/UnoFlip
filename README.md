@@ -86,7 +86,7 @@ MainGame Class:
 
 Authors:
 
-Ayman Kamran
+Ayman Kamran:
 * Implemented the Deck, Player, Card class and their associated test classes
 * Designed UML Class diagram
 
@@ -95,12 +95,12 @@ Adham Elmahi:
 * Designed sequence diagram
 * Wrote README
 
-Juanita Rodelo
+Juanita Rodelo:
 * Implemented MainGame functionalities: user prompts, card validation, REVERSE action card, SKIP action card
 * Wrote MainGame tests
 * Wrote README
 
-Rebecca Li
+Rebecca Li:
 * Implemented MainGame functionalities: user prompts, card validation, DRAW ONE action card, WILD_DRAW_TWO 
   action card, WILD action card, logic behind flow of the game
 * Wrote MainGame tests
