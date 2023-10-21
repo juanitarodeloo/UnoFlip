@@ -101,6 +101,6 @@ Juanita Rodelo
 * Wrote README
 
 Rebecca Li
-* Implemented MainGame functionalities: user prompts, card validation, DRAW ONE action card, WILD_DRAW_TWO action card,
-  logic behind flow of the game
+* Implemented MainGame functionalities: user prompts, card validation, DRAW ONE action card, WILD_DRAW_TWO 
+  action card, WILD action card, logic behind flow of the game
 * Wrote MainGame tests
