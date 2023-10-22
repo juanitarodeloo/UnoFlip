@@ -1,12 +1,13 @@
+/**
+ * Testing class for methods in Card Class
+ * Author: Ayman Kamran
+ */
 package Milestone1;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Testing class for methods in Card Class
- *
- */
 class CardTest {
 
     /** Testing for getter getColor

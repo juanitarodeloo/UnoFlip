@@ -1,5 +1,6 @@
 /**
  * Player class represents the player in game and the name and cards in their hand
+ * Author: Ayman Kamran
  */
 package Milestone1;
 

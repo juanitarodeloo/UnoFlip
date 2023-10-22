@@ -1,5 +1,6 @@
 /**
  * MainGame class will contain the implementation of how the game is created, controlled and finished
+ * Authors: Juanita Rodelo, Rebecca Li, Adham Elmahi
  */
 package Milestone1;
 

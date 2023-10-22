@@ -1,6 +1,7 @@
 /**
  * Card class represents playing cards for an UNO game.
  * It defines the available colors and card types.
+ * Author: Ayman Kamran
  */
 
 package Milestone1;
