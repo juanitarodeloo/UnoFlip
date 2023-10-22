@@ -172,12 +172,19 @@ public class MainGame {
                 currentPlayer.printHand();
                 alreadyPick = true;
                 System.out.println("Would you like to play the card you just picked up? (Enter yes/no)");
-                playPickUpCard = sc.nextLine();
-                // If the player choose to play the drawn card
-                if (playPickUpCard.equalsIgnoreCase("yes")) {
-                    playedCard = pickUpCard;
-                }else{
-                    validCard = true;
+                // loop until the player enters yes or no
+                while (true){
+                    playPickUpCard = sc.nextLine();
+                    // If the player choose to play the drawn card
+                    if (playPickUpCard.equalsIgnoreCase("yes")) {
+                        playedCard = pickUpCard;
+                        break;
+                    } else if (playPickUpCard.equalsIgnoreCase("no")) {
+                        validCard = true;
+                        break;
+                    } else {
+                        System.out.println("Invalid input! (Enter yes/no)");
+                    }
                 }
             }else {
                 //else player played a card in their hand without picking up
