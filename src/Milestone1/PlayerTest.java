@@ -1,3 +1,7 @@
+/**
+ * Testing class for methods in Player Class
+ * Author: Ayman Kamran
+ */
 package Milestone1;
 
 import org.junit.jupiter.api.BeforeEach;

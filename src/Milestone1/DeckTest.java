@@ -1,12 +1,14 @@
+/**
+ * Testing cases for testing Deck Class methods.
+ * Author: Ayman Kamran
+ */
+
 package Milestone1;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Testing cases for testing Deck Class methods.
- *
- */
 class DeckTest {
     /** Testing for deckSize at start of game (Size after creation)
      *

@@ -2,8 +2,8 @@
  * The Deck class represent a deck of cards in the game of UNO
  * This class allows a collection of card objects, with operations that allow us to.
  * create a full deck, shuffle, drawing a card, refilling an empty deck
+ * Author: Ayman Kamran
  */
-
 package Milestone1;
 
 import java.util.ArrayList;

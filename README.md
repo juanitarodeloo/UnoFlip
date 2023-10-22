@@ -39,7 +39,7 @@ based on the cards remaining in their opponents' hands:
 
 5) Winning: The first player to accumulate 500 points across multiple rounds wins the game.
 
-File Structure:
+## File Structure:
 
 MainGame.py: Contains the primary game loop and gameplay logic.
 MainGameTest.py: Contains all the test cases for the code.
@@ -47,7 +47,7 @@ Player.py: Defines the player class with attributes and methods specific to indi
 Deck.py: Describes the deck class, handling card creation, shuffling, and distribution.
 Card.py: Contains the card class definition, outlining the properties and behaviors of individual cards.
 
-Data Structure Explanation:
+## Data Structure Explanation:
 
 Card Class:
 * The Card class is made up of two enums, one to represent the Colour and one to represent the Type of the card.
@@ -84,7 +84,17 @@ MainGame Class:
   memory efficient and provide the most built-in functionality which would allow us to focus more on the logic of the
   game, and less on the individual data structures ability.
 
-Authors:
+## Roadmap Ahead
+The goal of this project is to extend the current functionality to include a graphical user interface (GUI) 
+of the system so a user can visualize the game in a more user-friendly approach. We will also extend 
+capabilities to include the UNO Flip variation. This feature will introduce more cards, more rules and updates
+to the scoring mechanism. We will implement this feature using AI capabilities to incorporate computer players
+to simulate intelligent gameplay. We also have plans to include redo, replay and save/load features. This is
+to allow users to have more control of their moves within the game and allow them to resume gameplay at a 
+later date. Stay tuned for these changes!
+
+
+## Authors:
 
 Ayman Kamran:
 * Implemented the Deck, Player, Card class and their associated test classes

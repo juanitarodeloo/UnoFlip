@@ -1,3 +1,7 @@
+/**
+ * MainGameTest contains test methods that test functionality in MainGame class
+ * Authors: Juanita Rodelo, Rebecca Li
+ */
 package Milestone1;
 import org.junit.Before;
 import org.junit.Test;
