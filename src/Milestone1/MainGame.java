@@ -41,7 +41,7 @@ public class MainGame {
      */
     public void playGame(){
         boolean gameDone = false;
-        Scanner sc = new Scanner(System.in); //TODO: close sc at the end
+        Scanner sc = new Scanner(System.in);
         System.out.println("\nWelcome to our UNO Game!\n");
         // initialize players
         players = initPlayers();
@@ -95,7 +95,7 @@ public class MainGame {
         while(!roundDone) {
             System.out.println("\nTop card: " + currCard);
             System.out.println("Target color: " + this.targetColor);
-            System.out.println(this.myDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
+            //System.out.println(this.myDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
             System.out.println(currentPlayer.getName() + ", it's your turn.");
             currentPlayer.printHand();
 
@@ -106,7 +106,7 @@ public class MainGame {
                 currPlayerIndex = nextPlayer(players.indexOf(currentPlayer), false);
             }else {  // If the player play a card-> do the card action and get next player index
                 currCard = chosenCard;  // updates the top card
-                System.out.println(currentPlayer.getName() + " played " + chosenCard); //TODO: take this out at the end - helpful for us to debug
+                //System.out.println(currentPlayer.getName() + " played " + chosenCard); //TODO: take this out at the end - helpful for us to debug
                 currPlayerIndex = playACard(chosenCard, currentPlayer, sc);
             }
 
@@ -115,7 +115,7 @@ public class MainGame {
                 System.out.println(currentPlayer.getName() + " has won the game!");
                 updatePlayerPoint(currentPlayer);  // Update the points for the winner of this round
             }else {  // If game continues
-                System.out.println("currplayerIndex = " + currPlayerIndex); //TODO: take out at the end
+                //System.out.println("currplayerIndex = " + currPlayerIndex); //TODO: take out at the end
                 currentPlayer = players.get(currPlayerIndex);  // Update 'currentPlayer'
             }
         }
@@ -370,7 +370,7 @@ public class MainGame {
         boolean validNumOfPlayers = false;
         String playerName = null;
         Player currPlayer = null;
-        Scanner sc = new Scanner(System.in); //TODO: close sc at the end 
+        Scanner sc = new Scanner(System.in);
 
         while(!validNumOfPlayers){
             System.out.print("Enter number of players (2-4): ");
@@ -409,7 +409,7 @@ public class MainGame {
      * @return true if the cardPlayed is a valid move, otherwise false.
      */
     public
-    boolean validateCard(Card prevCard, Card cardPlayed){ //TODO: this isn't working
+    boolean validateCard(Card prevCard, Card cardPlayed){
 
         // If the first card is Wild card, the player can play any card
         if (this.targetColor == Card.Color.NONE){

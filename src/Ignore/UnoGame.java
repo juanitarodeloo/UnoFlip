@@ -21,8 +21,8 @@ public class UnoGame {
     private List<Player> players = this.initializePlayers();
     private static Side currentSide;
     private int currentPlayerIndex = 0;
-    private Color temporaryChosenColor = null; //TODO: not sure what this does
-    private static final int INITIAL_NUM_CARDS = 7;
+    private Color temporaryChosenColor = null;
+    //private static final int INITIAL_NUM_CARDS = 7;
 
     public UnoGame() {
         Card startingCard;
