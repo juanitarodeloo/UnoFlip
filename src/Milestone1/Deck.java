@@ -11,13 +11,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck {
+
     /**
      * Private member variable to hold the list of Card objects
      */
     private List<Card> cards;
 
     /**
-     * Public constructor for the Deck class
+     * Deck() creates a new Deck object with a list of cards and shuffles it
      */
     public Deck() {
         cards = new ArrayList<>();
@@ -26,7 +27,7 @@ public class Deck {
     }
 
     /**
-     * createDeck() fill the cards list with card objects representing the deck
+     * createDeck() fills the cards list with card objects representing the deck
      * 108 cards, 76 number cards, 24 action cards, and 8 wild cards.
      */
     public void createDeck() {
@@ -58,8 +59,8 @@ public class Deck {
 
 
     /**
-     * draw() removes and retunr the top card form the deck.
-     * @return
+     * draw() removes and returns the top card form the deck.
+     * @return Card
      */
     public Card draw() {
         if (cards.isEmpty()) {
@@ -72,7 +73,7 @@ public class Deck {
     }
 
     /**
-     * Private method to refil the deck with cards
+     * refill() refills the deck with cards
      */
     private void refill() {
 
@@ -81,7 +82,7 @@ public class Deck {
     }
 
     /**
-     * Private method to shuffle the deck using the Collections utility class
+     * shuffle() randomizes the order of the cards using the Collections utility class
      */
     public void shuffle() {
 
@@ -89,8 +90,8 @@ public class Deck {
     }
 
     /**
-     * Public method to get the curr size of deck, basically what the number of cards left
-     * @return
+     * getSize() gets the curr size of deck
+     * @return int
      */
     public int getSize() {
 

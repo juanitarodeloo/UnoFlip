@@ -10,10 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CardTest {
 
-    /** Testing for getter getColor
-     *
-     */
-
     private Card card;
     private Card wild;
 
@@ -24,41 +20,45 @@ class CardTest {
 
     }
 
-    /**Testing case for wild card color(No color)
-     *
+    /**
+     * Tests the case for wild card color(No color)
      */
     @Test
     void wildCardColor(){
+
         assertEquals(Card.Color.NONE, wild.getColor(), "Wild card should have NONE color.");
 
     }
 
-    /**Testing case for WildCard
-     *
+    /**
+     * Tests the case for WildCard
      */
     @Test
     void wildCardType(){
+
         assertEquals(Card.Type.WILD, wild.getType(), "Card type should be WILD ");
     }
 
-    /**Testing case for getting color
-     *
+    /**
+     * Tests the case for getting color
      */
     @Test
     void testGetColor() {
+
         assertEquals(Card.Color.RED, card.getColor());
     }
 
-    /**Testing for getter getType
-     *
+    /**
+     * Testing for getter getType
      */
     @Test
     void testGetType() {
+
         assertEquals(Card.Type.FIVE, card.getType());
     }
 
-    /** Testing case for setting colors
-     *
+    /**
+     * Testing case for setting colors
      */
     @Test
     void testSetColor() {
@@ -66,16 +66,16 @@ class CardTest {
         assertEquals(Card.Color.BLUE, card.getColor(), "Card color should be updated to BLUE.");
     }
 
-    /**Testing case for setting Type
-     *
+    /**
+     * Testing case for setting Type
      */
     @Test
     void testSetType() {
         card.setType(Card.Type.ZERO);
         assertEquals(Card.Type.ZERO, card.getType(), "Card type should be updated to ZERO.");
     }
-    /** Testing for toString card
-     *
+    /**
+     * Testing for toString card
      */
     @Test
     void testToString() {

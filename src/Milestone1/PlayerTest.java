@@ -25,8 +25,10 @@ class PlayerTest {
      */
     @Test
     void testPlayerName() {
+
         assertEquals("Ayman", player.getName());
     }
+
     @Test
     void testSetName() {
         assertEquals("Ayman", player.getName(), "Initial name should be Ayman.");

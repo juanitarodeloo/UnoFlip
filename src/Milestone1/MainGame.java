@@ -4,8 +4,6 @@
  */
 package Milestone1;
 
-import com.sun.tools.javac.Main;
-
 import java.util.*;
 
 public class MainGame {
@@ -15,11 +13,11 @@ public class MainGame {
     private List<Player> players;
 
     // The target color for the next player
-    // Use targetColor instead of card color when checking if teh card is valid or not
+    // Use targetColor instead of card color when checking if the card is valid or not
     private Card.Color targetColor;
 
     // The order of the game
-    // Assume isClockWise is true at beginning
+    // Assumes isClockWise is true at beginning
     // Every time the player plays a reverse card, isClockWise = !isClockWise
     // Using 4 players and their index as the example: -----
     // If clockWise is true -> order: 0->1->2->3->0     calculation: (index + 1) % size
@@ -27,11 +25,13 @@ public class MainGame {
     private boolean isClockWise;
     private final int initNumOfCards = 7;
 
-
+    /**
+     * MainGame() creates a new MainGame object
+     */
     public MainGame(){
         myDeck = new Deck();
-        discardPile = new ArrayList<Card>();
-        players = new ArrayList<Player>();
+        discardPile = new ArrayList<>();
+        players = new ArrayList<>();
         this.isClockWise = true;
     }
 
@@ -70,7 +70,7 @@ public class MainGame {
     }
 
     /**
-     * playARound() plays UNO until one player get rid of his cards
+     * playARound() plays a round of UNO until one player get rid of his cards
      * @param roundNum
      * @param sc
      */
@@ -91,12 +91,12 @@ public class MainGame {
         // display starting card
         currCard = this.myDeck.draw();
         discardPile.add(currCard);
-        this.targetColor = currCard.getColor();  // Assign current card color to targetColor
+        targetColor = currCard.getColor();  // Assign current card color to targetColor
 
         while(!roundDone) {
             System.out.println("\nTop card: " + currCard);
             System.out.println("Target color: " + this.targetColor);
-            //System.out.println(this.myDeck.getSize() + " cards left in deck\n"); //TODO: remove after testing! only use to test
+            //System.out.println(this.myDeck.getSize() + " cards left in deck\n");
             System.out.println(currentPlayer.getName() + ", it's your turn.");
             currentPlayer.printHand();
 
@@ -163,7 +163,6 @@ public class MainGame {
 
         while (!validCard) {
             System.out.println("Enter the card you wish to play (i.e BLUE NINE) or enter 'None' to pick up a card: ");
-
             actionResponse = sc.nextLine();
 
             // If the player choose to draw a card
@@ -188,7 +187,7 @@ public class MainGame {
                     }
                 }
             }else {
-                //else player played a card in their hand without picking up
+                //else player either played a card in their hand without picking up or entered an invalid card
                 for (Card card : currentPlayer.getHand()) {
                     // check that the card they played exists in their hand
                     if (actionResponse.equalsIgnoreCase(card.toString())) {
@@ -201,6 +200,7 @@ public class MainGame {
                     continue;
                 }
             }
+            //Whether the player picked up a card or played an existing one, validate it
             if (playedCard != null) {
                 // Validate players' card
                 validCard = validateCard(currCard, playedCard);
@@ -234,6 +234,7 @@ public class MainGame {
         boolean skipNext = false;  // If the next player need to be skipped
         int currPlayerIndex = this.players.indexOf(currPlayer);
         currPlayer.playCard(playedCard);  // Remove played card from player
+
         switch(playedCard.getType()){
             case SKIP:  // Skip card -> skip next player
                 skipNext = true;
@@ -260,6 +261,7 @@ public class MainGame {
                 break;
             //default:  // All other cards (number cards)
         }
+
         if (playedCard.getColor() != Card.Color.NONE && playedCard.getType() != Card.Type.WILD_DRAW_TWO){  // If the played card is not Wild, update the target color
             this.targetColor = playedCard.getColor();
         }
@@ -370,14 +372,14 @@ public class MainGame {
     }
 
     /**
-     * initPlayers() will initialize players based on the user's input
+     * initPlayers() will initialize players based on the user input
      * @return a list of players
      */
     private List<Player> initPlayers(){
         int numOfPlayers = 0;
         boolean validNumOfPlayers = false;
-        String playerName = null;
-        Player currPlayer = null;
+        String playerName;
+        Player currPlayer;
         Scanner sc = new Scanner(System.in);
 
         while(!validNumOfPlayers){
@@ -397,8 +399,6 @@ public class MainGame {
             }
         }
 
-
-
         for(int i = 0; i < numOfPlayers; i++) {
             System.out.print("Enter name for Player " + (i+1) + ": ");
             playerName = sc.nextLine();
@@ -411,13 +411,12 @@ public class MainGame {
 
 
     /**
-     * Validates if the card played is a valid move based on the previous card on the table.
+     * validateCard() validates if the card played is a valid move based on the previous card on the table.
      * @param prevCard The card that was previously played on the table.
      * @param cardPlayed The card that the player wishes to play.
      * @return true if the cardPlayed is a valid move, otherwise false.
      */
-    public
-    boolean validateCard(Card prevCard, Card cardPlayed){
+    public boolean validateCard(Card prevCard, Card cardPlayed){
 
         // If the first card is Wild card, the player can play any card
         if (this.targetColor == Card.Color.NONE){
@@ -444,7 +443,8 @@ public class MainGame {
      * @param newColor  the color which will be assigned to the target color
      */
     public void setTargetColor(Card.Color newColor){
-       this.targetColor = newColor;
+
+        this.targetColor = newColor;
     }
 
     /**

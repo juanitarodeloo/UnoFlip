@@ -8,29 +8,29 @@ package Milestone1;
 
 public class Card {
 
-    /**Define enum for card colors
-     *
+    /**
+     * Define enum for card colors
      */
     public enum Color{
         RED, YELLOW, GREEN, BLUE, NONE
     }
 
-    /**Define enum for card types
-     *
+    /**
+     * Define enum for card types
      */
     public enum Type{
         ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, REVERSE, SKIP, WILD, WILD_DRAW_TWO, DRAW_ONE
 
     }
 
-    /**Private instance variables to store card color and type
-     *
+    /**
+     * Private instance variables to store card color and type
      */
     private Color color;
     private Type type;
 
-    /**Constructor to create a new Card object with specified color and type
-     *
+    /**
+     * Card() creates a new Card object with specified color and type
      * @param color
      * @param type
      */
@@ -40,41 +40,44 @@ public class Card {
 
     }
 
-    /**Getter method to retrieve card's color
-     *
-     * @return
+    /**
+     * getColor() returns the color of card
+     * @return color
      */
     public Color getColor(){
         return color;
 
     }
 
-    /**Setter method to set card's color
-     *
+    /**
+     * setColor() sets the color of the card
      * @param color
      */
     public void setColor(Color color){
+
         this.color = color;
     }
 
-    /**Getter method to retrieve card's type.
-     *
+    /**
+     * getType() gets the card type
      * @return
      */
     public Type getType(){
+
         return type;
     }
 
-    /**Setter method to set card's type
-     *
+    /**
+     * setType() sets card type with given card type
      * @param type
      */
     public void setType(Type type){
+
         this.type = type;
     }
 
-    /**toString() method to provide a string representation of the card
-     *
+    /**
+     * toString() provides a string representation of the card
      * @return
      */
     @Override

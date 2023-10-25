@@ -16,7 +16,7 @@ public class Player {
     private int score;
 
     /**
-     * Constructor that initializes the players with a name and a new hand of cards
+     * Player() creates a new Player object with the given name and a new hand of cards
      * @param name
      */
     public Player(String name){
@@ -26,7 +26,7 @@ public class Player {
     }
 
     /**
-     * Removes a card from players hand
+     * playCard() removes a card from players hand
      * @param card
      */
     public void playCard(Card card){
@@ -35,7 +35,7 @@ public class Player {
     }
 
     /**
-     * Adds a card to the players hand
+     * pickUpCard() adds a card to the players hand
      * @param card
      */
     public void pickUpCard(Card card){
@@ -44,7 +44,7 @@ public class Player {
     }
 
     /**
-     * Returns a string representation of the player and their hand of cards
+     * toString() returns a string representation of the player and their hand of cards
      * @return
      */
     public String toString(){
@@ -52,57 +52,64 @@ public class Player {
 
     }
 
-    /** Getter method to aquire the players name
-     *
+    /**
+     * getName() returns the player name
      * @return
      */
     public String getName(){
+
         return name;
     }
 
-    /**Setter for setting a players name
-     *
+    /**
+     * setName() sets a players name
      * @param newName
      */
     public void setName(String newName){
+
         this.name = newName;
     }
 
-    /** Getter method for the player's hand of cards.
-     *
+    /**
+     * getHand() gets the players hand of cards
      * @return
      */
     public List<Card> getHand(){
+
         return hand;
     }
 
-    /** Empties a players hand
-     *
+    /**
+     * emptyHand() empties a players hand
      */
     public void emptyHand(){
+
         this.hand = new ArrayList<Card>();
     }
 
-    /**Getter gets the players score
-     *
+    /**
+     * getScore() gets the players score
      * @return
      */
     public int getScore(){
+
         return this.score;
     }
 
-    /** Increases the Original score
-     *
+    /**
+     * increaseScore() increases the Original score
      * @param addedScore
      */
     public void increaseScore(int addedScore){
+
         this.score += addedScore;
     }
 
-    /**Prints the hand of the Player
-     *
+    /**
+     * printHand() prints the hand of the Player
      */
     public void printHand(){
+
         System.out.println("Your cards: \n" + getHand());
     }
 }
