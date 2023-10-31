@@ -12,24 +12,14 @@ import java.util.List;
 
 public class UnoController implements ActionListener {
     private UnoModel model;
-    private Deck myDeck;
-    private List<Card> discardPile;
-    private List<Player> players;
     private List<JTextField> playerNames;
+    private UnoView view;
+    private int numOfPlayers;
 
-
-
-    public UnoController(UnoModel model){
+    public UnoController(UnoModel model, UnoView view){
         this.model = model;
+        this.view = view;
         playerNames = new ArrayList<>();
-    }
-
-    public void startGame(){
-        boolean gameDone = false;
-        //players = initPlayers();
-
-        //while game isn't done...
-
     }
 
     public void savePlayerNames(List<JTextField> playerNameFields){
@@ -39,27 +29,25 @@ public class UnoController implements ActionListener {
         }
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         //save selected item
         Object source = e.getSource();
-
-        //TODO: idk if the following needs to all be put in the model or kept here?
         if(source instanceof JComboBox){
+            //if the source is a JComboBox that means the user is
+            //inputting the number of players
             JComboBox<Integer> jComboBox = (JComboBox<Integer>) source;
-            Integer numOfPlayers = (Integer) jComboBox.getSelectedItem();
+            numOfPlayers = (Integer) jComboBox.getSelectedItem();
             System.out.println("Selected Item: " + numOfPlayers); //just for testing
-            //model.startGame(); //may have to move this
-            model.initPlayers(numOfPlayers);
-        }else if(source instanceof JButton){
-            //int numOfPlayersInt = numOfPlayers;
+            view.initPlayers(numOfPlayers);
+        }else if(e.getActionCommand().equals("Save")){
             String[] playerNamesText = new String[playerNames.size()];
             for(int i = 0; i < playerNames.size(); i++){
                 playerNamesText[i] = playerNames.get(i).getText();
             }
-            //System.out.println("num of players from controller:" + playerNamesText.length);
-            model.savePlayerNames(playerNamesText);
+            List<Player> players = model.initPlayers(playerNamesText);
+            Card topCard = model.getTargetCard();
+            view.gameView(players, topCard); //TODO: view should already have numofplayers
         }
 
     }
