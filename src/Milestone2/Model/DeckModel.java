@@ -1,21 +1,19 @@
-package Milestone1;
-
-import Milestone1.Card;
+package Milestone2.Model;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck {
+public class DeckModel {
     /**
      * Private member variable to hold the list of Card objects
      */
-    private List<Card> cards;
+    private List<CardModel> cards;
 
     /**
      * Deck() creates a new Deck object with a list of cards and shuffles it
      */
-    public Deck() {
+    public DeckModel() {
         cards = new ArrayList<>();
         createDeck();
         shuffle();
@@ -29,26 +27,26 @@ public class Deck {
 
         this.cards.clear();  // make sure cards are empty
 
-        for (Card.Color color : Card.Color.values()) {
-            if (color != Card.Color.NONE) {
+        for (CardModel.Color color : CardModel.Color.values()) {
+            if (color != CardModel.Color.NONE) {
 
-                this.cards.add(new Card(color, Card.Type.ZERO));
+                this.cards.add(new CardModel(color, CardModel.Type.ZERO));
 
                 for (int i = 0; i < 2; i++) {
                     for (int val = 1; val <= 9; val++) { // 1-9
-                        this.cards.add(new Card(color, Card.Type.values()[val]));
+                        this.cards.add(new CardModel(color, CardModel.Type.values()[val]));
                     }
 
-                    this.cards.add(new Card(color, Card.Type.SKIP));
-                    this.cards.add(new Card(color, Card.Type.REVERSE));
-                    this.cards.add(new Card(color, Card.Type.DRAW_ONE));
+                    this.cards.add(new CardModel(color, CardModel.Type.SKIP));
+                    this.cards.add(new CardModel(color, CardModel.Type.REVERSE));
+                    this.cards.add(new CardModel(color, CardModel.Type.DRAW_ONE));
                 }
             }
         }
 
         for (int i = 0; i < 4; i++) {
-            this.cards.add(new Card(Card.Color.NONE, Card.Type.WILD));
-            this.cards.add(new Card(Card.Color.NONE, Card.Type.WILD_DRAW_TWO));
+            this.cards.add(new CardModel(CardModel.Color.NONE, CardModel.Type.WILD));
+            this.cards.add(new CardModel(CardModel.Color.NONE, CardModel.Type.WILD_DRAW_TWO));
         }
     }
 
@@ -57,7 +55,7 @@ public class Deck {
      * draw() removes and returns the top card form the deck.
      * @return Card
      */
-    public Card draw() {
+    public CardModel draw() {
         if (cards.isEmpty()) {
             refill();
             shuffle();
