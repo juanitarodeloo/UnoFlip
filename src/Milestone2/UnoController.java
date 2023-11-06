@@ -21,35 +21,6 @@ public class UnoController implements ActionListener{
         playerNames = new ArrayList<>();
     }
 
-//    public void savePlayerNames(List<JTextField> playerNameFields){
-//        //System.out.println("in savePlayer");
-//        for(JTextField p: playerNameFields){
-//            this.playerNames.add(p);
-//        }
-//    }
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        //save selected item
-//        Object source = e.getSource();
-//        if(source instanceof JComboBox){
-//            //if the source is a JComboBox that means the user is
-//            //inputting the number of players
-//            JComboBox<Integer> jComboBox = (JComboBox<Integer>) source;
-//            numOfPlayers = (Integer) jComboBox.getSelectedItem();
-//            System.out.println("Selected Item: " + numOfPlayers); //just for testing
-//            view.initPlayers(numOfPlayers);
-//        }else if(e.getActionCommand().equals("Save")){
-//            String[] playerNamesText = new String[playerNames.size()];
-//            for(int i = 0; i < playerNames.size(); i++){
-//                playerNamesText[i] = playerNames.get(i).getText();
-//            }
-//            List<Player> players = model.initPlayers(playerNamesText);
-//            Card topCard = model.getTargetCard();
-//            view.gameView(players, topCard); //TODO: view should already have numofplayers
-//        }
-//
-//    }
     @Override
     public void actionPerformed(ActionEvent e) {
         //save selected item
@@ -58,7 +29,6 @@ public class UnoController implements ActionListener{
             //if the source is a JComboBox that means the user is inputting the number of players
             JComboBox<Integer> jComboBox = (JComboBox<Integer>) source;
             numOfPlayers = (Integer) jComboBox.getSelectedItem();
-//            System.out.println("Selected Item: " + numOfPlayers); //just for testing
             this.model.setTempPlayerNum(numOfPlayers);  // Save the number of player in model
         }else if(source instanceof JButton){
             switch (e.getActionCommand()){

@@ -4,6 +4,7 @@ import Milestone2.Model.CardModel;
 import Milestone2.UnoController;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -17,12 +18,15 @@ public class GamePanel extends JPanel {
 
     public GamePanel(UnoController controller){
         this.setLayout(new BorderLayout());
-        this.topCard = new JLabel();
-        this.targetColour = new JLabel();
+        this.topCard = new JLabel(); //TODO: label it top card
+        this.topCard.setBorder(new LineBorder(Color.BLACK)); //for test
+        this.targetColour = new JLabel(); //TODO: label this target colour
+        this.targetColour.setBorder(new LineBorder(Color.BLACK)); //for test
         this.errorMessage = new JLabel();
+        this.errorMessage.setBorder(new LineBorder(Color.BLACK)); //for test
         this.currentHand = new PlayerHandPanel(controller);
         JPanel gameCenter = new JPanel();
-        gameCenter.setBorder(BorderFactory.createLineBorder(Color.black, 3));  // for test
+        gameCenter.setBorder(BorderFactory.createLineBorder(Color.black, 3));  // for test //TODO: i think we should change this layout to something else
         gameCenter.setLayout(new GridLayout(3, 1));
         gameCenter.add(this.topCard, 0);
         gameCenter.add(this.targetColour, 1);
@@ -74,10 +78,11 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * plaerRemoveCard calls the hand panel to remove the specific card
+     * playerRemoveCard calls the hand panel to remove the specific card
      * @param cardIndex
      */
     public void playerRemoveCard(int cardIndex){
+
         this.currentHand.removeCard(cardIndex);
     }
 }

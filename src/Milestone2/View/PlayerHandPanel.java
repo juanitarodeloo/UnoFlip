@@ -14,7 +14,7 @@ public class PlayerHandPanel extends JScrollPane{
     private ArrayList<JButton> cards;
     private JPanel handPanel;
 
-    public PlayerHandPanel(ActionListener buttonController){
+    public PlayerHandPanel(ActionListener buttonController){ //TODO: this panel should be bigger
         this.buttonController = buttonController;
         this.cards = new ArrayList<JButton>();
         this.handPanel = new JPanel(new FlowLayout());

@@ -88,6 +88,8 @@ public class UnoModel {
         int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
         this.currentPlayer = players.get(currPlayerIndex);  // Set current player
         this.unoView.updateRoundInfo(this.roundNum);  // Update round information
+//        if(this.targetColor.equals(Card.Color.NONE)){ //TODO: if the starting card is a wild card, message should tell user to play whatever card they want
+//        }
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer,
                 MessageConstant.normalTurn, this.topCard, this.targetColor, this.directionString()));
     }
@@ -229,6 +231,8 @@ public class UnoModel {
                 if (playedCard.getType() == CardModel.Type.WILD_DRAW_TWO) {  // if the card is wild draw two card
                     this.nextMessage = MessageConstant.drawTwoTurn;  // next player needs to draw two cards
                     this.needToDraw = 2;
+                }else{ //else the card is wild and the next message should be a normal message
+                    this.nextMessage = MessageConstant.normalTurn;
                 }
             } else if (playedCard.getType() == CardModel.Type.DRAW_ONE) {  // If the card is draw one card
                 this.nextMessage = MessageConstant.drawOneTurn;  // next player needs to draw one cards
@@ -246,7 +250,7 @@ public class UnoModel {
      */
     public void nextPlayer(){
         // If next player is in skip turn
-        if (this.nextMessage.equals(MessageConstant.skipTurn)){
+        if (this.nextMessage.equals(MessageConstant.skipTurn)){ //TODO: system crashes when a wild is played first
             if (this.finishSkip){  // if the skip turn finished -> current player is skipped, next player is normal
                 this.nextMessage = MessageConstant.normalTurn;
             }else {  // Next player needs to be skipped
