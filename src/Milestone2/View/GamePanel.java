@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import Milestone2.Model.UnoModel;
+
 
 public class GamePanel extends JPanel {
     // This class is the panel for the actual game part - the place shows top card, target color, and player's hand
@@ -15,8 +17,10 @@ public class GamePanel extends JPanel {
     private JLabel targetColour;
     private JLabel errorMessage;
     private PlayerHandPanel currentHand;
-
-    public GamePanel(UnoController controller){
+    private UnoModel unoModel;
+    private UnoController controller;
+    public GamePanel(UnoController controller, UnoModel model){
+        this.unoModel = model;
         this.setLayout(new BorderLayout());
         this.topCard = new JLabel(); //TODO: label it top card
         this.topCard.setBorder(new LineBorder(Color.BLACK)); //for test
@@ -33,23 +37,41 @@ public class GamePanel extends JPanel {
         gameCenter.add(this.errorMessage, 2);
         this.add(gameCenter, BorderLayout.CENTER);
         this.add(this.currentHand, BorderLayout.SOUTH);
+        this.controller = controller;
     }
 
     /**
      * beforeEachTurn method updates the displayed top card, target colour for the current player
-     * @param topCard
-     * @param targetColour
+
+     * @param topCardModel
      * @param cards
      */
-    public void beforeEachTurn(String topCard, CardModel.Color targetColour, ArrayList<CardModel> cards){
-        if (!this.topCard.toString().equals(topCard)){  // If top card has changed
-            this.topCard.setText(topCard);
+    public void beforeEachTurn(CardModel topCardModel, ArrayList<CardModel> cards) {
+        // Set the top card image
+        ImageIcon topCardIcon = currentHand.getCardImageIcon(
+                topCardModel.getColor().toString().toLowerCase(),
+                topCardModel.getType().toString().toLowerCase()
+        );
+        Image image = topCardIcon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+        this.topCard.setIcon(new ImageIcon(image));
+        this.topCard.setText(""); // Clear any text
+
+        // Check if the top card is a wild card and if the target color has been chosen
+        if (topCardModel.getType() == CardModel.Type.WILD || topCardModel.getType() == CardModel.Type.WILD_DRAW_TWO) {
+            // If targetColor has been set, use it. Otherwise, display "Choose a color".
+            String colorText = unoModel.getTargetColor() != CardModel.Color.NONE ? unoModel.getTargetColor().toString() : "Choose a color";
+            this.targetColour.setText(colorText);
+        } else {
+            // For non-wild cards, just use the card's color
+            this.targetColour.setText(topCardModel.getColor().toString());
         }
-        if(!this.targetColour.toString().equals(targetColour.toString())){  // If target color has changed
-            this.targetColour.setText(targetColour.toString());
-        }
-        this.currentHand.resetCards(cards);  // Reset the panel to display current player's cards
+
+        // Reset the panel to display the current player's hand
+        this.currentHand.resetCards(cards);
+        this.revalidate();
+        this.repaint();
     }
+
 
     /**
      * updateMessage method updates the instructions for the current player

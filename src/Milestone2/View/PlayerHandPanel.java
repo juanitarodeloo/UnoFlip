@@ -2,10 +2,16 @@ package Milestone2.View;
 
 import Milestone2.Model.CardModel;
 
+import java.io.IOException;
+import java.net.URL;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import java.io.File; // Add this import statement at the top of your Java file
+
+
 
 public class PlayerHandPanel extends JScrollPane{
     // PlayerHandPanel contains all cards in a player's hand.
@@ -26,15 +32,24 @@ public class PlayerHandPanel extends JScrollPane{
      * addNewCard creates new card button depend on the actual card and adds it to the panel.
      * @param card
      */
-    public void addNewCard(CardModel card){
-        JButton cardButton = new JButton(card.toString());
-        cardButton.setSize(100, 100);
-        cardButton.addActionListener(this.buttonController);
-        this.cards.add(cardButton);  // Add buttons to the button list -> easy to find later
-        // Set the action command of this button to the index of it in the list
-        cardButton.setActionCommand(Integer.toString(this.cards.indexOf(cardButton)));
-        this.handPanel.add(cardButton);
+    public void addNewCard(CardModel card) {
+
+            ImageIcon cardIcon = loadCardImageIcon(card.getColor().toString().toLowerCase(), card.getType().toString().toLowerCase());
+            JButton cardButton = new JButton(); // Declare cardButton once
+            if (cardIcon != null) {
+                cardButton.setIcon(cardIcon); // Set the icon if image loaded successfully
+            } else {
+                cardButton.setText(card.toString()); // Fallback to text if the image fails to load
+            }
+
+            cardButton.addActionListener(this.buttonController);
+            cardButton.setActionCommand(Integer.toString(this.cards.size()));
+            this.cards.add(cardButton);
+            this.handPanel.add(cardButton);
+            this.handPanel.revalidate();
+            this.handPanel.repaint();
     }
+
 
     /**
      * removeCard removes specific card button from the panel depend on its index
@@ -75,6 +90,35 @@ public class PlayerHandPanel extends JScrollPane{
         for (JButton card: this.cards){
             card.setEnabled(isEnable);
         }
+    }
+
+
+
+    private ImageIcon loadCardImageIcon(String color, String value) {
+        String fileName; // Declare the fileName variable at the beginning of the method.
+
+        // The leading slash is important, it tells Java to look from the root of the classpath.
+        if ("WILD".equals(value) || "WILD_DRAW_TWO".equals(value)) {
+            // For wild cards, the file name does not include a color
+            fileName = "/" + value + ".png";
+        } else {
+            // For non-wild cards, include the color and type in the file name
+            fileName = "/" + color + "_" + value + ".png";
+        }
+
+        URL resource = getClass().getResource(fileName);
+        if (resource == null) {
+            System.err.println("Resource not found: " + fileName);
+            return null;
+        } else {
+            ImageIcon icon = new ImageIcon(resource);
+            // Resize the icon to a fixed size, for example, 100x150 pixels
+            Image image = icon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+            return new ImageIcon(image);
+        }
+    }
+    public ImageIcon getCardImageIcon(String color, String value) {
+        return loadCardImageIcon(color, value);
     }
 
 }

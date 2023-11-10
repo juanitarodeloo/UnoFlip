@@ -50,7 +50,7 @@ public class UnoView extends JFrame {
      * initGamePanel initializes the game panel, hide the game panel as default and add it to the main frame
      */
     public void initGamePanel(){
-        this.gamePanel = new GamePanel(this.controller);
+        this.gamePanel = new GamePanel(this.controller, this.model);
         this.add(this.gamePanel, BorderLayout.CENTER);
         this.gamePanel.setBorder(BorderFactory.createLineBorder(Color.yellow, 3));  // for test
         this.gamePanel.setVisible(false);  // Hide game panel at beginning
@@ -88,10 +88,17 @@ public class UnoView extends JFrame {
     public void setBeforeEachTurn(UnoGameEvent e){
         this.infoPanel.updateCurrPlayer(e.getCurrPlayer().getName());
         this.infoPanel.updateDirection(e.getDirection());
-        // update target card, target color, and corresponding player's hand
-        this.gamePanel.beforeEachTurn(e.getTopCard().toString(), e.getTargetColour(), e.getCurrPlayer().getHand());
+
+        // Assuming e.getTopCard() returns a CardModel
+        CardModel topCardModel = e.getTopCard();
+
+        // Update target card, target color, and corresponding player's hand
+        // Pass the topCardModel directly instead of calling toString() on it.
+        this.gamePanel.beforeEachTurn(e.getTopCard(), e.getCurrPlayer().getHand());
+
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
     }
+
 
     /**
      * updateGameMessageAndButtons updates the instructions message and buttons states
