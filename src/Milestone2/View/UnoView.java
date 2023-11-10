@@ -93,6 +93,11 @@ public class UnoView extends JFrame {
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
     }
 
+    public void setAfterPlayACard(CardModel.Color color, CardModel card){
+        this.gamePanel.updateColor(color);
+        this.gamePanel.updateTopCard(card.toString());
+    }
+
     /**
      * updateGameMessageAndButtons updates the instructions message and buttons states
      * @param message
