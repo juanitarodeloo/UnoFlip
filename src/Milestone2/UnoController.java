@@ -49,7 +49,22 @@ public class UnoController implements ActionListener{
                     this.model.playerAction(Integer.parseInt(e.getActionCommand()));
             }
 
+        }
+
     }
 
-}
+    /**
+     * handleChallengeAccepted interrupts the users decision from the JOptionPane from the view
+     * @param decision
+     * @return true if challenge was accepted, false if challenge was not accepted
+     */
+    public boolean handleChallengeAccepted(int decision){
+        if(decision == 0){
+            this.model.challengeAccepted();
+            return true;
+        }else{
+//            System.out.println("Player does not want to challenge");
+            return false;
+        }
+    }
 }
