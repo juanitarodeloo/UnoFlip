@@ -6,7 +6,6 @@ import Milestone2.UnoController;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UnoView extends JFrame {
     // The main frame of the UNO game, it contains all panels
@@ -86,6 +85,7 @@ public class UnoView extends JFrame {
      * @param e
      */
     public void setBeforeEachTurn(UnoGameEvent e){
+
         this.infoPanel.updateCurrPlayer(e.getCurrPlayer().getName());
         this.infoPanel.updateDirection(e.getDirection());
         // update target card, target color, and corresponding player's hand
@@ -99,16 +99,24 @@ public class UnoView extends JFrame {
      */
     public void updateGameMessageAndButtons(String message){
         // If player can play a card
-        if (message.equals(MessageConstant.normalTurn) || (message.equals(MessageConstant.invalidCard))){
+        if (message.equals(MessageConstant.normalTurn) || (message.equals(MessageConstant.invalidCard)) ||
+                (message.equals(MessageConstant.guilty))){
             this.gamePanel.setHandEnable(true);  // Enable hand panel -> player can click to play card
             this.setUpButtonsState(true, false);
         }else { // If the player cannot play a card (only draw card or do nothing)
             this.gamePanel.setHandEnable(false);  // Disable hand panel -> player cannot click to play card
+
             // If current player does not need to do something or the player has finished
             if (message.equals(MessageConstant.skipTurn) || message.equals(MessageConstant.nextPlayer)) {
                 this.setUpButtonsState(false, true);
-            }else{  // else draw one or draw two
+            } else {  // else draw one or draw two
                 this.setUpButtonsState(true, false);
+                if (message.equals(MessageConstant.drawTwoTurn)) {
+                    boolean challengeAccepted = chanceToChallenge();
+                    if (challengeAccepted) { //if user accepted challenge, interrupt regular draw two message for challenge response message
+                        return;
+                    }//else continue with regular wild draw two message
+                }
             }
         }
         this.gamePanel.updateMessage(message);
@@ -152,7 +160,7 @@ public class UnoView extends JFrame {
      * @return  the target color
      */
     public CardModel.Color newColour(){
-        UIManager.put("OptionPane.cancelButtonText", "Cancel");
+        UIManager.put("OptionPane.cancelButtonText", "Cancel"); //TODO: I don't think it makes sense to have an ok and cancel button
         UIManager.put("OptionPane.okButtonText", "Ok");
         JPanel newColor = new JPanel();
         CardModel.Color[] choices = {CardModel.Color.YELLOW, CardModel.Color.BLUE,
@@ -163,6 +171,23 @@ public class UnoView extends JFrame {
         JOptionPane.showMessageDialog(null,
                 newColor,"Select New Color", JOptionPane.INFORMATION_MESSAGE);
         return (CardModel.Color) colorChoices.getSelectedItem();
+    }
+
+    /**
+     * chanceToChallenge pops up an option dialog allowing the user to challenge the wild draw two from previous player
+     * @return true if challenge was accepted, false otherwise
+     */
+    public boolean chanceToChallenge(){
+        int result = JOptionPane.showOptionDialog(
+                null,
+                "The last player played a wild draw two, would you like to challenge them?",
+                "Challenge Wild Draw Two",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null, // icon
+                new Object[]{"Yes", "No"}, //result = Yes = 0 or No = 1
+                "default");
+        return this.controller.handleChallengeAccepted(result);
     }
 
     /**

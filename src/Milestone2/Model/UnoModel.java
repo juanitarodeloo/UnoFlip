@@ -28,6 +28,8 @@ public class UnoModel {
     private final int initNumOfCards = 7;
     private UnoView unoView;
 
+    private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
+
     public UnoModel(){
         myDeck = new DeckModel();
         discardPile = new ArrayList<>();
@@ -88,8 +90,6 @@ public class UnoModel {
         int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
         this.currentPlayer = players.get(currPlayerIndex);  // Set current player
         this.unoView.updateRoundInfo(this.roundNum);  // Update round information
-//        if(this.targetColor.equals(Card.Color.NONE)){ //TODO: if the starting card is a wild card, message should tell user to play whatever card they want
-//        }
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer,
                 MessageConstant.normalTurn, this.topCard, this.targetColor, this.directionString()));
     }
@@ -202,7 +202,9 @@ public class UnoModel {
      * @param playedCard the card which will be implemented
      */
     public void playACard(CardModel playedCard){
+        valid_wild_draw_two = false; //should be reset to false every time
         this.currentPlayer.playCard(playedCard);  // Remove played card from player
+        CardModel prevTopCard = this.topCard;
         this.topCard = playedCard;  // Update top card
         this.targetColor = playedCard.getColor();  // update target color
         this.needToDraw = 0;  // Reset the cards that next player needs to draw to 0
@@ -229,6 +231,8 @@ public class UnoModel {
                 // If the card is a wild card
                 this.targetColor = this.unoView.newColour();  // Get the new color
                 if (playedCard.getType() == CardModel.Type.WILD_DRAW_TWO) {  // if the card is wild draw two card
+                    this.valid_wild_draw_two = validate_wild_draw_two(prevTopCard);
+                    System.out.println("Valid wild draw two? " + valid_wild_draw_two); //for testing
                     this.nextMessage = MessageConstant.drawTwoTurn;  // next player needs to draw two cards
                     this.needToDraw = 2;
                 }else{ //else the card is wild and the next message should be a normal message
@@ -246,11 +250,24 @@ public class UnoModel {
     }
 
     /**
+     * validate_wild_draw_two determines if the wild_draw_two is valid or not
+     * @return
+     */
+    public boolean validate_wild_draw_two(CardModel prevTopCard){
+        for(CardModel card: currentPlayer.getHand()){
+            if(card.getType() == prevTopCard.getType() || card.getColor() == prevTopCard.getColor()){
+                System.out.println("Top card: " + topCard.toString() + " matches this card in hand: " + card.toString());
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
      * nextPlayer updates the current player to the next player and updates the view for next turn
      */
     public void nextPlayer(){
         // If next player is in skip turn
-        if (this.nextMessage.equals(MessageConstant.skipTurn)){ //TODO: system crashes when a wild is played first
+        if (this.nextMessage.equals(MessageConstant.skipTurn)){
             if (this.finishSkip){  // if the skip turn finished -> current player is skipped, next player is normal
                 this.nextMessage = MessageConstant.normalTurn;
             }else {  // Next player needs to be skipped
@@ -274,6 +291,47 @@ public class UnoModel {
             addedNum = this.players.size() - addedNum;
         }
         return (curPlayIndex + addedNum) % this.players.size();
+    }
+
+    /**
+     * challengeAccepted is called when a player accepts a challenge to the previous player when they played a wild draw two card.
+     * It will evaluate whether the previous player is guilty or not. If found guilty, it will add two cards to the previous player,
+     * else it will make current player draw two cards
+     */
+    public void challengeAccepted(){
+        //get previous player
+        PlayerModel prevPlayer;
+        if(isClockWise){ //if the direction is clockwise, the prev player is at index = index - 1
+            if(players.indexOf(currentPlayer) == 0){ //when curr player index = 0, prev player is at index (size of players - 1)
+                prevPlayer = players.get(players.size() - 1); //tested
+            }else{
+                prevPlayer = players.get(players.indexOf(currentPlayer) - 1); //tested
+            }
+        }else{//if the direction is counter-clockwise, the prev player is at index = index + 1
+            if(players.indexOf(currentPlayer) == (players.indexOf(players.size() - 1))){
+                prevPlayer = players.get(0);
+            }else{
+                prevPlayer = players.get(players.indexOf(currentPlayer) + 1); //tested
+            }
+
+        }
+//        System.out.println("Current player: " + this.currentPlayer.getName());
+//        System.out.println("Prev player: " + prevPlayer.getName());
+//        System.out.println("prev wild draw two card is valid? " + valid_wild_draw_two); //this works
+        if(valid_wild_draw_two){
+            System.out.println("not guilty"); //this works
+            this.unoView.updateGameMessageAndButtons(MessageConstant.notGuilty);
+
+        }else{
+            System.out.println("guilty"); //this works
+            //add two cards to the prev player hand
+            System.out.println("prev player hand before found guilty: " + prevPlayer.getHand().toString()); //for testing
+            this.drawCards(prevPlayer, 2);
+            this.unoView.updateGameMessageAndButtons(MessageConstant.guilty);
+            System.out.println("prev player hand after found guilty: " + prevPlayer.getHand().toString()); //for testing
+
+        }
+
     }
 
     /**
