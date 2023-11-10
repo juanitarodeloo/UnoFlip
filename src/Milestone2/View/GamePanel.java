@@ -36,18 +36,34 @@ public class GamePanel extends JPanel {
     }
 
     /**
+     * updateColor updates the information about target color
+     * @param targetColour  new target color
+     */
+    public void updateColor(CardModel.Color targetColour){
+        if(!this.targetColour.toString().equals(targetColour.toString())){  // If target color has changed
+            this.targetColour.setText(targetColour.toString());
+        }
+    }
+
+    /**
+     * updateTopCard updates the top card information
+     * @param topCard  new played (top) card
+     */
+    public void updateTopCard(String topCard){
+        if (!this.topCard.toString().equals(topCard)){  // If top card has changed
+            this.topCard.setText(topCard);
+        }
+    }
+
+    /**
      * beforeEachTurn method updates the displayed top card, target colour for the current player
      * @param topCard
      * @param targetColour
      * @param cards
      */
     public void beforeEachTurn(String topCard, CardModel.Color targetColour, ArrayList<CardModel> cards){
-        if (!this.topCard.toString().equals(topCard)){  // If top card has changed
-            this.topCard.setText(topCard);
-        }
-        if(!this.targetColour.toString().equals(targetColour.toString())){  // If target color has changed
-            this.targetColour.setText(targetColour.toString());
-        }
+        this.updateTopCard(topCard);
+        this.updateColor(targetColour);
         this.currentHand.resetCards(cards);  // Reset the panel to display current player's cards
     }
 

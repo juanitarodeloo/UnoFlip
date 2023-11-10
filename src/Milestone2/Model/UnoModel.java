@@ -246,6 +246,7 @@ public class UnoModel {
             }
             // Update instructions and buttons in view
             this.unoView.updateGameMessageAndButtons(MessageConstant.nextPlayer);
+            this.unoView.setAfterPlayACard(this.targetColor, this.topCard);  // Update played card and color
         }
     }
 
@@ -321,15 +322,14 @@ public class UnoModel {
         if(valid_wild_draw_two){
             System.out.println("not guilty"); //this works
             this.unoView.updateGameMessageAndButtons(MessageConstant.notGuilty);
-
         }else{
             System.out.println("guilty"); //this works
             //add two cards to the prev player hand
             System.out.println("prev player hand before found guilty: " + prevPlayer.getHand().toString()); //for testing
             this.drawCards(prevPlayer, 2);
+            this.needToDraw = 0;  // Reset, then current player does not need to draw cards.
             this.unoView.updateGameMessageAndButtons(MessageConstant.guilty);
             System.out.println("prev player hand after found guilty: " + prevPlayer.getHand().toString()); //for testing
-
         }
 
     }
