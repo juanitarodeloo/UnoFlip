@@ -59,48 +59,35 @@ There are four colours within the cards: Red, Green, Yellow and Blue. Some cards
 they were not found from the same source. The following lists what each card color can look like:
 * Red Cards:
 
-<img src="resources/red_draw_one.png" width="130">
-<img src="resources/red_one.png" width="135">
+<img src="resources/red_draw_one.png" width="130"> <img src="resources/red_one.png" width="135">
 
 * Green Cards:
 
-<img src="resources/green_draw_one.png" width="120">
-<img src="resources/green_one.png" width="132">
+<img src="resources/green_draw_one.png" width="120"> <img src="resources/green_one.png" width="132">
 
 * Yellow Cards:
 
-<img src="resources/yellow_draw_one.png" width="120">
-<img src="resources/yellow_one.png" width="138">
+<img src="resources/yellow_draw_one.png" width="125"> <img src="resources/yellow_one.png" width="138">
 
 * Blue Cards:;
 
-<img src="resources/blue_draw_one.png" width="148">
-<img src="resources/blue_one.png" width="138">
+<img src="resources/blue_draw_one.png" width="145"> <img src="resources/blue_one.png" width="138">
 
 ## Action Cards:
 
 * Skip:
 
-<img src="resources/red_skip.png" width="130">
-<img src="resources/green_skip.png" width="130">
-<img src="resources/yellow_skip.png" width="130">
-<img src="resources/blue_skip.png" width="130">
+<img src="resources/red_skip.png" width="130"> <img src="resources/green_skip.png" width="130"> <img src="resources/yellow_skip.png" width="130"> <img src="resources/blue_skip.png" width="130">
 
 * Reverse:
 
-<img src="resources/red_reverse.png" width="130">
-<img src="resources/green_reverse.png" width="130">
-<img src="resources/yellow_reverse.png" width="130">
-<img src="resources/blue_reverse.png" width="130">
+<img src="resources/red_reverse.png" width="130"> <img src="resources/green_reverse.png" width="130"> <img src="resources/yellow_reverse.png" width="130"> <img src="resources/blue_reverse.png" width="130">
 
 * Draw One:
 
-<img src="resources/red_draw_one.png" width="130">
-<img src="resources/green_draw_one.png" width="125">
-<img src="resources/yellow_draw_one.png" width="120">
-<img src="resources/blue_draw_one.png" width="150">
+<img src="resources/red_draw_one.png" width="130"> <img src="resources/green_draw_one.png" width="125"> <img src="resources/yellow_draw_one.png" width="120"> <img src="resources/blue_draw_one.png" width="150">
 
-* Wild: 
+* Wild:
 
 <img src="resources/none_wild.png" width="130">
 
@@ -144,7 +131,7 @@ UnoProject contains:
 * SYSC 3110 Project.pdf: stores project instructions
 * UnoFlip.iml: file created by IntelliJ
 * UnoProject.iml: file created by IntelliJ
-  
+
 
 ## Data Structure Explanation:
 
@@ -180,28 +167,28 @@ UnoProject contains:
   list.
 
 ### MessageConstant Class:
-* The MessageConstant class is made up of static final strings because it will never change and a single copy of it can be used throughout the program. 
+* The MessageConstant class is made up of static final strings because it will never change and a single copy of it can be used throughout the program.
 
 ### UnoFinishEvent / UnoGameEvent Classes:
-* Both of the these classes extend the EventObject class because it will act as events that occur during the game. The UnoGameEvent 
-class handles events that occur during the game and the UnoFinishEvent class handles the events when a game finishes. 
-When these events occur, the model changes in some way so this is reflected in the model which then updates the view accordingly.
+* Both of the these classes extend the EventObject class because it will act as events that occur during the game. The UnoGameEvent
+  class handles events that occur during the game and the UnoFinishEvent class handles the events when a game finishes.
+  When these events occur, the model changes in some way so this is reflected in the model which then updates the view accordingly.
 
 ### UnoView
 * The UnoView class is the main frame of the game, it extends a JFrame and holds all the GUI components. The GUI is made up of two main
-panels: a GamePanel and a InfoPanel. These are their own classes to keep the code organized. Both the GamePanel and the InfoPanel
-extend JPanels and they contain other panels and other Java Swing components. The player's hand is represented by a JPanel,
-it is in a class called PlayerHandPanel. A player's information such as their name and their current score is stored in a class called
-PlayerInfoPanel.
+  panels: a GamePanel and a InfoPanel. These are their own classes to keep the code organized. Both the GamePanel and the InfoPanel
+  extend JPanels and they contain other panels and other Java Swing components. The player's hand is represented by a JPanel,
+  it is in a class called PlayerHandPanel. A player's information such as their name and their current score is stored in a class called
+  PlayerInfoPanel.
 
 
 * Overall, we primarily chose ArrayLists for the list type data structure in our program because they are the most
   memory efficient and provide the most built-in functionality which would allow us to focus more on the logic of the
   game, and less on the individual data structures ability.
 
-## Roadmap Ahead 
+## Roadmap Ahead
 The goal of this project is to extend the current functionality to include the rest of the cards in Uno Flip and to incorporate AI.
-The cards in Uno Flip are double-sided so this will be added in the next release of this game. For the AI capabilities, 
+The cards in Uno Flip are double-sided so this will be added in the next release of this game. For the AI capabilities,
 the game will offer a number of AI players. This will allow single users to play with a computer instead of real people.
 
 
@@ -228,20 +215,26 @@ Rebecca Li:
 
 ## Milestone 2 Authors:
 Ayman Kamran:
-*
+* Added the images of the cards at the bottom panel of the interface
+* Added the image of the top card to show its actual design
+* Enhanced GUI
+* Created UML Class Diagram
 
 Adham Elmahi:
 * Created Resources directory to store all the cards
-* Added the images of the cards at the bottom panel of the interface 
+* Added the images of the cards at the bottom panel of the interface
 * Added the image of the top card to show its actual design
-* Created sequence diagram
+* Created UML Sequence Diagram
 
 Juanita Rodelo:
-* Updated README
 * MVC architecture set up
 * Developed base code for MVC
 * Wild Draw Two Challenge Feature
+* User prompt for number of players
+* Updated README
 
 Rebecca Li:
 * Logic migration to GUI from Milestone 1
+* Created EventObject classes
+* User prompt for new colour for action cards
 * GUI separation files - one file per major GUI component
