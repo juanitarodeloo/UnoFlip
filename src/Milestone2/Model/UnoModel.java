@@ -1,3 +1,7 @@
+/**
+ * UnoModel class constains the main model of the game. It contains the data-related logic that the user works with.
+ * @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
+ */
 package Milestone2.Model;
 
 import Milestone1.Card;
@@ -249,7 +253,7 @@ public class UnoModel {
                 this.targetColor = this.unoView.newColour();  // Get the new color
                 if (playedCard.getType() == CardModel.Type.WILD_DRAW_TWO) {  // if the card is wild draw two card
                     this.valid_wild_draw_two = validate_wild_draw_two(prevTopCard);
-                    System.out.println("Valid wild draw two? " + valid_wild_draw_two); //for testing
+                    //System.out.println("Valid wild draw two? " + valid_wild_draw_two); //for testing
                     this.nextMessage = MessageConstant.drawTwoTurn;  // next player needs to draw two cards
                     this.needToDraw = 2;
                 }else{ //else the card is wild and the next message should be a normal message
@@ -333,20 +337,17 @@ public class UnoModel {
             }
 
         }
-//        System.out.println("Current player: " + this.currentPlayer.getName());
-//        System.out.println("Prev player: " + prevPlayer.getName());
-//        System.out.println("prev wild draw two card is valid? " + valid_wild_draw_two); //this works
         if(valid_wild_draw_two){
-            System.out.println("not guilty"); //this works
+            //System.out.println("not guilty"); //this works
             this.unoView.updateGameMessageAndButtons(MessageConstant.notGuilty);
         }else{
-            System.out.println("guilty"); //this works
+            //System.out.println("guilty"); //this works
             //add two cards to the prev player hand
-            System.out.println("prev player hand before found guilty: " + prevPlayer.getHand().toString()); //for testing
+            //System.out.println("prev player hand before found guilty: " + prevPlayer.getHand().toString()); //for testing
             this.drawCards(prevPlayer, 2);
             this.needToDraw = 0;  // Reset, then current player does not need to draw cards.
             this.unoView.updateGameMessageAndButtons(MessageConstant.guilty);
-            System.out.println("prev player hand after found guilty: " + prevPlayer.getHand().toString()); //for testing
+            //System.out.println("prev player hand after found guilty: " + prevPlayer.getHand().toString()); //for testing
         }
 
     }

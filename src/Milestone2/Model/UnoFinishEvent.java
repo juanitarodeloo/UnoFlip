@@ -1,4 +1,8 @@
 package Milestone2.Model;
+/**
+ *UnoFinishEvent class contains everything the view needs to know to pop up a finish confirm dialog.
+ * @Author: Rebecca Li
+ */
 
 import java.util.EventObject;
 

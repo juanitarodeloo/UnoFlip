@@ -1,10 +1,13 @@
+/**
+ * PlayerInfoPanel contains a label displays the player's name and a label display the player's score
+ * @Authors: Rebecca Li
+ */
 package Milestone2.View;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PlayerInfoPanel extends JPanel{
-    // PlayerInfoPanel contains a label displays the player's name and a label display the player's score
     private JLabel playerName = new JLabel();
     private JLabel score = new JLabel();
 
