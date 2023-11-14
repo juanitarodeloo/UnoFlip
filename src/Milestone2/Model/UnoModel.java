@@ -93,6 +93,23 @@ public class UnoModel {
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer,
                 MessageConstant.normalTurn, this.topCard, this.targetColor, this.directionString()));
     }
+    /**
+     * Gets the chosen target color after a wild card is played.
+     * @return the currently set target color.
+     */
+    public CardModel.Color getTargetColor() {
+        return this.targetColor;
+    }
+
+    /**
+     * Sets the chosen target color after a wild card is played.
+     * This method should be called when a player chooses a color after playing a wild card.
+     * @param targetColor the color chosen by the player.
+     */
+    public void setTargetColor(CardModel.Color targetColor) {
+        this.targetColor = targetColor;
+    }
+
 
     /**
      * initPlayers initializes players in the UNO game.

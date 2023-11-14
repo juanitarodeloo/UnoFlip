@@ -11,9 +11,9 @@ public class UnoView extends JFrame {
     // The main frame of the UNO game, it contains all panels
     private static final int FRAME_WIDTH = 1200;
     private static final int FRAME_HEIGHT = 800;
-    private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
-    private static final int CENTER_X = Math.round(((int)SCREEN_SIZE.getWidth()) - FRAME_WIDTH) / 2;  // center x of screen
-    private static final int CENTER_Y = Math.round(((int)SCREEN_SIZE.getHeight()) - FRAME_HEIGHT) / 2;  // center y of screen
+   // private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
+  //  private static final int CENTER_X = Math.round(((int)SCREEN_SIZE.getWidth()) - FRAME_WIDTH) / 2;  // center x of screen
+   // private static final int CENTER_Y = Math.round(((int)SCREEN_SIZE.getHeight()) - FRAME_HEIGHT) / 2;  // center y of screen
     UnoModel model;
     UnoController controller;
     private GamePanel gamePanel;  // main game panel contains top card, instructions, target color and cards in hand
@@ -24,8 +24,8 @@ public class UnoView extends JFrame {
         controller = new UnoController(model, this);
         this.model.setUnoView(this);
         this.initUNOView();
-        this.validate();
-        this.pack();
+        //this.getContentPane().setBackground(Color.BLUE);
+
     }
 
     /**
@@ -36,12 +36,17 @@ public class UnoView extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setTitle("UNO GAME");
-        // Center the Frame
-        this.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        this.setLocation(CENTER_X, CENTER_Y);  // Set the window location on the screen
-        this.intiInfoPanel();   // Initial information panel
-        this.initGamePanel();   // Initial game panel
+        this.setResizable(false);
+        this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        this.setLocationRelativeTo(null); // Center the frame on the screen
+
+        // Initialize the InfoPanel which will fill the entire window before the game starts
+        this.intiInfoPanel();
+
+        // Initialize the GamePanel but do not add it to the layout yet
+        this.initGamePanel();
+
+        // Make the frame visible
         this.setVisible(true);
     }
 
@@ -49,10 +54,10 @@ public class UnoView extends JFrame {
      * initGamePanel initializes the game panel, hide the game panel as default and add it to the main frame
      */
     public void initGamePanel(){
-        this.gamePanel = new GamePanel(this.controller);
-        this.add(this.gamePanel, BorderLayout.CENTER);
-        this.gamePanel.setBorder(BorderFactory.createLineBorder(Color.yellow, 3));  // for test
-        this.gamePanel.setVisible(false);  // Hide game panel at beginning
+        this.gamePanel = new GamePanel(this.controller, this.model);
+        this.gamePanel.setBorder(BorderFactory.createLineBorder(Color.black, 3)); // For testing
+        this.gamePanel.setVisible(false); // It's invisible until the game starts
+
     }
 
     /**
@@ -60,7 +65,7 @@ public class UnoView extends JFrame {
      */
     public void intiInfoPanel(){
         this.infoPanel = new InfoPanel(this.controller);
-        this.add(this.infoPanel, BorderLayout.EAST);
+        this.add(this.infoPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -68,8 +73,14 @@ public class UnoView extends JFrame {
      * @param players
      */
     public void startGame(ArrayList<PlayerModel> players){
-        this.infoPanel.startGame(players);  // init player information and add game information to info panel
-        this.gamePanel.setVisible(true);
+        this.getContentPane().removeAll(); // Remove all components from the frame
+        this.setLayout(new BorderLayout()); // Reset the layout
+        this.add(gamePanel, BorderLayout.CENTER); // Add the GamePanel to the center
+        this.add(infoPanel, BorderLayout.EAST); // Move the InfoPanel to the right side
+        this.gamePanel.setVisible(true); // Make the GamePanel visible
+        this.infoPanel.startGame(players); // Configure the InfoPanel for the game
+        this.revalidate(); // Revalidate the layout
+        this.repaint(); // Repaint the frame
     }
 
     /**
@@ -85,11 +96,16 @@ public class UnoView extends JFrame {
      * @param e
      */
     public void setBeforeEachTurn(UnoGameEvent e){
-
         this.infoPanel.updateCurrPlayer(e.getCurrPlayer().getName());
         this.infoPanel.updateDirection(e.getDirection());
-        // update target card, target color, and corresponding player's hand
-        this.gamePanel.beforeEachTurn(e.getTopCard().toString(), e.getTargetColour(), e.getCurrPlayer().getHand());
+
+        // Assuming e.getTopCard() returns a CardModel
+        CardModel topCardModel = e.getTopCard();
+
+        // Update target card, target color, and corresponding player's hand
+        // Pass the topCardModel directly instead of calling toString() on it.
+        this.gamePanel.beforeEachTurn(e.getTopCard(), e.getCurrPlayer().getHand());
+
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
     }
 
@@ -228,6 +244,6 @@ public class UnoView extends JFrame {
 
 
     public static void main(String[] args){
-        new UnoView();
+        SwingUtilities.invokeLater(() -> new UnoView());
     }
 }
