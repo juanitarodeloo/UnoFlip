@@ -7,6 +7,7 @@ import Milestone2.UnoController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class InfoPanel extends JPanel{
@@ -23,33 +24,102 @@ public class InfoPanel extends JPanel{
     private JButton nextPlayer = new JButton("Next Player");
     private UnoController controller;
 
-
+    private Image backgroundImage;
     public InfoPanel(UnoController controller){
+        this.backgroundImage = loadBackgroundImage("UNO").getImage();
         this.controller = controller;
         this.playerInfoPanels = new ArrayList<PlayerInfoPanel>();
         this.setLayout(new GridLayout(3, 1));
-        this.setBorder(BorderFactory.createLineBorder(Color.black, 3));  // for test
-        this.initStart();
+        //this.setBorder(BorderFactory.createLineBorder(Color.black, 3)); // for test
+
+
+        initStart();
     }
 
+    private ImageIcon loadBackgroundImage(String imageName) {
+        String fileName = "/" + imageName + ".png";
+
+        URL resource = getClass().getResource(fileName);
+        if (resource == null) {
+            System.err.println("Failed to load resource: " + fileName);
+            System.err.println("Current directory: " + System.getProperty("user.dir"));
+            System.err.println("Classpath: " + System.getProperty("java.class.path"));
+            return null;
+        } else {
+            return new ImageIcon(resource);
+        }
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Paint the panel's background
+
+        // Only draw the image if it has been loaded successfully
+        if (backgroundImage != null) {
+            Graphics2D g2d = (Graphics2D) g.create();
+
+            // Set rendering hints for better image quality
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Draw the image to fit the panel size
+            g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+
+            g2d.dispose(); // Dispose of the graphics object to release resources
+        }
+    }
     /**
      * initStart creates panel for start part which contains the combobox for choosing the number of players
      */
     public void initStart(){
-        JPanel startPanel = new JPanel();
-        startPanel.setLayout(new GridLayout(5, 1));
-        startPanel.add(new JLabel("Welcome to Uno!"), 0);
-        startPanel.add(new JLabel("Please select the number of players!"), 1);
-        startPanel.add(new JLabel("Click start to start the game!"), 2);
-        // Initialize the combo box used for selecting number of players.
+        startButton = new JButton("Start");
+        startButton.setFont(new Font("Tahoma", Font.BOLD, 18));
+        startButton.setForeground(Color.WHITE);
+        startButton.setBackground(new Color(0, 153, 76)); // A more vibrant color
+        startButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        startButton.addActionListener(controller);
+
+
+        JLabel welcomeLabel = new JLabel("Welcome to Uno!", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Tahoma", Font.BOLD, 36)); // Larger font size for title
+        welcomeLabel.setForeground(Color.WHITE); // White color for better contrast
+
+        JLabel selectLabel = new JLabel("Please select the number of players!", SwingConstants.CENTER);
+        selectLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Larger font size for subtext
+        selectLabel.setForeground(Color.WHITE);
+
+        JLabel clickStartLabel = new JLabel("Click start to begin the game!", SwingConstants.CENTER);
+        clickStartLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Consistent font size
+        clickStartLabel.setForeground(Color.WHITE);
+
         Integer[] choices = {2, 3, 4};
-        this.playerNums  = new JComboBox<Integer>(choices);
-        this.playerNums.setEditable(false);
-        this.playerNums.addActionListener(controller);
-        startPanel.add(playerNums, 3);
-        this.startButton.addActionListener(this.controller);
-        startPanel.add(this.startButton, 4);
-        this.add(startPanel, GridBagConstraints.NORTH, 0);
+        playerNums = new JComboBox<>(choices);
+        playerNums.setFont(new Font("Tahoma", Font.BOLD, 18));
+        playerNums.setForeground(Color.BLACK);
+        playerNums.setBackground(Color.WHITE);
+        playerNums.addActionListener(controller);
+
+        // Create a transparent panel to hold the components
+        JPanel startPanel = new JPanel();
+        startPanel.setLayout(new GridBagLayout()); // Use GridBagLayout for better control
+        startPanel.setOpaque(false); // Make it transparent
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 0, 10, 0); // Add some padding
+
+        // Add components with GridBagConstraints
+        startPanel.add(welcomeLabel, gbc);
+        startPanel.add(selectLabel, gbc);
+        startPanel.add(playerNums, gbc);
+        startPanel.add(clickStartLabel, gbc);
+        startPanel.add(startButton, gbc);
+
+        // Add the start panel to the InfoPanel
+        this.add(startPanel);
     }
 
     /**
@@ -59,13 +129,14 @@ public class InfoPanel extends JPanel{
      */
     public void initPlayerInfo(ArrayList<PlayerModel> players){
         JPanel playerInfo = new JPanel();
-        playerInfo.setLayout(new GridLayout(players.size() - 1, 1));
-        for (PlayerModel player: players){  // Create player info panel for each player
+        playerInfo.setLayout(new GridLayout(players.size(), 1));
+        playerInfo.setBackground(new Color(51, 204, 255)); // Ensuring the panel background matches
+        for (PlayerModel player : players) { // Create player info panel for each player
             PlayerInfoPanel currentPlayer = new PlayerInfoPanel(player.getName());
-            playerInfo.add(currentPlayer, players.indexOf(player));
+            playerInfo.add(currentPlayer);
             this.playerInfoPanels.add(currentPlayer);
         }
-        this.add(playerInfo, 1);
+        this.add(playerInfo);
     }
 
     /**
@@ -75,16 +146,19 @@ public class InfoPanel extends JPanel{
     public void initGameInfo(){
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(6, 1));
-        // set up components
-        gamePanel.add(this.roundLabel, 0);
-        gamePanel.add(this.direction, 1);
-        gamePanel.add(this.cardCount, 2);
-        gamePanel.add(this.currentPlayer, 3);
+
+        //gamePanel.setBackground(Color.WHITE); // Ensuring the panel background matches
+
+        // Add the components to the gamePanel
+        gamePanel.add(this.roundLabel);
+        gamePanel.add(this.direction);
+        gamePanel.add(this.cardCount);
+        gamePanel.add(this.currentPlayer);
         this.drawOne.addActionListener(this.controller);
-        gamePanel.add(this.drawOne, 4);
+        gamePanel.add(this.drawOne);
         this.nextPlayer.addActionListener(this.controller);
-        gamePanel.add(this.nextPlayer, 5);
-        this.add(gamePanel, 2);
+        gamePanel.add(this.nextPlayer);
+        this.add(gamePanel);
     }
 
     /**
