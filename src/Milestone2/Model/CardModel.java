@@ -1,8 +1,3 @@
-/**
- *CardModel class represents the model of the playing cards for an UNO game.
- *It defines the available colors and card types.
- * @Authors: Ayman Kamran, Rebecca Li
- */
 package Milestone2.Model;
 
 public class CardModel {

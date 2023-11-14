@@ -1,8 +1,7 @@
 package Milestone2.Model;
-/**
- * UnoGameEvent contains everything the view needs to know to set up the next turn
- *@Author: Rebecca Li
- */
+
+import Milestone1.Card;
+
 import java.util.EventObject;
 
 public class UnoGameEvent extends EventObject {

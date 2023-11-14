@@ -1,17 +1,15 @@
-/**
- * PlayerHandPanel contains all cards in a player's hand.
- *  @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
- */
 package Milestone2.View;
 
 import Milestone2.Model.CardModel;
 
+import java.io.IOException;
 import java.net.URL;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import java.io.File;
 
 public class PlayerHandPanel extends JScrollPane{
     // PlayerHandPanel contains all cards in a player's hand.
@@ -20,7 +18,7 @@ public class PlayerHandPanel extends JScrollPane{
     private ArrayList<JButton> cards;
     private JPanel handPanel;
 
-    public PlayerHandPanel(ActionListener buttonController){
+    public PlayerHandPanel(ActionListener buttonController){ //TODO: this panel should be bigger
         this.buttonController = buttonController;
         this.cards = new ArrayList<JButton>();
         this.handPanel = new JPanel(new FlowLayout());
@@ -38,8 +36,9 @@ public class PlayerHandPanel extends JScrollPane{
         JButton cardButton = new JButton(); // Declare cardButton once
         if (cardIcon != null) {
             cardButton.setIcon(cardIcon); // Set the icon if image loaded successfully
+        } else {
+            cardButton.setText(card.toString()); // Fallback to text if the image fails to load
         }
-        cardButton.setText(card.toString()); // Always set text
 
         cardButton.addActionListener(this.buttonController);
         cardButton.setActionCommand(Integer.toString(this.cards.size()));

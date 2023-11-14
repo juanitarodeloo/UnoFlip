@@ -1,9 +1,9 @@
 package Milestone2.Model;
-/**
- * PlayerModel class represents the model of a player.Each player has a name,a hand(list of cards) and a score.
- * @Author: Ayman Kamran, Rebecca Li
- */
+
+import Milestone1.Card;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerModel {
     /**

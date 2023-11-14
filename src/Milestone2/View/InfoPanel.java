@@ -1,9 +1,7 @@
-/**
- * InfoPanel class contains three part in the info panel -> start part, player info part and control game part
- * @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
- */
 package Milestone2.View;
 
+import Milestone1.Player;
+import Milestone2.Model.DeckModel;
 import Milestone2.Model.PlayerModel;
 import Milestone2.UnoController;
 
@@ -13,6 +11,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class InfoPanel extends JPanel{
+    // This IndoPanel contains three part in the info panel -> start part, player info part and control game part
+
     private ArrayList<PlayerInfoPanel> playerInfoPanels;
     private JComboBox<Integer> playerNums;
     private JButton startButton = new JButton("Start");
@@ -30,11 +30,15 @@ public class InfoPanel extends JPanel{
         this.controller = controller;
         this.playerInfoPanels = new ArrayList<PlayerInfoPanel>();
         this.setLayout(new GridLayout(3, 1));
+        //this.setBorder(BorderFactory.createLineBorder(Color.black, 3)); // for test
+
+
         initStart();
     }
 
     private ImageIcon loadBackgroundImage(String imageName) {
         String fileName = "/" + imageName + ".png";
+
         URL resource = getClass().getResource(fileName);
         if (resource == null) {
             System.err.println("Failed to load resource: " + fileName);
@@ -142,6 +146,8 @@ public class InfoPanel extends JPanel{
     public void initGameInfo(){
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(6, 1));
+
+        //gamePanel.setBackground(Color.WHITE); // Ensuring the panel background matches
 
         // Add the components to the gamePanel
         gamePanel.add(this.roundLabel);
