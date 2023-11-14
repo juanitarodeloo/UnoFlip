@@ -1,3 +1,8 @@
+/**
+ * UnoController is the controller component that connects the view and model. It holds the actions that happen when a
+ * user interacts with the view. It processes all the logic and incoming requests.
+ * @Authors: Rebecca Li, Juanita Rodelo
+ */
 package Milestone2;
 
 import Milestone2.Model.UnoModel;
@@ -6,19 +11,13 @@ import Milestone2.View.UnoView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UnoController implements ActionListener{
     private UnoModel model;
-    private List<JTextField> playerNames;
-    private UnoView view;
     private int numOfPlayers;
 
-    public UnoController(UnoModel model, UnoView view){
+    public UnoController(UnoModel model){
         this.model = model;
-        this.view = view;
-        playerNames = new ArrayList<>();
     }
 
     @Override
@@ -33,19 +32,15 @@ public class UnoController implements ActionListener{
         }else if(source instanceof JButton){
             switch (e.getActionCommand()){
                 case "Start":  // If click to start the game.
-//                    System.out.println("click start");
                     this.model.initGame();
                     break;
                 case "Draw One":  // If the player click the button to draw a card
-//                    System.out.println("click draw one");
                     this.model.playerAction(-1);
                     break;
                 case "Next Player":  // If the player clicks Next Player button
-//                    System.out.println("click Next Player");
                     this.model.nextPlayer();
                     break;
                 default:  // If the player click a card button to draw a card
-//                    System.out.println("Play a card");
                     this.model.playerAction(Integer.parseInt(e.getActionCommand()));
             }
 
@@ -63,7 +58,6 @@ public class UnoController implements ActionListener{
             this.model.challengeAccepted();
             return true;
         }else{
-//            System.out.println("Player does not want to challenge");
             return false;
         }
     }

@@ -1,3 +1,7 @@
+/**
+ * UnoView is the main frame of the UNO game, it contains all panels
+ * @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
+ */
 package Milestone2.View;
 
 import Milestone2.Model.*;
@@ -8,23 +12,18 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class UnoView extends JFrame {
-    // The main frame of the UNO game, it contains all panels
     private static final int FRAME_WIDTH = 1200;
     private static final int FRAME_HEIGHT = 800;
-   // private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
-  //  private static final int CENTER_X = Math.round(((int)SCREEN_SIZE.getWidth()) - FRAME_WIDTH) / 2;  // center x of screen
-   // private static final int CENTER_Y = Math.round(((int)SCREEN_SIZE.getHeight()) - FRAME_HEIGHT) / 2;  // center y of screen
     UnoModel model;
     UnoController controller;
     private GamePanel gamePanel;  // main game panel contains top card, instructions, target color and cards in hand
-    private InfoPanel infoPanel;  // Info game panel contains the number of player and corresponidng inforamtion
+    private InfoPanel infoPanel;  // Info game panel contains the number of player and corresponding information
 
     public UnoView(){
         this.model = new UnoModel();
-        controller = new UnoController(model, this);
+        controller = new UnoController(model);
         this.model.setUnoView(this);
         this.initUNOView();
-        //this.getContentPane().setBackground(Color.BLUE);
 
     }
 
@@ -111,7 +110,7 @@ public class UnoView extends JFrame {
 
     public void setAfterPlayACard(CardModel.Color color, CardModel card){
         this.gamePanel.updateColor(color);
-        this.gamePanel.updateTopCard(card.toString());
+        this.gamePanel.updateTopCard(card);
     }
 
     /**
@@ -162,7 +161,6 @@ public class UnoView extends JFrame {
     public void drawACard(CardModel newCard, String message){
         this.gamePanel.playerDrawCard(newCard);  // Add new card to the game panel
         UIManager.put("OptionPane.okButtonText", "Ok");
-        //TODO: add actual card image
         JOptionPane.showMessageDialog(null,
                 new JLabel("You draw: " + newCard.toString()),"Draw confirm", JOptionPane.INFORMATION_MESSAGE);
         this.updateGameMessageAndButtons(message);
@@ -181,7 +179,7 @@ public class UnoView extends JFrame {
      * @return  the target color
      */
     public CardModel.Color newColour(){
-        UIManager.put("OptionPane.cancelButtonText", "Cancel"); //TODO: I don't think it makes sense to have an ok and cancel button
+        UIManager.put("OptionPane.cancelButtonText", "Cancel");
         UIManager.put("OptionPane.okButtonText", "Ok");
         JPanel newColor = new JPanel();
         CardModel.Color[] choices = {CardModel.Color.YELLOW, CardModel.Color.BLUE,
@@ -229,7 +227,6 @@ public class UnoView extends JFrame {
     public void updateGameFinished(UnoFinishEvent e){
         // Game finish confirm dialog
         this.finishConfirm(e);
-        // TODO: add some function to disable panels or reset the game
     }
 
     /**

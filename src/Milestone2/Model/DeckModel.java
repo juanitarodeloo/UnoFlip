@@ -1,3 +1,7 @@
+/**
+ *DeckModel represents the logic behind the deck.It holds a list of cards.
+ *@Author:Ayman Kamran, Rebecca Li
+ */
 package Milestone2.Model;
 
 import java.util.ArrayList;
