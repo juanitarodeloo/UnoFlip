@@ -1,3 +1,7 @@
+/**
+ *Message Constant class holds all the messages that are shown to the user during the UNO game.
+ * @Authors: Rebecca Li, Juanita Rodelo
+ */
 package Milestone2.Model;
 
 public class MessageConstant {
