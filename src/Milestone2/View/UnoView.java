@@ -227,6 +227,7 @@ public class UnoView extends JFrame {
     public void updateGameFinished(UnoFinishEvent e){
         // Game finish confirm dialog
         this.finishConfirm(e);
+        this.dispose();
     }
 
     /**
