@@ -110,7 +110,7 @@ public class UnoView extends JFrame {
 
     public void setAfterPlayACard(CardModel.Color color, CardModel card){
         this.gamePanel.updateColor(color);
-        this.gamePanel.updateTopCard(card.toString());
+        this.gamePanel.updateTopCard(card);
     }
 
     /**
@@ -227,7 +227,6 @@ public class UnoView extends JFrame {
     public void updateGameFinished(UnoFinishEvent e){
         // Game finish confirm dialog
         this.finishConfirm(e);
-//        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         this.dispose();
     }
 
