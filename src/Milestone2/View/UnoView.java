@@ -9,7 +9,6 @@ import Milestone2.UnoController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class UnoView extends JFrame {
@@ -111,7 +110,7 @@ public class UnoView extends JFrame {
 
     public void setAfterPlayACard(CardModel.Color color, CardModel card){
         this.gamePanel.updateColor(color);
-        this.gamePanel.updateTopCard(card);
+        this.gamePanel.updateTopCard(card.toString());
     }
 
     /**
