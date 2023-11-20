@@ -98,6 +98,7 @@ public class UnoView extends JFrame {
     public void setBeforeEachTurn(Milestone3.Model.UnoGameEvent e){
         this.infoPanel.updateCurrPlayer(e.getCurrPlayer().getName());
         this.infoPanel.updateDirection(e.getDirection());
+        this.infoPanel.updateCardSide(e.getSideString());
 
         // Update target card, target color, and corresponding player's hand
         // Pass the topCardModel directly instead of calling toString() on it.
@@ -106,9 +107,11 @@ public class UnoView extends JFrame {
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
     }
 
-    public void setAfterPlayACard(CardSideModel.Color color, CardSideModel card){
+    public void setAfterPlayACard(CardSideModel.Color color, CardSideModel card, String direction, String side){
         this.gamePanel.updateColor(color);
         this.gamePanel.updateTopCard(card);
+        this.infoPanel.updateDirection(direction);
+        this.infoPanel.updateCardSide(side);
     }
 
     /**

@@ -55,6 +55,18 @@ public class UnoModel {
     }
 
     /**
+     * sideString converts the card side information to String
+     * @return
+     */
+    public String sideString(){
+        if (this.isLight){
+            return "Light Side";
+        }else {
+            return "Dark Side";
+        }
+    }
+
+    /**
      * setUnoView assigns unoView
      * @param unoView
      */
@@ -98,7 +110,7 @@ public class UnoModel {
         this.unoView.updateRoundInfo(this.roundNum);  // Update round information
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer,
                 MessageConstant.normalTurn, this.topCard.getCard(this.isLight), this.targetColor,
-                this.directionString(), this.isLight));
+                this.directionString(), this.isLight, this.sideString()));
     }
     /**
      * Gets the chosen target color after a wild card is played.
@@ -283,6 +295,13 @@ public class UnoModel {
                 this.targetColor =  this.topCard.getCard(this.isLight).getColor();
                 this.nextMessage = MessageConstant.normalTurn;
                 System.out.println("top card: " + this.topCard.getCard(this.isLight).toString());
+                if (this.topCard.getCard(this.isLight).getType() != CardSideModel.Type.FLIP){
+                    // Update played card and color before doing the flip action
+                    this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight),
+                            this.directionString(), this.sideString());
+                    this.playACard(this.topCard);
+                    return;
+                }
             }else if (playedSide.getType() == CardSideModel.Type.DRAW_FIVE){
                 this.needToDraw = 5;
                 this.nextMessage = MessageConstant.drawFiveTurn;
@@ -299,7 +318,8 @@ public class UnoModel {
             }
             // Update instructions and buttons in view
             this.unoView.updateGameMessageAndButtons(MessageConstant.nextPlayer);
-            this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight));  // Update played card and color
+            this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight),
+                    this.directionString(), this.sideString());  // Update played card and color
         }
     }
 
@@ -333,7 +353,8 @@ public class UnoModel {
         // Update current player
         this.currentPlayer = this.players.get(this.getNextPlayerIndex(this.players.indexOf(this.currentPlayer)));
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer, this.nextMessage,
-                this.topCard.getCard(this.isLight), this.targetColor, this.directionString(), this.isLight));  // update the view
+                this.topCard.getCard(this.isLight), this.targetColor, this.directionString(), this.isLight,
+                this.sideString()));  // update the view
     }
 
     /**

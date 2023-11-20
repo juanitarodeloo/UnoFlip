@@ -20,6 +20,7 @@ public class InfoPanel extends JPanel{
     private JLabel roundLabel = new JLabel();
     private JLabel cardCount = new JLabel();
     private JLabel direction = new JLabel();
+    private JLabel cardSide = new JLabel();
     private JLabel currentPlayer = new JLabel();
     private JButton drawOne = new JButton("Draw One");
     private JButton nextPlayer = new JButton("Next Player");
@@ -142,11 +143,12 @@ public class InfoPanel extends JPanel{
      */
     public void initGameInfo(){
         JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(6, 1));
+        gamePanel.setLayout(new GridLayout(7, 1));
 
         // Add the components to the gamePanel
         gamePanel.add(this.roundLabel);
         gamePanel.add(this.direction);
+        gamePanel.add(this.cardSide);
         gamePanel.add(this.cardCount);
         gamePanel.add(this.currentPlayer);
         this.drawOne.addActionListener(this.controller);
@@ -182,6 +184,14 @@ public class InfoPanel extends JPanel{
      */
     public void updateDirection(String direction){
         this.direction.setText("Game order: " + direction);
+    }
+
+    /**
+     * updateCardSide updates the displayed card side
+     * @param cardSide
+     */
+    public void updateCardSide(String cardSide){
+        this.cardSide.setText("Game side: " + cardSide);
     }
 
     /**

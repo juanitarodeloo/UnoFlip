@@ -14,6 +14,7 @@ public class UnoGameEvent extends EventObject {
     private CardSideModel topCard;
     private CardSideModel.Color targetColour;
     private boolean isLight;
+    private String sideString;
 
 
     /**
@@ -22,8 +23,8 @@ public class UnoGameEvent extends EventObject {
      * @param model the UnoModel on which the Event initially occurred
      * @throws IllegalArgumentException if source is null
      */
-    public UnoGameEvent(UnoModel model, PlayerModel currPlayer, String message,
-                        CardSideModel topCard, CardSideModel.Color targetColour, String direction, boolean isLight) {
+    public UnoGameEvent(UnoModel model, PlayerModel currPlayer, String message, CardSideModel topCard,
+                        CardSideModel.Color targetColour, String direction, boolean isLight, String sideString) {
         super(model);
         this.currPlayer = currPlayer;
         this.message = message;
@@ -31,6 +32,7 @@ public class UnoGameEvent extends EventObject {
         this.targetColour = targetColour;
         this.direction = direction;
         this.isLight = isLight;
+        this.sideString = sideString;
     }
 
 
@@ -56,5 +58,9 @@ public class UnoGameEvent extends EventObject {
 
     public boolean isLight() {
         return isLight;
+    }
+
+    public String getSideString(){
+        return this.sideString;
     }
 }
