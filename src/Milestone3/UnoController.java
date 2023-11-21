@@ -5,7 +5,6 @@
  */
 package Milestone3;
 
-import Milestone2.View.UnoView;
 import Milestone3.Model.CardSideModel;
 import Milestone3.Model.UnoModel;
 
@@ -26,24 +25,26 @@ public class UnoController implements ActionListener{
         //save selected item
         Object source = e.getSource();
         if(source instanceof JComboBox){
-            //if the source is a JComboBox that means the user is inputting the number of players
-            JComboBox<Integer> jComboBox = (JComboBox<Integer>) source;
-            numOfPlayers = (Integer) jComboBox.getSelectedItem();
-            this.model.setTempPlayerNum(numOfPlayers);  // Save the number of player in model
-        }else if(source instanceof JButton){
-            switch (e.getActionCommand()){
-                case "Start":  // If click to start the game.
-                    this.model.initGame();
-                    break;
-                case "Draw One":  // If the player click the button to draw a card
-                    this.model.playerAction(-1);
-                    break;
-                case "Next Player":  // If the player clicks Next Player button
-                    this.model.nextPlayer();
-                    break;
-                default:  // If the player click a card button to draw a card
-                    this.model.playerAction(Integer.parseInt(e.getActionCommand()));
-            }
+            System.out.println(e.getActionCommand());
+//            //if the source is a JComboBox that means the user is inputting the number of players
+//            JComboBox<Integer> jComboBox = (JComboBox<Integer>) source;
+//            numOfPlayers = (Integer) jComboBox.getSelectedItem();
+//            this.model.setTempPlayerNum(numOfPlayers);  // Save the number of player in model
+        }else
+      if(source instanceof JButton){
+        switch (e.getActionCommand()){
+            case "Start":  // If click to start the game.
+                this.model.initGame();
+                break;
+            case "Draw One":  // If the player click the button to draw a card
+                this.model.playerAction(-1);
+                break;
+            case "Next Player":  // If the player clicks Next Player button
+                this.model.nextPlayer();
+                break;
+            default:  // If the player click a card button to draw a card
+                this.model.playerAction(Integer.parseInt(e.getActionCommand()));
+        }
 
         }
 
@@ -70,4 +71,15 @@ public class UnoController implements ActionListener{
     public void newColor(CardSideModel.Color newColor){
         this.model.setTargetColor(newColor);
     }
+
+    public void saveNumOfHumanPlayers(int numOfPlayers){
+        model.saveNumOfHumanPlayers(numOfPlayers);
+    }
+
+    public void saveNumOfAIPlayers(int numOfPlayers){
+        model.saveNumOfAIPlayers(numOfPlayers);
+//        this.model.initGame();
+    }
+
+
 }

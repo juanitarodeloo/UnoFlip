@@ -24,9 +24,42 @@ public class UnoView extends JFrame {
         this.model = new Milestone3.Model.UnoModel();
         controller = new Milestone3.UnoController(model);
         this.model.setUnoView(this);
-        this.initUNOView();
 
+        this.initUNOView();
+//        this.promptUserForHumanPlayerInfo();
+//        this.promptUserForAIPlayerInfo();
     }
+
+    public void promptUserForHumanPlayerInfo(){
+        //get num of human players:
+        JPanel firstPanel = new JPanel();
+        JComboBox<Integer> numOfHPlayerOptions = new JComboBox<Integer>();
+        firstPanel.setPreferredSize(new Dimension(200,50));
+        for(int i = 1; i <= 5; i++){
+            numOfHPlayerOptions.addItem(i);
+        }
+        firstPanel.add(numOfHPlayerOptions);
+        JOptionPane.showMessageDialog(null, firstPanel,
+                "Select number of human players:", JOptionPane.INFORMATION_MESSAGE);
+        controller.saveNumOfHumanPlayers((Integer)numOfHPlayerOptions.getSelectedItem());
+    }
+
+    public void promptUserForAIPlayerInfo(){
+        //get num of AI players:
+        JPanel secPanel = new JPanel();
+        JComboBox<Integer> numOfAIPlayerOptions = new JComboBox<Integer>();
+        secPanel.setPreferredSize(new Dimension(200,50));
+        for(int i = 1; i <= 5; i++){
+            numOfAIPlayerOptions.addItem(i);
+        }
+        secPanel.add(numOfAIPlayerOptions);
+        JOptionPane.showMessageDialog(null, secPanel,
+                "Select number of AI players:", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println("AI selected: " + (Integer)numOfAIPlayerOptions.getSelectedItem());
+        controller.saveNumOfAIPlayers((Integer)numOfAIPlayerOptions.getSelectedItem());
+    }
+
+
 
     /**
      * initUNOView initializes the view of the UNO game
@@ -64,6 +97,7 @@ public class UnoView extends JFrame {
      * initInfoPanel initializes the information panel and add it to the main frame
      */
     public void intiInfoPanel(){
+        System.out.println("init info");
         this.infoPanel = new InfoPanel(this.controller);
         this.add(this.infoPanel, BorderLayout.CENTER);
     }
@@ -252,6 +286,7 @@ public class UnoView extends JFrame {
 
 
     public static void main(String[] args){
+        //new UnoView();
         SwingUtilities.invokeLater(() -> new UnoView());
     }
 }

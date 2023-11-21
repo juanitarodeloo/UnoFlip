@@ -33,13 +33,17 @@ public class UnoModel {
     private int tempPlayerNum = 2;  // used for initialize number of player
     private final int initNumOfCards = 7;
     private UnoView unoView;
-
     private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
+    private int numOfHumanPlayers;
+
+    private int numOfAIplayers;
 
     public UnoModel(){
         myDeck = new DeckModel();
         discardPile = new ArrayList<>();
         players = new ArrayList<>();
+        numOfHumanPlayers = 0;
+        numOfAIplayers = 0;
     }
 
     /**
@@ -507,5 +511,16 @@ public class UnoModel {
         }
     }
 
+    public void saveNumOfHumanPlayers(int numOfHumanPlayers){
+        System.out.println(" In model, num of human players: " + numOfHumanPlayers);
+        this.numOfHumanPlayers = numOfHumanPlayers;
+    }
+
+    public void saveNumOfAIPlayers(int numOfAIPlayers){
+        System.out.println(" In model, num of AI players: " + numOfAIPlayers);
+        this.numOfAIplayers = numOfAIPlayers;
+        setTempPlayerNum(numOfHumanPlayers + numOfAIPlayers);
+        initGame();
+    }
 
 }

@@ -4,8 +4,6 @@
  */
 package Milestone3.View;
 
-import Milestone2.Model.PlayerModel;
-import Milestone2.UnoController;
 import Milestone2.View.PlayerInfoPanel;
 
 import javax.swing.*;
@@ -15,7 +13,9 @@ import java.util.ArrayList;
 
 public class InfoPanel extends JPanel{
     private ArrayList<PlayerInfoPanel> playerInfoPanels;
-    private JComboBox<Integer> playerNums;
+    private JComboBox<Integer> humanPlayerNums;
+
+    private JComboBox<Integer> AIPlayerNums;
     private JButton startButton = new JButton("Start");
     private JLabel roundLabel = new JLabel();
     private JLabel cardCount = new JLabel();
@@ -31,7 +31,7 @@ public class InfoPanel extends JPanel{
         this.backgroundImage = loadBackgroundImage("UNO").getImage();
         this.controller = controller;
         this.playerInfoPanels = new ArrayList<PlayerInfoPanel>();
-        this.setLayout(new GridLayout(3, 1));
+        this.setLayout(new GridLayout(5, 1));
         initStart();
     }
 
@@ -68,6 +68,8 @@ public class InfoPanel extends JPanel{
             g2d.dispose(); // Dispose of the graphics object to release resources
         }
     }
+
+
     /**
      * initStart creates panel for start part which contains the combobox for choosing the number of players
      */
@@ -84,20 +86,36 @@ public class InfoPanel extends JPanel{
         welcomeLabel.setFont(new Font("Tahoma", Font.BOLD, 36)); // Larger font size for title
         welcomeLabel.setForeground(Color.WHITE); // White color for better contrast
 
-        JLabel selectLabel = new JLabel("Please select the number of players!", SwingConstants.CENTER);
-        selectLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Larger font size for subtext
-        selectLabel.setForeground(Color.WHITE);
+        JLabel humanPlayerLabel = new JLabel("Please select the number of human players!", SwingConstants.CENTER);
+        humanPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Larger font size for subtext
+        humanPlayerLabel.setForeground(Color.WHITE);
+
+        JLabel AIPlayerLabel = new JLabel("Please select the number of AI players!", SwingConstants.CENTER);
+        AIPlayerLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Larger font size for subtext
+        AIPlayerLabel.setForeground(Color.WHITE);
 
         JLabel clickStartLabel = new JLabel("Click start to begin the game!", SwingConstants.CENTER);
         clickStartLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Consistent font size
         clickStartLabel.setForeground(Color.WHITE);
 
-        Integer[] choices = {2, 3, 4};
-        playerNums = new JComboBox<>(choices);
-        playerNums.setFont(new Font("Tahoma", Font.BOLD, 18));
-        playerNums.setForeground(Color.BLACK);
-        playerNums.setBackground(Color.WHITE);
-        playerNums.addActionListener(controller);
+        Integer[] choices = {1, 2, 3, 4, 5};
+        //get human players:
+        humanPlayerNums = new JComboBox<>(choices);
+        humanPlayerNums.setFont(new Font("Tahoma", Font.BOLD, 18));
+        humanPlayerNums.setForeground(Color.BLACK);
+        humanPlayerNums.setBackground(Color.WHITE);
+        humanPlayerNums.setActionCommand("human player");
+        humanPlayerNums.addActionListener(this.controller);
+//        controller.saveNumOfHumanPlayers((Integer) humanPlayerNums.getSelectedItem());
+
+        //get AI players:
+        AIPlayerNums = new JComboBox<>(choices);
+        AIPlayerNums.setFont(new Font("Tahoma", Font.BOLD, 18));
+        AIPlayerNums.setForeground(Color.BLACK);
+        AIPlayerNums.setBackground(Color.WHITE);
+//        controller.saveNumOfAIPlayers((Integer) AIPlayerNums.getSelectedItem());
+
+        //playerNums.addActionListener(controller);
 
         // Create a transparent panel to hold the components
         JPanel startPanel = new JPanel();
@@ -110,9 +128,11 @@ public class InfoPanel extends JPanel{
         gbc.insets = new Insets(10, 0, 10, 0); // Add some padding
 
         // Add components with GridBagConstraints
-        startPanel.add(welcomeLabel, gbc);
-        startPanel.add(selectLabel, gbc);
-        startPanel.add(playerNums, gbc);
+        //startPanel.add(welcomeLabel, gbc);
+        startPanel.add(humanPlayerLabel, gbc);
+        startPanel.add(AIPlayerLabel, gbc);
+        startPanel.add(humanPlayerNums, gbc);
+        startPanel.add(AIPlayerNums, gbc);
         startPanel.add(clickStartLabel, gbc);
         startPanel.add(startButton, gbc);
 
@@ -164,8 +184,9 @@ public class InfoPanel extends JPanel{
      * @param players
      */
     public void startGame(ArrayList<Milestone3.Model.PlayerModel> players){
-        this.startButton.setEnabled(false);  // Disable start button
-        this.playerNums.setEnabled(false);  // Disable combo box used for selecting number of players
+//        this.startButton.setEnabled(false);  // Disable start button
+//        this.humanPlayerNums.setEnabled(false);  // Disable combo box used for selecting number of players
+//        this.AIPlayerNums.setEnabled(false);
         this.initPlayerInfo(players);
         this.initGameInfo();
     }
