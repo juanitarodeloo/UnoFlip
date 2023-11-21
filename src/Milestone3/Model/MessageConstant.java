@@ -21,9 +21,13 @@ public class MessageConstant {
     // The current player finishes his/her turn, teh game needs to goto the next player's turn
     public static final String nextPlayer = "You turn has finished! Please click Next Player";
 
-    public static final String notGuilty = "Previous player was found not guilty! You were skipped! Please draw two cards!";
-
-    public static final String guilty = "Previous player was found guilty! They have received two cards. Now it's your turn, draw or play a valid card!";
+    public static final String notGuiltyTwo = "Previous player was found not guilty! You were skipped! Please draw two cards!";
+    public static final String guiltyTwo = "Previous player was found guilty! They have received two cards. " +
+            "Now it's your turn, draw or play a valid card!";
+    public static final String notGuiltyColor = "Previous player was found not guilty! " +
+            "You were skipped! Please draw cards until the target color!";
+    public static final String guiltyColor = "Previous player was found guilty! They have received cards." +
+            " Now it's your turn, draw or play a valid card!";
     public static final String drawTwoTurn = "You were skipped! Please draw two cards!";  // distinguish with wild draw two
     public static final String drawThreeTurn = "You were skipped! Please draw three cards!";
     public static final String drawFourTurn = "You were skipped! Please draw four cards!";
