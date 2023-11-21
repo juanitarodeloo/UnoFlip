@@ -15,6 +15,7 @@ public class UnoModel {
     // The target color for the next player
     // Use targetColor instead of card color when checking if the card is valid or not
     private CardSideModel.Color targetColor;
+    private CardSideModel.Color previousColor;  // used when challenge the draw color
     private CardModel topCard;  // top card
     private boolean drawUntilColor = false;  // indicate if current player needs to draw until specific card
     private int numSkip = 0; // indicate how many players need to be skipped
@@ -34,7 +35,7 @@ public class UnoModel {
     private final int initNumOfCards = 7;
     private UnoView unoView;
 
-    private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
+    private boolean valid_wild_draw_two_or_color; //holds whether the wild draw two/color was played properly
 
     public UnoModel(){
         myDeck = new DeckModel();
@@ -245,7 +246,7 @@ public class UnoModel {
      * @param playedCard the card which will be implemented
      */
     public void playACard(CardModel playedCard){
-        valid_wild_draw_two = false; //should be reset to false every time
+        valid_wild_draw_two_or_color = false; //should be reset to false every time
         this.currentPlayer.playCard(playedCard);  // Remove played card from player
         CardModel prevTopCard = this.topCard;
         CardSideModel playedSide = playedCard.getCard(this.isLight);
@@ -279,7 +280,7 @@ public class UnoModel {
                 // If the card is a wild card
                 this.unoView.newColour(this.getColourChoices());  // Get the new color
                 if (playedSide.getType() == CardSideModel.Type.WILD_DRAW_TWO) {  // if the card is wild draw two card
-                    this.valid_wild_draw_two = validate_wild_draw_two(prevTopCard);
+                    this.valid_wild_draw_two_or_color = validate_wild_draw_two_or_color(prevTopCard);
                     //System.out.println("Valid wild draw two? " + valid_wild_draw_two); //for testing
                     this.nextMessage = MessageConstant.wildDrawTwoTurn;  // next player needs to draw two cards
                     this.needToDraw = 2;
@@ -309,6 +310,7 @@ public class UnoModel {
                 this.unoView.newColour(this.getColourChoices());  // Get the new color
                 this.nextMessage = MessageConstant.drawColor;
                 this.drawUntilColor = true;
+                this.valid_wild_draw_two_or_color = validate_wild_draw_two_or_color(prevTopCard);
                 System.out.println("color choose in draw color: " + this.targetColor);
             }else if (playedSide.getType() == CardSideModel.Type.SKIP_EVERYONE){
                 this.numSkip = this.players.size() - 1;
@@ -324,14 +326,14 @@ public class UnoModel {
     }
 
     /**
-     * validate_wild_draw_two determines if the wild_draw_two is valid or not
+     * validate_wild_draw_two determines if the wild_draw_two or wild_draw_color is valid or not
      * @return
      */
-    public boolean validate_wild_draw_two(CardModel prevTopCard){
+    public boolean validate_wild_draw_two_or_color(CardModel prevTopCard){
         for(CardModel card: currentPlayer.getHand()){
             if(card.getCard(this.isLight).getType() == prevTopCard.getCard(this.isLight).getType() ||
                     card.getCard(this.isLight).getColor() == prevTopCard.getCard(this.isLight).getColor()){
-                System.out.println("Top card: " + topCard.toString() + " matches this card in hand: " + card.toString());
+                System.out.println("Top card: " + topCard.toString() + " matches this card in hand: " + card.getCard(this.isLight).toString());
                 return false;
             }
         }
@@ -377,36 +379,55 @@ public class UnoModel {
      */
     public void challengeAccepted(){
         //get previous player
-        PlayerModel prevPlayer;
-        if(isClockWise){ //if the direction is clockwise, the prev player is at index = index - 1
-            if(players.indexOf(currentPlayer) == 0){ //when curr player index = 0, prev player is at index (size of players - 1)
-                prevPlayer = players.get(players.size() - 1); //tested
-            }else{
-                prevPlayer = players.get(players.indexOf(currentPlayer) - 1); //tested
+        PlayerModel prevPlayer = this.getPrevPlayer();
+        if(valid_wild_draw_two_or_color){
+            if (this.drawUntilColor) {
+                this.unoView.updateGameMessageAndButtons(MessageConstant.notGuiltyColor);
+            }else {
+                this.unoView.updateGameMessageAndButtons(MessageConstant.notGuiltyTwo);
             }
-        }else{//if the direction is counter-clockwise, the prev player is at index = index + 1
-            if(players.indexOf(currentPlayer) == (players.indexOf(players.size() - 1))){
-                prevPlayer = players.get(0);
-            }else{
-                prevPlayer = players.get(players.indexOf(currentPlayer) + 1); //tested
-            }
-
-        }
-        if(valid_wild_draw_two){
-            //System.out.println("not guilty"); //this works
-            this.unoView.updateGameMessageAndButtons(MessageConstant.notGuilty);
         }else{
-            //System.out.println("guilty"); //this works
-            //add two cards to the prev player hand
-            //System.out.println("prev player hand before found guilty: " + prevPlayer.getHand().toString()); //for testing
-            this.drawCards(prevPlayer, 2);
-            this.needToDraw = 0;  // Reset, then current player does not need to draw cards.
-            this.unoView.updateGameMessageAndButtons(MessageConstant.guilty);
-            //System.out.println("prev player hand after found guilty: " + prevPlayer.getHand().toString()); //for testing
+            if (this.drawUntilColor){  // if challenge draw color
+                while (true) {
+                    this.drawCards(prevPlayer, 1);  // previous player draw one card
+                    CardModel justDraw = prevPlayer.getHand().get(prevPlayer.getHand().size() - 1);
+                    System.out.println("previous draw: " + justDraw.getCard(this.isLight).toString());
+                    if (justDraw.getCard(isLight).getColor() == this.previousColor) {
+                        this.unoView.updateGameMessageAndButtons(MessageConstant.guiltyColor);
+                        this.drawUntilColor = false;
+                        break;
+                    }
+                    System.out.println("finish draw color");
+                }
+            }else {  // if challenge draw two
+                //add two cards to the prev player hand
+                this.drawCards(prevPlayer, 2);
+                this.needToDraw = 0;  // Reset, then current player does not need to draw cards.
+                this.unoView.updateGameMessageAndButtons(MessageConstant.guiltyTwo);
+            }
         }
 
     }
 
+    /**
+     * getPrecPlayer returns previous player
+     * @return
+     */
+    public PlayerModel getPrevPlayer(){
+        if(isClockWise){ //if the direction is clockwise, the prev player is at index = index - 1
+            if(players.indexOf(currentPlayer) == 0){ //when curr player index = 0, prev player is at index (size of players - 1)
+                return players.get(players.size() - 1); //tested
+            }else{
+                return players.get(players.indexOf(currentPlayer) - 1); //tested
+            }
+        }else{//if the direction is counter-clockwise, the prev player is at index = index + 1
+            if(players.indexOf(currentPlayer) == (players.indexOf(players.size() - 1))){
+                return players.get(0);
+            }else{
+                return players.get(players.indexOf(currentPlayer) + 1); //tested
+            }
+        }
+    }
     /**
      * isLastCard checks if the current player plays all cards in hand
      * @return  if the player has no cards in hand

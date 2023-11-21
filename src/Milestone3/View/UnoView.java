@@ -122,7 +122,7 @@ public class UnoView extends JFrame {
         // If player can play a card
         if (message.equals(Milestone3.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone3.Model.MessageConstant.invalidCard)) ||
-                (message.equals(Milestone3.Model.MessageConstant.guilty))){
+                (message.equals(Milestone3.Model.MessageConstant.guiltyTwo))){
             this.gamePanel.setHandEnable(true);  // Enable hand panel -> player can click to play card
             this.setUpButtonsState(true, false);
         }else { // If the player cannot play a card (only draw card or do nothing)
@@ -131,9 +131,10 @@ public class UnoView extends JFrame {
             // If current player does not need to do something or the player has finished
             if (message.equals(Milestone3.Model.MessageConstant.skipTurn) || message.equals(MessageConstant.nextPlayer)) {
                 this.setUpButtonsState(false, true);
-            } else {  // else draw one or draw two
+            } else {  // else draw one or draw two or draw five or draw color
                 this.setUpButtonsState(true, false);
-                if (message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn)) {
+                if (message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn) ||
+                        message.equals(Milestone3.Model.MessageConstant.drawColor) ) {
                     boolean challengeAccepted = chanceToChallenge();
                     if (challengeAccepted) { //if user accepted challenge, interrupt regular draw two message for challenge response message
                         return;
