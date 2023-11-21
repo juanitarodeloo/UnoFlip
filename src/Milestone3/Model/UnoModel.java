@@ -24,11 +24,6 @@ public class UnoModel {
     private PlayerModel currentPlayer;
     private int roundNum; // Round number
     private int needToDraw = 0;  // the number of cards the player need to draw
-    // Indicate if the skip has finished -----
-    // false means next player is skipped
-    // true means current player is skipped and has finished the turn
-    // set to false when player plays a skip card
-//    private boolean finishSkip = true;
     private String nextMessage;  // Message Constant
     private PlayerModel roundWinner = null;  // The winner of the current round
     private int tempPlayerNum = 2;  // used for initialize number of player
@@ -183,6 +178,8 @@ public class UnoModel {
         if (cardIndex >= 0){  // If player plays a card
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))){  // If the card is valid
                 this.unoView.playCard(cardIndex);  // updates the UNO game view
+                this.previousColor = this.targetColor;
+                System.out.println("previous Color: " + this.previousColor);
                 this.playACard(this.currentPlayer.getHand().get(cardIndex));  // do/record the card action
             }else { // If the player plays an invalid card
                 // Display the message and allow the player to draw or play a card again.
@@ -332,7 +329,7 @@ public class UnoModel {
     public boolean validate_wild_draw_two_or_color(CardModel prevTopCard){
         for(CardModel card: currentPlayer.getHand()){
             if(card.getCard(this.isLight).getType() == prevTopCard.getCard(this.isLight).getType() ||
-                    card.getCard(this.isLight).getColor() == prevTopCard.getCard(this.isLight).getColor()){
+                    card.getCard(this.isLight).getColor() == this.previousColor){
                 System.out.println("Top card: " + topCard.toString() + " matches this card in hand: " + card.getCard(this.isLight).toString());
                 return false;
             }
