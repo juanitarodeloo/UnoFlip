@@ -73,15 +73,38 @@ public class GamePanel extends JPanel {
      * @param topCardModel
      * @param cards
      */
-    public void beforeEachTurn(CardSideModel topCardModel, ArrayList<CardModel> cards, boolean isLight, CardSideModel.Color targetColor) {
+    public void beforeEachHumanTurn(CardSideModel topCardModel, ArrayList<CardModel> cards, boolean isLight, CardSideModel.Color targetColor) {
         this.updateTopCard(topCardModel);  // Update top card
 
         // Check if the top card is a wild card and if the target color has been chosen
         if (topCardModel.getType() == CardSideModel.Type.WILD ||
                 topCardModel.getType() == CardSideModel.Type.WILD_DRAW_TWO ||
                 topCardModel.getType() == CardSideModel.Type.WILD_DRAW_COLOR) {
+
             // If targetColor has been set, use it. Otherwise, display "Choose a color".
-            String colorText = targetColor != CardSideModel.Color.NONE ? targetColor.toString() : "Choose a color";
+            String colorText = targetColor != CardSideModel.Color.NONE ? targetColor.toString() : "Choose a color"; //TODO: change message if AI player played the wild
+            this.targetColour.setText(colorText);
+        } else {
+            // For non-wild cards, just use the card's color
+            this.targetColour.setText(topCardModel.getColor().toString());
+        }
+
+        // Reset the panel to display the current player's hand
+        this.currentHand.resetCards(cards, isLight);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void beforeEachAITurn(CardSideModel topCardModel, ArrayList<CardModel> cards, boolean isLight, CardSideModel.Color targetColor) {
+        this.updateTopCard(topCardModel);  // Update top card
+
+        // Check if the top card is a wild card and if the target color has been chosen
+        if (topCardModel.getType() == CardSideModel.Type.WILD ||
+                topCardModel.getType() == CardSideModel.Type.WILD_DRAW_TWO ||
+                topCardModel.getType() == CardSideModel.Type.WILD_DRAW_COLOR) {
+
+            // If targetColor has been set, use it. Otherwise, display "Choose a color".
+            String colorText = targetColor != CardSideModel.Color.NONE ? targetColor.toString() : "AI player chose a color!";
             this.targetColour.setText(colorText);
         } else {
             // For non-wild cards, just use the card's color

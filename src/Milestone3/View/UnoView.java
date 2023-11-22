@@ -100,10 +100,13 @@ public class UnoView extends JFrame {
         this.infoPanel.updateDirection(e.getDirection());
         this.infoPanel.updateCardSide(e.getSideString());
 
-        // Update target card, target color, and corresponding player's hand
-        // Pass the topCardModel directly instead of calling toString() on it.
-        this.gamePanel.beforeEachTurn(e.getTopCard(), e.getCurrPlayer().getHand(), e.isLight(), e.getTargetColour());
-
+        if(e.getCurrPlayer().isHuman()){
+            // Update target card, target color, and corresponding player's hand
+            // Pass the topCardModel directly instead of calling toString() on it.
+            this.gamePanel.beforeEachHumanTurn(e.getTopCard(), e.getCurrPlayer().getHand(), e.isLight(), e.getTargetColour());
+        }else{
+            this.gamePanel.beforeEachAITurn(e.getTopCard(), e.getCurrPlayer().getHand(), e.isLight(), e.getTargetColour());
+        }
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
     }
 
@@ -119,8 +122,14 @@ public class UnoView extends JFrame {
      * @param message
      */
     public void updateGameMessageAndButtons(String message){
-        // If player can play a card
-        if (message.equals(Milestone3.Model.MessageConstant.normalTurn) ||
+        if(message.equals(Milestone3.Model.MessageConstant.aIplayed) ||
+                message.equals(Milestone3.Model.MessageConstant.aIPickedUp) ||
+                message.equals(Milestone3.Model.MessageConstant.aIDrawOne) ||
+                message.equals(Milestone3.Model.MessageConstant.aIDrawFive) ||
+                message.equals(Milestone3.Model.MessageConstant.aISkipped)){
+            this.gamePanel.setHandEnable(false);
+            this.setUpButtonsState(false, true);
+        }else if (message.equals(Milestone3.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone3.Model.MessageConstant.invalidCard)) ||
                 (message.equals(Milestone3.Model.MessageConstant.guiltyTwo))){
             this.gamePanel.setHandEnable(true);  // Enable hand panel -> player can click to play card

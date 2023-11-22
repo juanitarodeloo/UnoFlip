@@ -33,4 +33,18 @@ public class MessageConstant {
     public static final String drawFourTurn = "You were skipped! Please draw four cards!";
     public static final String drawFiveTurn = "You were skipped! Please draw five cards!";
     public static final String drawColor = "You were skipped! Please draw cards until the target color!";
+
+    public static final String aIplayed = "AI Played! Please click Next Player";
+
+    public static final String aIPickedUp = "AI Played and chose to pick up a card!";
+
+    public static final String aIDrawOne = "AI Played and picked up one card!";
+
+    public static final String aIDrawTwo = "AI Played and picked up two card!";
+
+    public static final String aIDrawFive = "AI Played and picked up five card!";
+
+    public static final String aIdrawColor = "AI played and picked up cards until they received the target color!";
+
+    public static final String aISkipped = "AI was skipped. Please click Next Player!";
 }
