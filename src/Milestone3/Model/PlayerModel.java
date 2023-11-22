@@ -23,6 +23,7 @@ public class PlayerModel {
         this.name = name;
         this.hand = new ArrayList<CardModel>();
         this.score = 0;
+        this.isHuman = isHuman;
     }
 
     /**
