@@ -329,6 +329,7 @@ public class UnoModel {
                 this.unoView.newColour(this.getColourChoices());  // Get the new color
                 this.nextMessage = MessageConstant.drawColor;
                 this.drawUntilColor = true;
+                this.valid_wild_draw_two_or_color = validate_wild_draw_two_or_color(prevTopCard);
                 System.out.println("color choose in draw color: " + this.targetColor);
             }else if (playedSide.getType() == CardSideModel.Type.SKIP_EVERYONE){
                 this.numSkip = this.players.size() - 1;
@@ -340,10 +341,10 @@ public class UnoModel {
             this.unoView.updateGameMessageAndButtons(MessageConstant.nextPlayer);
 
             //if current play is AI we don't want to update their view after they play a card, it should be the same
-            if(!currentPlayer.isHuman()){
-                System.out.println("In here");
-                return;
-            }
+//            if(!currentPlayer.isHuman()){
+//                System.out.println("In here");
+//                return;
+//            }
 
             this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight),
                     this.directionString(), this.sideString());  // Update played card and color
@@ -405,28 +406,32 @@ public class UnoModel {
     public void nextPlayer(){
         System.out.println("Current next message before if statements: " + this.nextMessage);
         //if the current player is AI play the card previously picked for them
-        if(this.nextMessage.equals(MessageConstant.aIplayed)){
+        if(this.nextMessage.equals(MessageConstant.aIplayed)) {
             System.out.println("AI played a card");
-            if(cardAIPlayed != null){
+            if (cardAIPlayed != null) {
                 playACard(cardAIPlayed);
             }
+
             //else if the previous player was AI and picked up cards then the next message should be a normal turn
         }else if(this.nextMessage.equals(MessageConstant.aIPickedUp) ||
                 this.nextMessage.equals(MessageConstant.aIDrawOne) ||
                 this.nextMessage.equals(MessageConstant.aIDrawTwo) ||
                 this.nextMessage.equals(MessageConstant.aIDrawFive)){
             this.nextMessage = MessageConstant.normalTurn;
-        }else if (this.nextMessage.equals(MessageConstant.skipTurn)){ // If next player is in skip turn
-            if (this.numSkip == 0){  // if the skip turn finished -> current player is skipped, next player is normal
-                this.nextMessage = MessageConstant.normalTurn;
+        }else if (this.nextMessage.equals(MessageConstant.skipTurn) || this.nextMessage.equals(MessageConstant.aISkipped)){ // If next player is in skip turn
+            if (this.numSkip <= 0){  // if the skip turn finished -> current player is skipped, next player is normal
                 this.nextMessage = MessageConstant.normalTurn;
             }else {  // Decrease number of player that needs to be skipped
                 this.numSkip -= 1;
             }
         }
+        System.out.println("numSkip: " + this.numSkip);
+//        this.nextMessage = MessageConstant.normalTurn;
 
         // Update current player
         this.currentPlayer = this.players.get(this.getNextPlayerIndex(this.players.indexOf(this.currentPlayer)));
+        System.out.println("---next player is " + this.currentPlayer.getName());
+        System.out.println("next player is Human ---" + this.currentPlayer.isHuman());
 
         //if the next player is AI and they are not skipped, pick a card for them to play
         if(this.nextMessage.equals(MessageConstant.normalTurn) //|| (this.nextMessage.equals(MessageConstant.skipTurn))
@@ -481,10 +486,10 @@ public class UnoModel {
             for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
                 System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
             }
+        }else if(this.nextMessage.equals(MessageConstant.skipTurn)){
+            this.nextMessage = MessageConstant.aISkipped;
+            this.numSkip -= 1;
         }
-//        else if(this.nextMessage.equals(MessageConstant.skipTurn)){
-//            this.nextMessage = MessageConstant.aISkipped;
-//        }
 
         //if message is draw one, add one card to AI's hand and change next message to normal
         //in a game of two people: when an AI player plays a skip, it skips the next person but then skips itself again

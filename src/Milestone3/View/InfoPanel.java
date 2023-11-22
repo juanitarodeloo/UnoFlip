@@ -183,9 +183,9 @@ public class InfoPanel extends JPanel{
      * @param players
      */
     public void startGame(ArrayList<Milestone3.Model.PlayerModel> players){
-        //        this.startButton.setEnabled(false);  // Disable start button
-//        this.humanPlayerNums.setEnabled(false);  // Disable combo box used for selecting number of players
-//        this.AIPlayerNums.setEnabled(false);
+        this.startButton.setEnabled(false);  // Disable start button
+        this.humanPlayerNums.setEnabled(false);  // Disable combo box used for selecting number of players
+        this.AIPlayerNums.setEnabled(false);
         this.initPlayerInfo(players);
         this.initGameInfo();
     }
