@@ -107,7 +107,14 @@ public class UnoView extends JFrame {
         }else{
             this.gamePanel.beforeEachAITurn(e.getTopCard(), e.getCurrPlayer().getHand(), e.isLight(), e.getTargetColour());
         }
-        this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
+
+        // If it is wild draw two turn or wild  draw color turn and current player is human -> ask for challenge
+        if ((e.getMessage().equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn) ||
+                e.getMessage().equals(Milestone3.Model.MessageConstant.drawColor)) && e.getCurrPlayer().isHuman()){
+            this.chanceToChallenge(e.getMessage().equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn));
+        }else {
+            this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
+        }
     }
 
     public void setAfterPlayACard(CardSideModel.Color color, CardSideModel card, String direction, String side){
@@ -122,37 +129,54 @@ public class UnoView extends JFrame {
      * @param message
      */
     public void updateGameMessageAndButtons(String message){
-        if(message.equals(Milestone3.Model.MessageConstant.aIplayed) ||
-                message.equals(Milestone3.Model.MessageConstant.aIPickedUp) ||
-                message.equals(Milestone3.Model.MessageConstant.aIDrawOne) ||
-                message.equals(Milestone3.Model.MessageConstant.aIDrawFive) ||
-                message.equals(Milestone3.Model.MessageConstant.aISkipped)){
-            this.gamePanel.setHandEnable(false);
-            this.setUpButtonsState(false, true);
-        }else if (message.equals(Milestone3.Model.MessageConstant.normalTurn) ||
+//        if(message.equals(Milestone3.Model.MessageConstant.aIplayed) ||
+//                message.equals(Milestone3.Model.MessageConstant.aIPickedUp) ||
+//                message.equals(Milestone3.Model.MessageConstant.aIDrawOne) ||
+//                message.equals(Milestone3.Model.MessageConstant.aIDrawFive) ||
+//                message.equals(Milestone3.Model.MessageConstant.aISkipped)){
+//            this.gamePanel.setHandEnable(false);
+//            this.setUpButtonsState(false, true);
+        if (message.equals(Milestone3.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone3.Model.MessageConstant.invalidCard)) ||
-                (message.equals(Milestone3.Model.MessageConstant.guiltyTwo))){
+                (message.equals(Milestone3.Model.MessageConstant.guiltyTwo)) ||
+                (message.equals(Milestone3.Model.MessageConstant.guiltyColor))){
             this.gamePanel.setHandEnable(true);  // Enable hand panel -> player can click to play card
             this.setUpButtonsState(true, false);
         }else { // If the player cannot play a card (only draw card or do nothing)
             this.gamePanel.setHandEnable(false);  // Disable hand panel -> player cannot click to play card
 
             // If current player does not need to do something or the player has finished
-            if (message.equals(Milestone3.Model.MessageConstant.skipTurn) || message.equals(MessageConstant.nextPlayer)) {
+            if (message.equals(Milestone3.Model.MessageConstant.skipTurn) || message.equals(MessageConstant.nextPlayer)
+                    || message.equals(Milestone3.Model.MessageConstant.aIplayed) ||
+                    message.equals(Milestone3.Model.MessageConstant.aIPickedUp) ||
+                    message.equals(Milestone3.Model.MessageConstant.aIDrawOne) ||
+                    message.equals(Milestone3.Model.MessageConstant.aIDrawFive) ||
+                    message.equals(Milestone3.Model.MessageConstant.aISkipped) ||
+                    message.equals(Milestone3.Model.MessageConstant.aIdrawColor) ||
+                    message.equals(Milestone3.Model.MessageConstant.aIDrawTwo)) {
                 this.setUpButtonsState(false, true);
-            } else {  // else draw one or draw two or draw five or draw color
+            } else {  // else draw one or draw two or draw five or draw color, not guilty draw five, not guilty draw color
                 this.setUpButtonsState(true, false);
-                if (message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn) ||
-                        message.equals(Milestone3.Model.MessageConstant.drawColor) ) {
-                    boolean challengeAccepted = chanceToChallenge();
-                    if (challengeAccepted) { //if user accepted challenge, interrupt regular draw two message for challenge response message
-                        return;
-                    }//else continue with regular wild draw two message
-                }
+//                if ((message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn) ||
+//                        message.equals(Milestone3.Model.MessageConstant.drawColor)) && isHuman ) {
+//                    boolean challengeAccepted;
+//                    if(message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn)){
+//                        challengeAccepted = chanceToChallenge(true);
+//                    }else{
+//                        challengeAccepted = chanceToChallenge(false);
+//                    }
+//                    if (challengeAccepted) { //if user accepted challenge, interrupt regular draw two message for challenge response message
+//                        return;
+//                    }//else continue with regular wild draw two message
+//                }
             }
         }
         this.gamePanel.updateMessage(message);
     }
+
+//    public void challengeView(boolean isDrawTwo){
+//
+//    }
 
     /**
      * setUpButtonsState calls methods in infoPanel to disable or enable buttons
@@ -216,11 +240,17 @@ public class UnoView extends JFrame {
      * chanceToChallenge pops up an option dialog allowing the user to challenge the wild draw two from previous player
      * @return true if challenge was accepted, false otherwise
      */
-    public boolean chanceToChallenge(){
+    public boolean chanceToChallenge(boolean isDrawTwo){
+        String message;
+        if (isDrawTwo){
+            message = "wild draw two";
+        }else {
+            message = "wild draw color";
+        }
         int result = JOptionPane.showOptionDialog(
                 null,
-                "The last player played a wild draw two, would you like to challenge them?",
-                "Challenge Wild Draw Two",
+                "The last player played a " + message + ", would you like to challenge them?",
+                "Challenge " + message,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
                 null, // icon
