@@ -13,11 +13,13 @@ public class PlayerModel {
     private ArrayList<CardModel> hand;
     private int score;
 
+    private boolean isHuman;
+
     /**
      * Player() creates a new Player object with the given name and a new hand of cards
      * @param name
      */
-    public PlayerModel(String name){
+    public PlayerModel(String name, Boolean isHuman){
         this.name = name;
         this.hand = new ArrayList<CardModel>();
         this.score = 0;
@@ -100,6 +102,10 @@ public class PlayerModel {
     public void printHand(){
 
         System.out.println("Your cards: \n" + getHand());
+    }
+
+    public boolean isHuman() {
+        return isHuman;
     }
 }
 

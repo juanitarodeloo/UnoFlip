@@ -26,10 +26,13 @@ public class UnoController implements ActionListener{
         //save selected item
         Object source = e.getSource();
         if(source instanceof JComboBox){
-            //if the source is a JComboBox that means the user is inputting the number of players
             JComboBox<Integer> jComboBox = (JComboBox<Integer>) source;
             numOfPlayers = (Integer) jComboBox.getSelectedItem();
-            this.model.setTempPlayerNum(numOfPlayers);  // Save the number of player in model
+            if(e.getActionCommand().equals("human")){
+                model.saveNumOfHumanPlayers(numOfPlayers);
+            }else if(e.getActionCommand().equals("AI")){
+                model.saveNumOfAIPlayers(numOfPlayers);
+            }
         }else if(source instanceof JButton){
             switch (e.getActionCommand()){
                 case "Start":  // If click to start the game.

@@ -27,15 +27,27 @@ public class UnoModel {
     private String nextMessage;  // Message Constant
     private PlayerModel roundWinner = null;  // The winner of the current round
     private int tempPlayerNum = 2;  // used for initialize number of player
-    private final int initNumOfCards = 7;
+    private final int initNumOfCards = 15; //changed for testing
     private UnoView unoView;
 
+    //private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
     private boolean valid_wild_draw_two_or_color; //holds whether the wild draw two/color was played properly
+
+    private int numOfHumanPlayers;
+
+    private int numOfAIplayers;
+
+    private CardModel cardAIPlayed;
+
+    private int totalNumOfPlayers;  // used for initialize number of player
 
     public UnoModel(){
         myDeck = new DeckModel();
         discardPile = new ArrayList<>();
         players = new ArrayList<>();
+        numOfHumanPlayers = 1;
+        numOfAIplayers = 1;
+        totalNumOfPlayers = 2;
     }
 
     /**
@@ -100,9 +112,9 @@ public class UnoModel {
         this.initPlayerHands();  // Draw cards for each player
         this.topCard = this.getTargetCard();  // Get the start card in the current round
         this.targetColor = this.topCard.getCard(this.isLight).getColor();  // Get target color from the top card
-        Random random = new Random();
-        int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
-        this.currentPlayer = players.get(currPlayerIndex);  // Set current player
+//        Random random = new Random();
+//        int currPlayerIndex = random.nextInt(this.players.size());  // choose the first player randomly
+        this.currentPlayer = players.get(0);  // Set current player to first player which is always a human player
         this.unoView.updateRoundInfo(this.roundNum);  // Update round information
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer,
                 MessageConstant.normalTurn, this.topCard.getCard(this.isLight), this.targetColor,
@@ -130,8 +142,14 @@ public class UnoModel {
      * initPlayers initializes players in the UNO game.
      */
     public void initPlayers(){
-        for (int i = 0; i < this.tempPlayerNum; i++) {
-            PlayerModel p = new PlayerModel("Player " + (i + 1));
+        int i;
+        for (i = 0; i < numOfHumanPlayers; i++) {
+            PlayerModel p = new PlayerModel("H" + (i + 1), true);
+            this.players.add(p);
+        }
+        for (int j = 0; j < numOfAIplayers; j++) {
+            i++;
+            PlayerModel p = new PlayerModel("A" + (i), false);
             this.players.add(p);
         }
     }
@@ -175,11 +193,11 @@ public class UnoModel {
      * @param cardIndex  played card index
      */
     public void playerAction(int cardIndex){
+        //System.out.println("In here, card index: " + cardIndex);
+
         if (cardIndex >= 0){  // If player plays a card
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))){  // If the card is valid
                 this.unoView.playCard(cardIndex);  // updates the UNO game view
-                this.previousColor = this.targetColor;
-                System.out.println("previous Color: " + this.previousColor);
                 this.playACard(this.currentPlayer.getHand().get(cardIndex));  // do/record the card action
             }else { // If the player plays an invalid card
                 // Display the message and allow the player to draw or play a card again.
@@ -268,14 +286,18 @@ public class UnoModel {
             if (playedSide.getType() == CardSideModel.Type.SKIP ||
                     (playedSide.getType() == CardSideModel.Type.REVERSE && this.players.size() == 2)) {
                 this.nextMessage = MessageConstant.skipTurn;  // next player cannot play or draw a card
-//                this.finishSkip = false;  // skip not finished yet
                 this.numSkip = 1;
             } else if (playedSide.getType() == CardSideModel.Type.REVERSE) {  // If reverse the direction
                 this.isClockWise = !this.isClockWise; // reverse the play order
                 this.nextMessage = MessageConstant.normalTurn;  // next turn is a normal turn
             } else if (playedSide.getType() == CardSideModel.Type.WILD || playedSide.getType() == CardSideModel.Type.WILD_DRAW_TWO) {
-                // If the card is a wild card
-                this.unoView.newColour(this.getColourChoices());  // Get the new color
+                if(!currentPlayer.isHuman()){
+                    //choose new color for AI
+                    setTargetColor(pickColorForAI());
+                }else{
+                    // If the card is a wild card
+                    this.unoView.newColour(this.getColourChoices());  // Get the new color if current player is human
+                }
                 if (playedSide.getType() == CardSideModel.Type.WILD_DRAW_TWO) {  // if the card is wild draw two card
                     this.valid_wild_draw_two_or_color = validate_wild_draw_two_or_color(prevTopCard);
                     //System.out.println("Valid wild draw two? " + valid_wild_draw_two); //for testing
@@ -307,7 +329,6 @@ public class UnoModel {
                 this.unoView.newColour(this.getColourChoices());  // Get the new color
                 this.nextMessage = MessageConstant.drawColor;
                 this.drawUntilColor = true;
-                this.valid_wild_draw_two_or_color = validate_wild_draw_two_or_color(prevTopCard);
                 System.out.println("color choose in draw color: " + this.targetColor);
             }else if (playedSide.getType() == CardSideModel.Type.SKIP_EVERYONE){
                 this.numSkip = this.players.size() - 1;
@@ -317,9 +338,51 @@ public class UnoModel {
             }
             // Update instructions and buttons in view
             this.unoView.updateGameMessageAndButtons(MessageConstant.nextPlayer);
+
+            //if current play is AI we don't want to update their view after they play a card, it should be the same
+            if(!currentPlayer.isHuman()){
+                System.out.println("In here");
+                return;
+            }
+
             this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight),
                     this.directionString(), this.sideString());  // Update played card and color
         }
+    }
+
+    public CardModel pickCardForAI(PlayerModel aiPlayer){
+        System.out.println("Current top card: " + topCard.toString(isLight));
+        System.out.println("Current target color: " + targetColor.toString());
+        System.out.println("Next player: " + aiPlayer.getName() + "\nHand Before: ");
+        for(int i = 0; i < aiPlayer.getHand().size(); i++){
+            System.out.print(aiPlayer.getHand().get(i).toString(isLight) + ", ");
+        }
+        for(int i = 0; i < aiPlayer.getHand().size(); i++){
+            if(validateCard(aiPlayer.getHand().get(i))){
+                System.out.println(aiPlayer.getHand().get(i).toString(isLight) + " matches!");
+                topCard = aiPlayer.getHand().get(i);
+                targetColor = topCard.getColor(isLight);
+                this.nextMessage = MessageConstant.aIplayed;
+                return aiPlayer.getHand().get(i);
+            }
+        }
+        System.out.println("Nothing matched! ");
+        drawCards(aiPlayer, 1);
+        this.nextMessage = MessageConstant.aIPickedUp;
+
+        //just for testing:
+        System.out.println("Hand after: ");
+        for(int i = 0; i < aiPlayer.getHand().size(); i++){
+            System.out.print(aiPlayer.getHand().get(i).toString(isLight) + ", ");
+        }
+
+        return null;
+
+    }
+
+    public CardSideModel.Color pickColorForAI(){
+        return currentPlayer.getHand().get(0).getColor(isLight); //TODO: test when AI player has no more cards
+        //TODO: what if card at 0 is wild?
     }
 
     /**
@@ -340,9 +403,22 @@ public class UnoModel {
      * nextPlayer updates the current player to the next player and updates the view for next turn
      */
     public void nextPlayer(){
-        // If next player is in skip turn
-        if (this.nextMessage.equals(MessageConstant.skipTurn)){
+        System.out.println("Current next message before if statements: " + this.nextMessage);
+        //if the current player is AI play the card previously picked for them
+        if(this.nextMessage.equals(MessageConstant.aIplayed)){
+            System.out.println("AI played a card");
+            if(cardAIPlayed != null){
+                playACard(cardAIPlayed);
+            }
+            //else if the previous player was AI and picked up cards then the next message should be a normal turn
+        }else if(this.nextMessage.equals(MessageConstant.aIPickedUp) ||
+                this.nextMessage.equals(MessageConstant.aIDrawOne) ||
+                this.nextMessage.equals(MessageConstant.aIDrawTwo) ||
+                this.nextMessage.equals(MessageConstant.aIDrawFive)){
+            this.nextMessage = MessageConstant.normalTurn;
+        }else if (this.nextMessage.equals(MessageConstant.skipTurn)){ // If next player is in skip turn
             if (this.numSkip == 0){  // if the skip turn finished -> current player is skipped, next player is normal
+                this.nextMessage = MessageConstant.normalTurn;
                 this.nextMessage = MessageConstant.normalTurn;
             }else {  // Decrease number of player that needs to be skipped
                 this.numSkip -= 1;
@@ -351,9 +427,67 @@ public class UnoModel {
 
         // Update current player
         this.currentPlayer = this.players.get(this.getNextPlayerIndex(this.players.indexOf(this.currentPlayer)));
+
+        //if the next player is AI and they are not skipped, pick a card for them to play
+        if(this.nextMessage.equals(MessageConstant.normalTurn) //|| (this.nextMessage.equals(MessageConstant.skipTurn))
+                && !this.currentPlayer.isHuman()){
+            System.out.println("next player is AI");
+            cardAIPlayed = pickCardForAI(currentPlayer);
+        }else if(!this.currentPlayer.isHuman()){ //else if the next player is AI and they are going to be skipped, handle this
+            handleAIReaction();
+        }
+
+
+        System.out.println("Current next message after if statements: " + this.nextMessage + "/n");
+        //System.out.println("In next player: the next message = " + this.nextMessage);
         this.unoView.setBeforeEachTurn(new UnoGameEvent(this, this.currentPlayer, this.nextMessage,
                 this.topCard.getCard(this.isLight), this.targetColor, this.directionString(), this.isLight,
                 this.sideString()));  // update the view
+    }
+
+    public void handleAIReaction(){
+        System.out.println("\nAI player will receive this message: " + this.nextMessage);
+        //TODO: handle the AI reaction to action cards that were played previous to their turn
+        if(this.nextMessage.equals(MessageConstant.drawOneTurn)){
+            this.nextMessage = MessageConstant.aIDrawOne;
+            System.out.println("AI is going to pick up one card, they're hand before: "); //just for testing
+            for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
+                System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
+            }
+            drawCards(this.currentPlayer, 1);
+            System.out.println("AI Picked up one card, they're hand after: "); //just for testing
+            for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
+                System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
+            }
+        }else if(this.nextMessage.equals(MessageConstant.drawTwoTurn)){
+            this.nextMessage = MessageConstant.aIDrawTwo;
+            System.out.println("AI is going to pick up two cards, they're hand before: "); //just for testing
+            for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
+                System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
+            }
+            drawCards(this.currentPlayer, 2);
+            System.out.println("AI Picked up two cards, they're hand after: "); //just for testing
+            for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
+                System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
+            }
+        }else if(this.nextMessage.equals(MessageConstant.drawFiveTurn)){
+            this.nextMessage = MessageConstant.aIDrawFive;
+            System.out.println("AI is going to pick up five cards, they're hand before: "); //just for testing
+            for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
+                System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
+            }
+            drawCards(this.currentPlayer, 5);
+            System.out.println("AI Picked up five cards, they're hand after: "); //just for testing
+            for(int i = 0; i < this.currentPlayer.getHand().size(); i++){
+                System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
+            }
+        }
+//        else if(this.nextMessage.equals(MessageConstant.skipTurn)){
+//            this.nextMessage = MessageConstant.aISkipped;
+//        }
+
+        //if message is draw one, add one card to AI's hand and change next message to normal
+        //in a game of two people: when an AI player plays a skip, it skips the next person but then skips itself again
     }
 
     /**
@@ -523,6 +657,26 @@ public class UnoModel {
         }else {  // this.needToDraw == 1
             return MessageConstant.drawOneTurn;
         }
+    }
+
+    public void saveNumOfHumanPlayers(int numOfHumanPlayers){
+        System.out.println(" In model, num of human players: " + numOfHumanPlayers);
+        this.numOfHumanPlayers = numOfHumanPlayers;
+    }
+
+    /**
+     * setTemPlayerNum updates the temporal player name, this is called after player choose the number of players
+     * @param playerNum
+     */
+    public void setTotalNumOfPlayers(int playerNum){
+        System.out.println("Total number of players: " + playerNum);
+        this.totalNumOfPlayers = playerNum;
+    }
+
+    public void saveNumOfAIPlayers(int numOfAIPlayers){
+        System.out.println(" In model, num of AI players: " + numOfAIPlayers);
+        this.numOfAIplayers = numOfAIPlayers;
+        setTotalNumOfPlayers(numOfHumanPlayers + numOfAIPlayers);
     }
 
 
