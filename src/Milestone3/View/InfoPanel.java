@@ -137,7 +137,7 @@ public class InfoPanel extends JPanel{
         startPanel.add(clickStartLabel, gbc);
         startPanel.add(startButton, gbc);
 
-        // Add the start panel to the InfoPanel
+        // /Add the start panel to the InfoPanel
         this.add(startPanel);
     }
 
