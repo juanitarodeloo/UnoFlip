@@ -144,7 +144,12 @@ public class UnoView extends JFrame {
                 this.setUpButtonsState(true, false);
                 if (message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn) ||
                         message.equals(Milestone3.Model.MessageConstant.drawColor) ) {
-                    boolean challengeAccepted = chanceToChallenge();
+                    boolean challengeAccepted;
+                    if(message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn)){
+                        challengeAccepted = chanceToChallenge(true);
+                    }else{
+                        challengeAccepted = chanceToChallenge(false);
+                    }
                     if (challengeAccepted) { //if user accepted challenge, interrupt regular draw two message for challenge response message
                         return;
                     }//else continue with regular wild draw two message
@@ -216,11 +221,17 @@ public class UnoView extends JFrame {
      * chanceToChallenge pops up an option dialog allowing the user to challenge the wild draw two from previous player
      * @return true if challenge was accepted, false otherwise
      */
-    public boolean chanceToChallenge(){
+    public boolean chanceToChallenge(boolean isDrawTwo){
+        String message;
+        if (isDrawTwo){
+            message = "wild draw two";
+        }else {
+            message = "wild draw color";
+        }
         int result = JOptionPane.showOptionDialog(
                 null,
-                "The last player played a wild draw two, would you like to challenge them?",
-                "Challenge Wild Draw Two",
+                "The last player played a " + message + ", would you like to challenge them?",
+                "Challenge " + message,
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
                 null, // icon
