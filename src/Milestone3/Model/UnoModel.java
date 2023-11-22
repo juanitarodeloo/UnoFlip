@@ -198,7 +198,7 @@ public class UnoModel {
         if (cardIndex >= 0){  // If player plays a card
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))){  // If the card is valid
                 this.unoView.playCard(cardIndex);  // updates the UNO game view
-                this.previousColor = this.targetColor;
+//                this.previousColor = this.targetColor;
                 System.out.println("previous Color: " + this.previousColor);
                 this.playACard(this.currentPlayer.getHand().get(cardIndex));  // do/record the card action
             }else { // If the player plays an invalid card
@@ -265,6 +265,8 @@ public class UnoModel {
     public void playACard(CardModel playedCard){
         String updatedMessage;
         valid_wild_draw_two_or_color = false; //should be reset to false every time
+
+        this.previousColor = this.targetColor;
         this.currentPlayer.playCard(playedCard);  // Remove played card from player
         CardModel prevTopCard = this.topCard;
         CardSideModel playedSide = playedCard.getCard(this.isLight);
