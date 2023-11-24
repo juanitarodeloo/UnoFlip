@@ -35,6 +35,7 @@ public class InfoPanel extends JPanel{
         this.playerInfoPanels = new ArrayList<PlayerInfoPanel>();
         this.setLayout(new GridLayout(3, 1));
         initStart();
+        validate();
     }
 
     private ImageIcon loadBackgroundImage(String imageName) {
@@ -74,14 +75,6 @@ public class InfoPanel extends JPanel{
      * initStart creates panel for start part which contains the combobox for choosing the number of players
      */
     public void initStart(){
-        startButton = new JButton("Start");
-        startButton.setFont(new Font("Tahoma", Font.BOLD, 18));
-        startButton.setForeground(Color.WHITE);
-        startButton.setBackground(new Color(0, 153, 76)); // A more vibrant color
-        startButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        startButton.addActionListener(controller);
-
-
         JLabel welcomeLabel = new JLabel("Welcome to Uno!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Tahoma", Font.BOLD, 36)); // Larger font size for title
         welcomeLabel.setForeground(Color.WHITE); // White color for better contrast
@@ -98,7 +91,15 @@ public class InfoPanel extends JPanel{
         clickStartLabel.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Consistent font size
         clickStartLabel.setForeground(Color.WHITE);
 
+        startButton = new JButton("Start");
+        startButton.setFont(new Font("Tahoma", Font.BOLD, 18));
+        startButton.setForeground(Color.WHITE);
+        startButton.setBackground(new Color(0, 153, 76)); // A more vibrant color
+        startButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        startButton.addActionListener(controller);
+
         Integer[] choices = {1, 2, 3, 4, 5};
+
         //get human players:
         humanPlayerNums = new JComboBox<>(choices);
         humanPlayerNums.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -124,18 +125,19 @@ public class InfoPanel extends JPanel{
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 10, 0); // Add some padding
+        //gbc.insets = new Insets(10, 0, 10, 0); // Add some padding
 
         // Add components with GridBagConstraints
-        //startPanel.add(welcomeLabel, gbc);
+        startPanel.add(welcomeLabel, gbc);
+
         startPanel.add(humanPlayerLabel, gbc);
-        startPanel.add(AIPlayerLabel, gbc);
         startPanel.add(humanPlayerNums, gbc);
+        startPanel.add(AIPlayerLabel, gbc);
         startPanel.add(AIPlayerNums, gbc);
         startPanel.add(clickStartLabel, gbc);
         startPanel.add(startButton, gbc);
 
-        // Add the start panel to the InfoPanel
+        //Add the start panel to the InfoPanel
         this.add(startPanel);
     }
 
