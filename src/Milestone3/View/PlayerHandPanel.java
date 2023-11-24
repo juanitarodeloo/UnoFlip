@@ -34,12 +34,12 @@ public class PlayerHandPanel extends JScrollPane{
      */
     public void addNewCard(CardSideModel card){
 
-//        ImageIcon cardIcon = loadCardImageIcon(card.getColor().toString().toLowerCase(),
-//                card.getType().toString().toLowerCase());
+        ImageIcon cardIcon = loadCardImageIcon(card.getColor().toString().toLowerCase(),
+                card.getType().toString().toLowerCase());
         JButton cardButton = new JButton(); // Declare cardButton once
-//        if (cardIcon != null) {
-//            cardButton.setIcon(cardIcon); // Set the icon if image loaded successfully
-//        }
+        if (cardIcon != null) {
+            cardButton.setIcon(cardIcon); // Set the icon if image loaded successfully
+        }
         cardButton.setText(card.toString()); // Always set text
 
         cardButton.addActionListener(this.buttonController);
