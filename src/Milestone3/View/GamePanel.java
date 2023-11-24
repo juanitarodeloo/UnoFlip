@@ -13,29 +13,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-
 public class GamePanel extends JPanel {
     private JLabel topCard;
     private JLabel targetColour;
     private JLabel errorMessage;
     private PlayerHandPanel currentHand;
-//    private UnoModel unomodel;
+    private JLabel topCardText; // Label for the text of the top card
 
     public GamePanel(UnoController controller, UnoModel model){
-//        this.unomodel = model;
         this.setLayout(new BorderLayout());
         this.topCard = new JLabel();
         this.targetColour = new JLabel();
         this.errorMessage = new JLabel();
         this.currentHand = new PlayerHandPanel(controller);
+        this.topCardText = new JLabel("", SwingConstants.LEFT); // Initialize here with center alignment
+
         JPanel gameCenter = new JPanel();
         gameCenter.setBackground(new Color(238, 132, 132)); // A more vibrant color
-        gameCenter.setLayout(new GridLayout(3, 1));
+        gameCenter.setLayout(new GridLayout(4, 1)); // Changed to GridLayout with 4 rows
         gameCenter.add(this.topCard, 0);
-        gameCenter.add(this.targetColour, 1);
-        gameCenter.add(this.errorMessage, 2);
+        gameCenter.add(this.topCardText, 1); // Add the topCardText label to the layout
+        gameCenter.add(this.targetColour, 2);
+        gameCenter.add(this.errorMessage, 3);
+
         this.add(gameCenter, BorderLayout.CENTER);
-        this.currentHand.setBackground(new Color(238, 132, 132)); // A more vibrant color
+        this.currentHand.setBackground(new Color(238, 132, 132));
         this.add(this.currentHand, BorderLayout.SOUTH);
     }
 
@@ -54,17 +56,18 @@ public class GamePanel extends JPanel {
      * @param topCard  new played (top) card
      */
     public void updateTopCard(CardSideModel topCard){
-        if (!this.topCard.toString().equals(topCard.toString())){  // If top card has changed
-            // Set the top card image
+        if (!this.topCard.toString().equals(topCard.toString())){
             ImageIcon topCardIcon = currentHand.getCardImageIcon(
                     topCard.getColor().toString().toLowerCase(),
                     topCard.getType().toString().toLowerCase()
             );
-//            Image image = topCardIcon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
-//            if (image != null) {
-//                this.topCard.setIcon(new ImageIcon(image));
-//            }
-            this.topCard.setText(topCard.toString()); // Clear any text
+            Image image = topCardIcon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+            if (image != null) {
+                this.topCard.setIcon(new ImageIcon(image)); // Set the card image
+                this.topCardText.setText(topCard.toString()); // Set the card text
+            }
+            this.revalidate();
+            this.repaint();
         }
     }
 
