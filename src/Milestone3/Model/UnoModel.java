@@ -828,93 +828,206 @@ public class UnoModel {
 
     // Helper methods to be added in UnoModel for testing purposes
     // These should be used strictly for testing and not be part of the production code unless necessary
+
+    /**
+     *
+     * @return
+     */
+    /**
+     * Gets the current player's deck.
+     *
+     * @return the current player's deck
+     */
     public DeckModel getMyDeck() {
         return myDeck;
     }
 
+    /**
+     * Gets the discard pile.
+     *
+     * @return the discard pile
+     */
     public List<CardModel> getDiscardPile() {
         return discardPile;
     }
 
+    /**
+     * Gets the top card of the deck.
+     *
+     * @return the top card
+     */
     public CardModel getTopCard() {
         return topCard;
     }
 
+    /**
+     * Gets the current round number.
+     *
+     * @return the round number
+     */
     public int getRoundNum() {
         return roundNum;
     }
 
-
+    /**
+     * Gets the current player.
+     *
+     * @return the current player
+     */
     public PlayerModel getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Sets the top card of the deck.
+     *
+     * @param topCard the top card to be set
+     */
     public void setTopCard(CardModel topCard) {
         this.topCard = topCard;
     }
 
-
+    /**
+     * Sets the players for testing purposes.
+     *
+     * @param players the list of players to be set
+     */
     public void setPlayersForTest(List<PlayerModel> players) {
         this.players = new ArrayList<>(players);
     }
 
-    // Getter for the isLight variable
+    /**
+     * Checks if the current state is light.
+     *
+     * @return true if light, false otherwise
+     */
     public boolean isLight() {
         return isLight;
     }
 
-    // Setter for the isLight variable
+    /**
+     * Sets the light state.
+     *
+     * @param light the light state to be set
+     */
     public void setIsLight(boolean light) {
         isLight = light;
     }
 
-    // Getter for the roundWinner variable
+    /**
+     * Gets the winner of the round.
+     *
+     * @return the round winner
+     */
     public PlayerModel getRoundWinner() {
         return roundWinner;
     }
 
-    // Setter for the roundWinner variable
+    /**
+     * Sets the winner of the round.
+     *
+     * @param roundWinner the round winner to be set
+     */
     public void setRoundWinner(PlayerModel roundWinner) {
         this.roundWinner = roundWinner;
     }
 
+    /**
+     * Sets the clockwise rotation state.
+     *
+     * @param isClockWise the clockwise state to be set
+     */
     public void setIsClockWise(boolean isClockWise) {
         this.isClockWise = isClockWise;
     }
 
+    /**
+     * Gets the clockwise rotation state.
+     *
+     * @return true if clockwise, false otherwise
+     */
     public boolean getIsClockWise() {
         return isClockWise;
     }
 
+    /**
+     * Gets the list of players.
+     *
+     * @return the list of players
+     */
     public List<PlayerModel> getPlayers() {
         return this.players;
     }
+
+    /**
+     * Sets the number of human players.
+     *
+     * @param numOfHumanPlayers the number of human players to be set
+     */
     public void setNumOfHumanPlayers(int numOfHumanPlayers) {
         this.numOfHumanPlayers = numOfHumanPlayers;
     }
 
+    /**
+     * Sets the number of AI players.
+     *
+     * @param numOfAIplayers the number of AI players to be set
+     */
     public void setNumOfAIplayers(int numOfAIplayers) {
         this.numOfAIplayers = numOfAIplayers;
     }
 
+    /**
+     * Sets the current player.
+     *
+     * @param player the current player to be set
+     */
     public void setCurrentPlayer(PlayerModel player) {
         this.currentPlayer = player;
     }
 
+    /**
+     * Sets the number of skips.
+     *
+     * @param num the number of skips to be set
+     */
     public void setNumSkip(int num) {
         this.numSkip = num;
     }
 
+    /**
+     * Gets the initial number of cards.
+     *
+     * @return the initial number of cards
+     */
     public int getInitNumOfCards() {
         return this.initNumOfCards;
     }
+
+    /**
+     * Sets the initial number of cards.
+     *
+     * @param initNumOfCards the initial number of cards to be set
+     */
     public void setInitNumOfCards(int initNumOfCards) {
         this.initNumOfCards = initNumOfCards;
     }
+
+    /**
+     * Gets the hand of a specific player.
+     *
+     * @param player the player whose hand is to be retrieved
+     * @return the hand of the specified player
+     */
     public List<CardModel> getPlayerHand(PlayerModel player) {
         return player.getHand();
     }
 
+    /**
+     * Checks if the game is finished.
+     *
+     * @return true if the game is finished, false otherwise
+     */
     public boolean isGameFinished() {
         for (PlayerModel player : players) {
             if (player.getScore() >= 500) {
@@ -924,21 +1037,30 @@ public class UnoModel {
         return false;
     }
 
-    // Method to set the next message for testing purposes
+    /**
+     * Sets the next message for testing purposes.
+     *
+     * @param nextMessage the next message to be set
+     */
     public void setNextMessage(String nextMessage) {
         this.nextMessage = nextMessage;
     }
-    // Method to get the UnoView instance for testing purposes
+
+    /**
+     * Gets the UnoView instance for testing purposes.
+     *
+     * @return the UnoView instance
+     */
     public UnoView getUnoView() {
         return this.unoView;
     }
 
-    // For testing: a method to set a predefined deck
+    /**
+     * Sets a predefined deck for testing purposes.
+     *
+     * @param testDeck the predefined deck to be set
+     */
     public void setTestDeck(LinkedList<CardModel> testDeck) {
         myDeck.setDeck(testDeck); // Assuming you have a method in DeckModel to set the deck
     }
-
-
-
-
 }
