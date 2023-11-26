@@ -1,14 +1,20 @@
 /**
- * UnoModel class constains the main model of the game. It contains the data-related logic that the user works with.
- * @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
- */
-package Milestone3.Model;
+        * UnoModel class constains the main model of the game. It contains the data-related logic that the user works with.
+        * @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
+        */
+        package Milestone3.Model;
 
-import Milestone3.View.UnoView;
+        import Milestone3.View.UnoView;
 
-import java.util.*;
+        import java.util.*;
 
 public class UnoModel {
+
+    // Flag to determine if the game is in testing mode
+    private boolean isTesting = false;
+
+
+
     private ArrayList<PlayerModel> players;
     private DeckModel myDeck;
     private List<CardModel> discardPile;
@@ -25,9 +31,9 @@ public class UnoModel {
     private int roundNum; // Round number
     private int needToDraw = 0;  // the number of cards the player need to draw
     private String nextMessage;  // Message Constant
-    private PlayerModel roundWinner = null;  // The winner of the current round
+    private PlayerModel roundWinner;  // The winner of the current round
     private int tempPlayerNum = 2;  // used for initialize number of player
-    private final int initNumOfCards = 15; //changed for testing
+    private int initNumOfCards = 15; //changed for testing
     private UnoView unoView;
 
     //private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
@@ -197,7 +203,9 @@ public class UnoModel {
 
         if (cardIndex >= 0){  // If player plays a card
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))){  // If the card is valid
-                this.unoView.playCard(cardIndex);  // updates the UNO game view
+                if (!isTesting) {
+                    this.unoView.playCard(cardIndex);  // Call view methods only if not in testing mode
+                }
 //                this.previousColor = this.targetColor;
                 System.out.println("previous Color: " + this.previousColor);
                 this.playACard(this.currentPlayer.getHand().get(cardIndex));  // do/record the card action
@@ -257,6 +265,7 @@ public class UnoModel {
         // none conditions apply return false
         return false;
     }
+
 
     /**
      * playACard() implement the corresponding card action
@@ -428,6 +437,11 @@ public class UnoModel {
      * nextPlayer updates the current player to the next player and updates the view for next turn
      */
     public void nextPlayer(){
+        // Ensure nextMessage is initialized before using it
+        if (this.nextMessage == null) {
+            this.nextMessage = MessageConstant.normalTurn; // or some other default message constant
+        }
+
         System.out.println("skip number before: " + this.numSkip);
         // If next player is in skip turn
         if (this.nextMessage.equals(MessageConstant.skipTurn) || this.nextMessage.equals(MessageConstant.aISkipped)){
@@ -609,7 +623,7 @@ public class UnoModel {
      * @param curPlayIndex  the current player's index in
      * @return  the index of the player who play the next turn
      */
-    private int getNextPlayerIndex(int curPlayIndex){
+    int getNextPlayerIndex(int curPlayIndex){
         int addedNum = 1;  // the number which is used to calculate
         if (!this.isClockWise){
             addedNum = this.players.size() - addedNum;
@@ -660,16 +674,18 @@ public class UnoModel {
      * @param player
      */
     public void drawColorAction(PlayerModel player) {
+        System.out.println("Starting drawColorAction, target color: " + this.targetColor);
         while (true) {
-            this.drawCards(player, 1);  // previous player draw one card
-            CardModel justDraw = player.getHand().get(player.getHand().size() - 1);
-            System.out.println("previous/AI draw: " + justDraw.getCard(this.isLight).toString());
-            if (justDraw.getCard(isLight).getColor() == this.targetColor) {
-                this.drawUntilColor = false;
+            this.drawCards(player, 1);
+            CardModel justDrawn = player.getHand().get(player.getHand().size() - 1);
+            System.out.println("AI drew: " + justDrawn.getCard(this.isLight));
+            if (justDrawn.getCard(isLight).getColor() == this.targetColor) {
+                System.out.println("Drawn color matches target color, stopping.");
                 break;
             }
         }
     }
+
 
     /**
      * getPrecPlayer returns previous player
@@ -809,6 +825,120 @@ public class UnoModel {
         this.numOfAIplayers = numOfAIPlayers;
         setTotalNumOfPlayers(numOfHumanPlayers + numOfAIPlayers);
     }
+
+    // Helper methods to be added in UnoModel for testing purposes
+    // These should be used strictly for testing and not be part of the production code unless necessary
+    public DeckModel getMyDeck() {
+        return myDeck;
+    }
+
+    public List<CardModel> getDiscardPile() {
+        return discardPile;
+    }
+
+    public CardModel getTopCard() {
+        return topCard;
+    }
+
+    public int getRoundNum() {
+        return roundNum;
+    }
+
+
+    public PlayerModel getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setTopCard(CardModel topCard) {
+        this.topCard = topCard;
+    }
+
+
+    public void setPlayersForTest(List<PlayerModel> players) {
+        this.players = new ArrayList<>(players);
+    }
+
+    // Getter for the isLight variable
+    public boolean isLight() {
+        return isLight;
+    }
+
+    // Setter for the isLight variable
+    public void setIsLight(boolean light) {
+        isLight = light;
+    }
+
+    // Getter for the roundWinner variable
+    public PlayerModel getRoundWinner() {
+        return roundWinner;
+    }
+
+    // Setter for the roundWinner variable
+    public void setRoundWinner(PlayerModel roundWinner) {
+        this.roundWinner = roundWinner;
+    }
+
+    public void setIsClockWise(boolean isClockWise) {
+        this.isClockWise = isClockWise;
+    }
+
+    public boolean getIsClockWise() {
+        return isClockWise;
+    }
+
+    public List<PlayerModel> getPlayers() {
+        return this.players;
+    }
+    public void setNumOfHumanPlayers(int numOfHumanPlayers) {
+        this.numOfHumanPlayers = numOfHumanPlayers;
+    }
+
+    public void setNumOfAIplayers(int numOfAIplayers) {
+        this.numOfAIplayers = numOfAIplayers;
+    }
+
+    public void setCurrentPlayer(PlayerModel player) {
+        this.currentPlayer = player;
+    }
+
+    public void setNumSkip(int num) {
+        this.numSkip = num;
+    }
+
+    public int getInitNumOfCards() {
+        return this.initNumOfCards;
+    }
+    public void setInitNumOfCards(int initNumOfCards) {
+        this.initNumOfCards = initNumOfCards;
+    }
+    public List<CardModel> getPlayerHand(PlayerModel player) {
+        return player.getHand();
+    }
+
+    public boolean isGameFinished() {
+        for (PlayerModel player : players) {
+            if (player.getScore() >= 500) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to set the next message for testing purposes
+    public void setNextMessage(String nextMessage) {
+        this.nextMessage = nextMessage;
+    }
+    // Method to get the UnoView instance for testing purposes
+    public UnoView getUnoView() {
+        return this.unoView;
+    }
+
+    // For testing: a method to set a predefined deck
+    public void setTestDeck(LinkedList<CardModel> testDeck) {
+        myDeck.setDeck(testDeck); // Assuming you have a method in DeckModel to set the deck
+    }
+
+
 
 
 }

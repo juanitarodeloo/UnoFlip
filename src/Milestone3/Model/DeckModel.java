@@ -7,6 +7,7 @@ package Milestone3.Model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DeckModel {
@@ -16,6 +17,7 @@ public class DeckModel {
     private List<Milestone3.Model.CardModel> cards;
     private List<CardSideModel> lightSides;
     private List<CardSideModel> darkSides;
+    private LinkedList<CardModel> deck;
 
 
     /**
@@ -28,6 +30,12 @@ public class DeckModel {
         this.createSides();
         createDeck();
     }
+
+    public int size() {
+        // Assuming you have a collection called 'cards' that stores the card objects
+        return cards.size();
+    }
+
 
     /**
      * createSides generate all light side of cards and all dark side of cards
@@ -125,4 +133,10 @@ public class DeckModel {
 
         return cards.size();
     }
+
+    public void setDeck(LinkedList<CardModel> testDeck) {
+        this.deck = testDeck; // Replace the current deck with the test deck
+    }
+
+
 }

@@ -8,6 +8,7 @@ public class CardModel {
     public CardModel(CardSideModel lightSide, CardSideModel darkSide){
         this.lightSide = lightSide;
         this.darkSide = darkSide;
+
     }
 
     public CardSideModel getCard(boolean isLight){

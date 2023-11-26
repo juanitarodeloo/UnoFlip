@@ -88,6 +88,10 @@ public class PlayerModel {
         return this.score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     /**
      * increaseScore() increases the Original score
      * @param addedScore
@@ -109,4 +113,3 @@ public class PlayerModel {
         return isHuman;
     }
 }
-
