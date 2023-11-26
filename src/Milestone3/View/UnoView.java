@@ -192,13 +192,21 @@ public class UnoView extends JFrame {
     }
 
     /**
+     * addNewCard add just drawn card to the game display
+     * @param newCard
+     */
+    public void addNewCard(CardSideModel newCard){
+        this.gamePanel.playerDrawCard(newCard);  // Add new card to the game panel
+    }
+
+    /**
      * drawACard pops up a confirm dialog to show the player the drawn card.
      * It also calls method in gamePanel to add the drawn card to player's hand, and updates instructions.
      * @param newCard
      * @param message
      */
     public void drawACard(CardSideModel newCard, String message){
-        this.gamePanel.playerDrawCard(newCard);  // Add new card to the game panel
+        this.addNewCard(newCard);  // Add new card to the game panel
         UIManager.put("OptionPane.okButtonText", "Ok");
         JOptionPane.showMessageDialog(null,
                 new JLabel("You draw: " + newCard.toString()),"Draw confirm", JOptionPane.INFORMATION_MESSAGE);
