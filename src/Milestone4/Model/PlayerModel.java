@@ -33,7 +33,6 @@ public class PlayerModel {
      * @param card
      */
     public void playCard(CardModel card) {
-        System.out.println("has removed card: " + this.hand.contains(card) + "----------------");
         hand.remove(card);
     }
 

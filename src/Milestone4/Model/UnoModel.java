@@ -178,7 +178,7 @@ public class UnoModel {
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))) {  // If the card is valid
                 this.unoView.playCard(cardIndex);  // updates the UNO game view
                 System.out.println("previous Color: " + this.previousColor);
-                this.playACard(this.currentPlayer.getHand().get(cardIndex), false);  // do/record the card action
+                this.playACard(this.currentPlayer.getHand().get(cardIndex));  // do/record the card action
             } else { // If the player plays an invalid card
                 // Display the message and allow the player to draw or play a card again.
                 this.unoView.updateGameMessageAndButtons(MessageConstant.invalidCard);
@@ -239,16 +239,13 @@ public class UnoModel {
     /**
      * playACard() implement the corresponding card action
      * @param playedCard the card which will be implemented
-     * @param afterFlip if the playACard is called for the other side of the flip card
      */
-    public void playACard(CardModel playedCard, boolean afterFlip) {
+    public void playACard(CardModel playedCard) {
         String updatedMessage;
         valid_wild_draw_two_or_color = false; //should be reset to false every time
 
         this.previousColor = this.targetColor;
-        if (!afterFlip) {  // If the card is not the other side of the flip card
-            this.currentPlayer.playCard(playedCard);  // Remove played card from player
-        }
+        this.currentPlayer.playCard(playedCard);  // Remove played card from player
         // prevTopCard is only used to check if the wild_draw_two or wild_draw_color card is guilty.
         // If such cards are in the other side of the clip card, it must be valid to play
         CardModel prevTopCard = this.topCard;  // update the previous top card
@@ -302,7 +299,7 @@ public class UnoModel {
                     // Update played card and color before doing the flip action
                     this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight),
                             this.directionString(), this.sideString());
-                    this.playACard(this.topCard, true);
+                    this.playACard(this.topCard);
                     return;
                 }
             } else if (playedSide.getType() == CardSideModel.Type.DRAW_FIVE) {
@@ -441,7 +438,7 @@ public class UnoModel {
             if (playedCard != null) {
                 System.out.println("AI plays a card");
                 this.unoView.playCard(this.currentPlayer.getHand().indexOf(playedCard));  // updates the UNO game view
-                this.playACard(playedCard, false);  // AI plays card
+                this.playACard(playedCard);  // AI plays card
             } else {
                 System.out.println("AI draws a card");
                 this.unoView.updateGameMessageAndButtons(MessageConstant.aIPickedUp);
