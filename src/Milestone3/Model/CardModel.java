@@ -5,39 +5,39 @@ public class CardModel {
     private final CardSideModel lightSide;
     private final CardSideModel darkSide;
 
-    public CardModel(CardSideModel lightSide, CardSideModel darkSide){
+    public CardModel(CardSideModel lightSide, CardSideModel darkSide) {
         this.lightSide = lightSide;
         this.darkSide = darkSide;
     }
 
-    public CardSideModel getCard(boolean isLight){
-        if (isLight){
+    public CardSideModel getCard(boolean isLight) {
+        if (isLight) {
             return this.lightSide;
-        }else {
+        } else {
             return this.darkSide;
         }
     }
 
-    public CardSideModel.Color getColor(boolean isLight){
-        if (isLight){
+    public CardSideModel.Color getColor(boolean isLight) {
+        if (isLight) {
             return this.lightSide.getColor();
-        }else {
+        } else {
             return this.darkSide.getColor();
         }
     }
 
-    public CardSideModel.Type getType(boolean isLight){
-        if (isLight){
+    public CardSideModel.Type getType(boolean isLight) {
+        if (isLight) {
             return this.lightSide.getType();
-        }else {
+        } else {
             return this.darkSide.getType();
         }
     }
 
-    public String toString(boolean isLight){
-        if (isLight){
+    public String toString(boolean isLight) {
+        if (isLight) {
             return this.lightSide.toString();
-        }else {
+        } else {
             return this.darkSide.toString();
         }
     }

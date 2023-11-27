@@ -1,8 +1,10 @@
 package Milestone3.Model;
 /**
  * PlayerModel class represents the model of a player.Each player has a name,a hand(list of cards) and a score.
+ *
  * @Author: Ayman Kamran, Rebecca Li
  */
+
 import java.util.ArrayList;
 
 public class PlayerModel {
@@ -19,7 +21,7 @@ public class PlayerModel {
      * Player() creates a new Player object with the given name and a new hand of cards
      * @param name
      */
-    public PlayerModel(String name, Boolean isHuman){
+    public PlayerModel(String name, Boolean isHuman) {
         this.name = name;
         this.hand = new ArrayList<CardModel>();
         this.score = 0;
@@ -30,7 +32,7 @@ public class PlayerModel {
      * playCard() removes a card from players hand
      * @param card
      */
-    public void playCard(CardModel card){
+    public void playCard(CardModel card) {
         hand.remove(card);
     }
 
@@ -38,7 +40,7 @@ public class PlayerModel {
      * pickUpCard() adds a card to the players hand
      * @param card
      */
-    public void pickUpCard(CardModel card){
+    public void pickUpCard(CardModel card) {
         hand.add(card);
 
     }
@@ -47,7 +49,7 @@ public class PlayerModel {
      * toString() returns a string representation of the player and their hand of cards
      * @return
      */
-    public String toString(){
+    public String toString() {
         return "Player: " + name + "\nHand: " + hand;
 
     }
@@ -56,7 +58,7 @@ public class PlayerModel {
      * getName() returns the player name
      * @return
      */
-    public String getName(){
+    public String getName() {
 
         return name;
     }
@@ -66,7 +68,7 @@ public class PlayerModel {
      * getHand() gets the players hand of cards
      * @return
      */
-    public ArrayList<CardModel> getHand(){
+    public ArrayList<CardModel> getHand() {
 
         return hand;
     }
@@ -74,7 +76,7 @@ public class PlayerModel {
     /**
      * emptyHand() empties a players hand
      */
-    public void emptyHand(){
+    public void emptyHand() {
 
         this.hand = new ArrayList<CardModel>();
     }
@@ -83,7 +85,7 @@ public class PlayerModel {
      * getScore() gets the players score
      * @return
      */
-    public int getScore(){
+    public int getScore() {
 
         return this.score;
     }
@@ -92,7 +94,7 @@ public class PlayerModel {
      * increaseScore() increases the Original score
      * @param addedScore
      */
-    public void increaseScore(int addedScore){
+    public void increaseScore(int addedScore) {
 
         this.score += addedScore;
     }
@@ -100,7 +102,7 @@ public class PlayerModel {
     /**
      * printHand() prints the hand of the Player
      */
-    public void printHand(){
+    public void printHand() {
 
         System.out.println("Your cards: \n" + getHand());
     }

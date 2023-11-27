@@ -1,12 +1,14 @@
 package Milestone3.Model;
 
 /**
- *DeckModel represents the logic behind the deck.It holds a list of cards.
- *@Author:Ayman Kamran, Rebecca Li
+ * DeckModel represents the logic behind the deck.It holds a list of cards.
+ *
+ * @Author:Ayman Kamran, Rebecca Li
  */
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DeckModel {
@@ -16,6 +18,7 @@ public class DeckModel {
     private List<Milestone3.Model.CardModel> cards;
     private List<CardSideModel> lightSides;
     private List<CardSideModel> darkSides;
+    private LinkedList<CardModel> deck;
 
 
     /**
@@ -32,7 +35,7 @@ public class DeckModel {
     /**
      * createSides generate all light side of cards and all dark side of cards
      */
-    public void createSides(){
+    public void createSides() {
         for (Milestone3.Model.CardSideModel.Color color : Milestone3.Model.CardSideModel.Color.values()) {
             if (color != Milestone3.Model.CardSideModel.Color.NONE) {
 //                this.cards.add(new Milestone3.Model.CardSideModel.CardModel(color, Milestone3.Model.CardSideModel.Type.ZERO));
@@ -42,7 +45,7 @@ public class DeckModel {
                     for (int val = 1; val <= 9; val++) { // 1-9
                         if (isLight) {
                             this.lightSides.add(new Milestone3.Model.CardSideModel(color, Milestone3.Model.CardSideModel.Type.values()[val]));
-                        }else {
+                        } else {
                             this.darkSides.add(new Milestone3.Model.CardSideModel(color, Milestone3.Model.CardSideModel.Type.values()[val]));
                         }
                     }
@@ -51,7 +54,7 @@ public class DeckModel {
                         this.lightSides.add(new Milestone3.Model.CardSideModel(color, Milestone3.Model.CardSideModel.Type.REVERSE));
                         this.lightSides.add(new Milestone3.Model.CardSideModel(color, Milestone3.Model.CardSideModel.Type.DRAW_ONE));
                         this.lightSides.add(new Milestone3.Model.CardSideModel(color, CardSideModel.Type.FLIP));
-                    }else {
+                    } else {
                         this.darkSides.add(new Milestone3.Model.CardSideModel(color, CardSideModel.Type.SKIP_EVERYONE));
                         this.darkSides.add(new Milestone3.Model.CardSideModel(color, Milestone3.Model.CardSideModel.Type.REVERSE));
                         this.darkSides.add(new Milestone3.Model.CardSideModel(color, CardSideModel.Type.DRAW_FIVE));
@@ -124,5 +127,9 @@ public class DeckModel {
     public int getSize() {
 
         return cards.size();
+    }
+
+    public void setDeck(LinkedList<CardModel> testDeck) {
+        this.deck = testDeck; // Replace the current deck with the test deck
     }
 }
