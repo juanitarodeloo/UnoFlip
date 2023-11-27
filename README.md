@@ -35,23 +35,48 @@ based on the cards remaining in their opponents' hands:
 5) Winning: The first player to accumulate 500 points across multiple rounds wins the game.
 
 ## Updates:
-Milestone 2 brings many updates and new features to this game.
-### GUI:
-There is now a GUI that users can interact with. This was
-done using Java AWT (Abstract Window Toolkit), which is an API to develop graphical user interfaces and Java Swing, which is part
-of Java Foundation Classes (JFC) that is used to create window-based applications. The GUI is a JFrame that is comprised of JPanels,
-JOptionPane, JComboBox, JLabel, and more.
-### MVC:
-Now that there is a GUI, a new architecture has been introduced to simplify and optimize user interactions and processing called MVC.
-MVC is composed of three parts: Model, View, and Controller. The View component is responsible for housing the user interface
-components. The View is what the user interacts with and as a result it interacts with the controller. The
-Controller is the component that connects the view and the model. The Controller does not handle the data logic, it tells
-the model what to do. The Model component is responsible for the logic behind the game. It responds to the controller's
-requests and changes the view accordingly.
-### Wild Draw Two Card Challenge:
-This milestone brings a new rule to the game. Now, if a player decides to play a wild draw two card the next player that is
-due to draw two cards can choose to challenge them. If the player who played this card had no other option than to play this wild
-draw two card, then they will be found not guilty, but if they had other card options, then they will be found guilty.
+Milestone 3 introduces advanced features and enhancements to further develop the game.
+
+### Uno Flip Integration:
+
+The game now includes Uno Flip cards with unique rules and scoring mechanisms, enriching the gameplay experience and offering more variety.
+- AI Player Capability:
+
+The game can now support an arbitrary number of AI players.
+- AI players are designed for flexibility with multiple strategies for gameplay.
+- Strategies include generating all possible legal moves and selecting the highest-scoring move to simulate intelligent gameplay.
+- Simplified rules such as "The first valid card will be placed" can be employed for quick AI decision-making.
+
+MVC Architecture Expansion:
+
+- The Model component has been expanded with new classes for AI and Uno Flip integration.
+- UnoModel has been updated to handle AI logic, managing interactions between AI players and the game state.
+- Additional tests in UnoModelTest ensure the robustness of AI functionalities.
+
+GUI Enhancements:
+
+- Existing GUI components have been refined to accommodate the new Uno Flip cards and AI interactions.
+- The View component remains responsible for rendering the user interface, now with added elements for AI gameplay visualization.
+
+Classes and Files:
+
+- New classes such as CardSideModel and DeckModel have been introduced in the Model package for handling the two-sided nature of Uno Flip cards.
+- MessageConstant has been updated with new constants to support AI game messaging.
+- The View package remains largely unchanged, with updates to existing components to reflect the Uno Flip and AI integration.
+  Cards:
+
+Colors and Sides:
+
+- The game now features a dual-sided card mechanic with a light side and a dark side.
+- Light Side Colors: The traditional Red, Green, Yellow, and Blue cards have been retained from the standard Uno deck.
+- Dark Side Colors: A new addition to the game, introducing a darker palette for each color to represent the flip side of the cards. Orange, purple, pink and teal.
+- Flips: Existing light cards now have a corresponding dark side, which players can switch to using specific flip card actions, adding a strategic layer to the game.
+
+Action Cards:
+
+- The introduction of dual-sided cards brings in new action cards that can flip the game from light to dark side and vice versa.
+- Skip, Reverse, Draw One, and Wild cards now have dark side variants with potentially different effects or enhanced actions.
+- Wild Draw Two: Updated to include challenges within both light and dark sides, adding a complexity in decision-making during challenges.
 
 # Cards:
 ## Colors:
@@ -69,9 +94,25 @@ they were not found from the same source. The following lists what each card col
 
 <img src="resources/yellow_draw_one.png" width="125"> <img src="resources/yellow_one.png" width="138">
 
-* Blue Cards:;
+* Blue Cards:
 
 <img src="resources/blue_draw_one.png" width="145"> <img src="resources/blue_one.png" width="138">
+
+* Orange cards:
+
+<img src="resources/orange_one.png" width="138">
+
+* Pink cards:
+
+<img src="resources/pink_draw_five.png" width="145"> 
+
+* Purple cards:
+
+<img src="resources/purple_one.png" width="145"> 
+
+* Teal cards:
+
+<img src="resources/teal_one.png" width="145">
 
 ## Action Cards:
 
@@ -95,6 +136,23 @@ they were not found from the same source. The following lists what each card col
 
 <img src="resources/none_wild_draw_two.png" width="130">
 
+* Flip both sides:
+
+<img src="resources/green_flip.png" width="130"> <img src="resources/blue_flip.png" width="130">
+
+
+* Reverse dark side:
+
+<img src="resources/orange_reverse.png" width="130"> <img src="resources/pink_reverse.png" width="130"> <img src="resources/purple_reverse.png" width="130"> <img src="resources/teal_reverse.png" width="130">
+
+* Draw five:
+
+<img src="resources/orange_draw_five.png" width="130"> <img src="resources/pink_draw_five.png" width="130"> <img src="resources/purple_draw_five.png" width="130"> <img src="resources/teal_draw_five.png" width="130">
+
+
+* Skip everyone:s
+
+<img src="resources/orange_skip_everyone.png" width="130"> <img src="resources/pink_skip_everyone.png" width="130"> <img src="resources/purple_skip_everyone.png" width="130"> <img src="resources/teal_skip_everyone.png" width="130">
 
 
 ## File Structure:
@@ -127,6 +185,23 @@ UnoProject contains:
       * PlayerInfoPanel
       * UnoView:
     * UnoController: holds the controller class component
+  * Milestone3: stores code from Milestone 3
+    * Model/: updated and new model class components for Milestone 3
+      * CardModel: Updated with dark and light side card implementations.
+      * CardSideModel: New class to handle the properties of the dual-sided cards.
+      * DeckModel: Enhanced to manage dual-sided cards.
+      * MessageConstant: Updated constants to accommodate new game rules.
+      * PlayerModel: Now includes logic for AI player interactions.
+      * UnoFinishEvent: Events specific to the end-game scenarios, including AI outcomes.
+      * UnoGameEvent: New events related to Uno Flip actions.
+      * UnoModel: Core game logic, now with integrated AI decision-making.
+      * UnoModelTest: Unit tests for verifying the functionality of the UnoModel with AI integration.
+      * View/: updated view class components for Milestone 3
+        * GamePanel
+        * InfoPanel
+        * PlayerHandPanel
+        * PlayerInfoPanel
+        * UnoView: Now displays AI actions and Uno Flip transitions.
 * README: stores game setup, instruction, updates, authors, and more.
 * SYSC 3110 Project.pdf: stores project instructions
 * UnoFlip.iml: file created by IntelliJ
@@ -238,3 +313,26 @@ Rebecca Li:
 * Created EventObject classes
 * User prompt for new colour for action cards
 * GUI separation files - one file per major GUI component
+
+## Milestone 3 authors:
+
+Adham Elmahi:
+* Updated the sequence diagram to include UnoFlip and AI features
+* Added Darkside and Lightside flips card images
+* Conducted UnoModel testing
+* Updated README file for project documentation
+
+
+Ayman Kamran:
+* Documentation for UnoFlip integration and AI Integration
+* Performed unit testing for UnoModel as part of Milestone 3
+* Implemented GUI enhancements for improved user interaction
+* Implemented the UML Class Diagram
+
+
+Juanita Rodelo:
+* Modified `UnoModel` to add AI integration
+
+Rebecca Li:
+* Worked on adding UnoFlip functionality
+* Worked on AI Implementation

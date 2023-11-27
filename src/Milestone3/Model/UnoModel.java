@@ -27,7 +27,7 @@ public class UnoModel {
     private int needToDraw = 0;  // the number of cards the player need to draw
     private String nextMessage;  // Message Constant
     private PlayerModel roundWinner = null;  // The winner of the current round
-    private int initNumOfCards = 15; //changed for testing
+    private int initNumOfCards = 7; //changed for testing
     private UnoView unoView;
 
     //private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
