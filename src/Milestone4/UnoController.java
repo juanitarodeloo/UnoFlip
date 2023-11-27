@@ -54,14 +54,10 @@ public class UnoController implements ActionListener{
     /**
      * handleChallengeAccepted interrupts the users decision from the JOptionPane from the view
      * @param decision
-     * @return true if challenge was accepted, false if challenge was not accepted
      */
-    public boolean handleChallengeAccepted(int decision){
+    public void handleChallengeAccepted(int decision){
         if(decision == 0){
             this.model.challengeAccepted();
-            return true;
-        }else{
-            return false;
         }
     }
 
