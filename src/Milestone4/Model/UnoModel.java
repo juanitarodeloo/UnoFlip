@@ -435,8 +435,8 @@ public class UnoModel {
             CardModel playedCard = this.pickCardForAI(this.currentPlayer);  // AI plays a card or draw a card
             if (playedCard != null) {
                 System.out.println("AI plays a card");
+                this.unoView.playCard(this.currentPlayer.getHand().indexOf(playedCard));  // updates the UNO game view
                 this.playACard(playedCard);  // AI plays card
-
             } else {
                 System.out.println("AI draws a card");
                 this.unoView.updateGameMessageAndButtons(MessageConstant.aIPickedUp);

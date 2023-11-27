@@ -130,7 +130,6 @@ public class UnoView extends JFrame {
      * @param message
      */
     public void updateGameMessageAndButtons(String message){
-        System.out.println("mesage in update button: " + message);
         if (message.equals(Milestone4.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone4.Model.MessageConstant.invalidCard)) ||
                 (message.equals(Milestone4.Model.MessageConstant.guiltyTwo)) ||
@@ -158,17 +157,12 @@ public class UnoView extends JFrame {
         lastMessage = message;
     }
 
-//    public void challengeView(boolean isDrawTwo){
-//
-//    }
-
     /**
      * setUpButtonsState calls methods in infoPanel to disable or enable buttons
      * @param drawButton
      * @param nextButton
      */
     private void setUpButtonsState(boolean drawButton, boolean nextButton){
-        System.out.println("draw button: " + drawButton + " next button: " + nextButton);
         this.infoPanel.setDrawOneState(drawButton);
         this.infoPanel.setNextPlayerState(nextButton);
     }
