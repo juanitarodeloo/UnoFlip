@@ -1,6 +1,7 @@
 package Milestone3.Model;
 /**
- *UnoFinishEvent class contains everything the view needs to know to pop up a finish confirm dialog.
+ * UnoFinishEvent class contains everything the view needs to know to pop up a finish confirm dialog.
+ *
  * @Author: Rebecca Li
  */
 
@@ -24,10 +25,10 @@ public class UnoFinishEvent extends EventObject {
         super(model);
         this.winner = winner;
         this.winnerIndex = winnerIndex;
-        if (roundNum > 0){ // if round number is bigger than 0 -> round finish
+        if (roundNum > 0) { // if round number is bigger than 0 -> round finish
             this.title = "Round " + roundNum + " finished confirm";
             this.message = winner.getName() + " has won round " + roundNum + "!";
-        }else {  // Else if the game finish
+        } else {  // Else if the game finish
             this.title = "Game finished confirm";
             this.message = winner.getName() + "has won the game!";
         }

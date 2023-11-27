@@ -1,8 +1,10 @@
 package Milestone3.Model;
 /**
  * UnoGameEvent contains everything the view needs to know to set up the next turn
- *@Author: Rebecca Li
+ *
+ * @Author: Rebecca Li
  */
+
 import java.util.EventObject;
 
 public class UnoGameEvent extends EventObject {
@@ -60,7 +62,7 @@ public class UnoGameEvent extends EventObject {
         return isLight;
     }
 
-    public String getSideString(){
+    public String getSideString() {
         return this.sideString;
     }
 }

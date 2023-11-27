@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class UnoView extends JFrame {
     private static final int FRAME_WIDTH = 1200;
     private static final int FRAME_HEIGHT = 800;
+    private String lastMessage = "";
     Milestone3.Model.UnoModel model;
     UnoController controller;
     private Milestone3.View.GamePanel gamePanel;  // main game panel contains top card, instructions, target color and cards in hand
@@ -172,6 +173,7 @@ public class UnoView extends JFrame {
             }
         }
         this.gamePanel.updateMessage(message);
+        lastMessage = message;
     }
 
 //    public void challengeView(boolean isDrawTwo){
@@ -296,6 +298,9 @@ public class UnoView extends JFrame {
         UIManager.put("OptionPane.okButtonText", "Ok");
         JOptionPane.showMessageDialog(null,
                 new JLabel( e.getMessage()), e.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+    }
+    public String getLastMessageForTest() {
+        return this.lastMessage;
     }
 
 
