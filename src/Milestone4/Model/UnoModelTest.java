@@ -55,7 +55,7 @@ public class UnoModelTest {
         unoModel.setTopCard(new CardModel(new CardSideModel(CardSideModel.Color.RED, CardSideModel.Type.ONE),
                 new CardSideModel(CardSideModel.Color.GREEN, CardSideModel.Type.TWO)));
         unoModel.setTargetColor(CardSideModel.Color.RED);
-        unoModel.playACard(cardToPlay);
+        unoModel.playACard(cardToPlay, false);
         assertFalse("Player's hand should not contain the played card", currentPlayer.getHand().contains(cardToPlay));
         assertEquals("Top card should be the played card", cardToPlay, unoModel.getTopCard());
     }
