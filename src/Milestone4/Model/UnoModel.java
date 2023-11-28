@@ -246,7 +246,9 @@ public class UnoModel {
 
         this.previousColor = this.targetColor;
         this.currentPlayer.playCard(playedCard);  // Remove played card from player
-        CardModel prevTopCard = this.topCard;
+        // prevTopCard is only used to check if the wild_draw_two or wild_draw_color card is guilty.
+        // If such cards are in the other side of the clip card, it must be valid to play
+        CardModel prevTopCard = this.topCard;  // update the previous top card
         CardSideModel playedSide = playedCard.getCard(this.isLight);
         this.topCard = playedCard;  // Update top card
         this.targetColor = playedSide.getColor();  // update target color
@@ -435,8 +437,8 @@ public class UnoModel {
             CardModel playedCard = this.pickCardForAI(this.currentPlayer);  // AI plays a card or draw a card
             if (playedCard != null) {
                 System.out.println("AI plays a card");
+                this.unoView.playCard(this.currentPlayer.getHand().indexOf(playedCard));  // updates the UNO game view
                 this.playACard(playedCard);  // AI plays card
-
             } else {
                 System.out.println("AI draws a card");
                 this.unoView.updateGameMessageAndButtons(MessageConstant.aIPickedUp);

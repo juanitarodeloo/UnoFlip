@@ -109,13 +109,13 @@ public class UnoView extends JFrame {
             this.gamePanel.beforeEachAITurn(e.getTopCard(), e.getCurrPlayer().getHand(), e.isLight(), e.getTargetColour());
         }
 
+        this.updateGameMessageAndButtons(e.getMessage());  // Update instructions and button states
         // If it is wild draw two turn or wild  draw color turn and current player is human -> ask for challenge
         if ((e.getMessage().equals(Milestone4.Model.MessageConstant.wildDrawTwoTurn) ||
-                e.getMessage().equals(Milestone4.Model.MessageConstant.drawColor)) && e.getCurrPlayer().isHuman()){
+                e.getMessage().equals(Milestone4.Model.MessageConstant.drawColor)) && e.getCurrPlayer().isHuman()) {
             this.chanceToChallenge(e.getMessage().equals(Milestone4.Model.MessageConstant.wildDrawTwoTurn));
-        }else {
-            this.updateGameMessageAndButtons(e.getMessage());  // Update instructions
         }
+
     }
 
     public void setAfterPlayACard(CardSideModel.Color color, CardSideModel card, String direction, String side){
@@ -130,13 +130,6 @@ public class UnoView extends JFrame {
      * @param message
      */
     public void updateGameMessageAndButtons(String message){
-//        if(message.equals(Milestone3.Model.MessageConstant.aIplayed) ||
-//                message.equals(Milestone3.Model.MessageConstant.aIPickedUp) ||
-//                message.equals(Milestone3.Model.MessageConstant.aIDrawOne) ||
-//                message.equals(Milestone3.Model.MessageConstant.aIDrawFive) ||
-//                message.equals(Milestone3.Model.MessageConstant.aISkipped)){
-//            this.gamePanel.setHandEnable(false);
-//            this.setUpButtonsState(false, true);
         if (message.equals(Milestone4.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone4.Model.MessageConstant.invalidCard)) ||
                 (message.equals(Milestone4.Model.MessageConstant.guiltyTwo)) ||
@@ -158,27 +151,11 @@ public class UnoView extends JFrame {
                 this.setUpButtonsState(false, true);
             } else {  // else draw one or draw two or draw five or draw color, not guilty draw five, not guilty draw color
                 this.setUpButtonsState(true, false);
-//                if ((message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn) ||
-//                        message.equals(Milestone3.Model.MessageConstant.drawColor)) && isHuman ) {
-//                    boolean challengeAccepted;
-//                    if(message.equals(Milestone3.Model.MessageConstant.wildDrawTwoTurn)){
-//                        challengeAccepted = chanceToChallenge(true);
-//                    }else{
-//                        challengeAccepted = chanceToChallenge(false);
-//                    }
-//                    if (challengeAccepted) { //if user accepted challenge, interrupt regular draw two message for challenge response message
-//                        return;
-//                    }//else continue with regular wild draw two message
-//                }
             }
         }
         this.gamePanel.updateMessage(message);
         lastMessage = message;
     }
-
-//    public void challengeView(boolean isDrawTwo){
-//
-//    }
 
     /**
      * setUpButtonsState calls methods in infoPanel to disable or enable buttons
@@ -248,9 +225,8 @@ public class UnoView extends JFrame {
 
     /**
      * chanceToChallenge pops up an option dialog allowing the user to challenge the wild draw two from previous player
-     * @return true if challenge was accepted, false otherwise
      */
-    public boolean chanceToChallenge(boolean isDrawTwo){
+    public void chanceToChallenge(boolean isDrawTwo){
         String message;
         if (isDrawTwo){
             message = "wild draw two";
@@ -266,7 +242,7 @@ public class UnoView extends JFrame {
                 null, // icon
                 new Object[]{"Yes", "No"}, //result = Yes = 0 or No = 1
                 "default");
-        return this.controller.handleChallengeAccepted(result);
+        this.controller.handleChallengeAccepted(result);
     }
 
     /**
