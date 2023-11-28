@@ -3,16 +3,18 @@
  *
  * @Authors: Rebecca Li, Juanita Rodelo, Adham Elmahi
  */
-package Milestone3.Model;
+package Milestone4.Model;
 
-import Milestone3.View.UnoView;
+import Milestone4.View.UnoView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class UnoModel {
     private ArrayList<PlayerModel> players;
     private DeckModel myDeck;
-    private List<CardModel> discardPile;
     // The target color for the next player
     // Use targetColor instead of card color when checking if the card is valid or not
     private CardSideModel.Color targetColor;
@@ -29,26 +31,21 @@ public class UnoModel {
     private PlayerModel roundWinner = null;  // The winner of the current round
     private int initNumOfCards = 7; //changed for testing
     private UnoView unoView;
-
-    //private boolean valid_wild_draw_two; //holds whether the wild draw two was played properly
     private boolean valid_wild_draw_two_or_color; //holds whether the wild draw two/color was played properly
 
     private int numOfHumanPlayers;
 
     private int numOfAIplayers;
 
-    private int totalNumOfPlayers;  // used for initialize number of player
 
     /**
      * UnoModel is the constructor of the class
      */
     public UnoModel() {
         myDeck = new DeckModel();
-        discardPile = new ArrayList<>();
         players = new ArrayList<>();
         numOfHumanPlayers = 1;
         numOfAIplayers = 1;
-        totalNumOfPlayers = 2;
     }
 
     /**
@@ -158,7 +155,6 @@ public class UnoModel {
         for (int i = 0; i < NumOfCards; i++) {
             CardModel drawnCard = this.myDeck.draw();
             player.pickUpCard(drawnCard);
-            discardPile.add(drawnCard);
         }
     }
 
@@ -168,7 +164,6 @@ public class UnoModel {
      */
     public CardModel getTargetCard() {
         CardModel targetCard = myDeck.draw();
-        discardPile.add(targetCard);
         return targetCard;
     }
 
@@ -251,7 +246,9 @@ public class UnoModel {
 
         this.previousColor = this.targetColor;
         this.currentPlayer.playCard(playedCard);  // Remove played card from player
-        CardModel prevTopCard = this.topCard;
+        // prevTopCard is only used to check if the wild_draw_two or wild_draw_color card is guilty.
+        // If such cards are in the other side of the clip card, it must be valid to play
+        CardModel prevTopCard = this.topCard;  // update the previous top card
         CardSideModel playedSide = playedCard.getCard(this.isLight);
         this.topCard = playedCard;  // Update top card
         this.targetColor = playedSide.getColor();  // update target color
@@ -440,8 +437,8 @@ public class UnoModel {
             CardModel playedCard = this.pickCardForAI(this.currentPlayer);  // AI plays a card or draw a card
             if (playedCard != null) {
                 System.out.println("AI plays a card");
+                this.unoView.playCard(this.currentPlayer.getHand().indexOf(playedCard));  // updates the UNO game view
                 this.playACard(playedCard);  // AI plays card
-
             } else {
                 System.out.println("AI draws a card");
                 this.unoView.updateGameMessageAndButtons(MessageConstant.aIPickedUp);
@@ -684,19 +681,9 @@ public class UnoModel {
         this.numOfHumanPlayers = numOfHumanPlayers;
     }
 
-    /**
-     * setTemPlayerNum updates the temporal player name, this is called after player choose the number of players
-     * @param playerNum
-     */
-    public void setTotalNumOfPlayers(int playerNum) {
-        System.out.println("Total number of players: " + playerNum);
-        this.totalNumOfPlayers = playerNum;
-    }
-
     public void saveNumOfAIPlayers(int numOfAIPlayers) {
         System.out.println(" In model, num of AI players: " + numOfAIPlayers);
         this.numOfAIplayers = numOfAIPlayers;
-        setTotalNumOfPlayers(numOfHumanPlayers + numOfAIPlayers);
     }
 
     public CardSideModel.Color getTargetColor() {
@@ -710,15 +697,6 @@ public class UnoModel {
      */
     public DeckModel getMyDeck() {
         return myDeck;
-    }
-
-    /**
-     * Gets the discard pile.
-     *
-     * @return the discard pile
-     */
-    public List<CardModel> getDiscardPile() {
-        return discardPile;
     }
 
     /**
