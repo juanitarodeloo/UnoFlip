@@ -43,6 +43,14 @@ public class UnoController implements ActionListener{
                 case "Next Player":  // If the player clicks Next Player button
                     this.model.nextPlayer();
                     break;
+                case "Undo":  // If the player clicks Undo
+                    System.out.println("click undo");
+                    this.model.playerUndo();
+                    break;
+                case "Redo":  // If the player clicks Undo
+                    System.out.println("click redo");
+                    this.model.playerRedo();
+                    break;
                 default:  // If the player click a card button to draw a card
                     this.model.playerAction(Integer.parseInt(e.getActionCommand()));
             }

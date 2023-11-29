@@ -110,6 +110,8 @@ public class UnoView extends JFrame {
         }
 
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions and button states
+        this.enableUndo(false);  // disable undo
+        this.enableRedo(false);  // disable redo
         // If it is wild draw two turn or wild  draw color turn and current player is human -> ask for challenge
         if ((e.getMessage().equals(Milestone4.Model.MessageConstant.wildDrawTwoTurn) ||
                 e.getMessage().equals(Milestone4.Model.MessageConstant.drawColor)) && e.getCurrPlayer().isHuman()) {
@@ -130,6 +132,9 @@ public class UnoView extends JFrame {
      * @param message
      */
     public void updateGameMessageAndButtons(String message){
+        // redo only enable after undo
+        // if undo draw five and choose to draw, after the first draw, redo should be disable
+        this.enableRedo(false);
         if (message.equals(Milestone4.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone4.Model.MessageConstant.invalidCard)) ||
                 (message.equals(Milestone4.Model.MessageConstant.guiltyTwo)) ||
@@ -149,6 +154,10 @@ public class UnoView extends JFrame {
                     message.equals(Milestone4.Model.MessageConstant.aIdrawColor) ||
                     message.equals(Milestone4.Model.MessageConstant.aIDrawTwo)) {
                 this.setUpButtonsState(false, true);
+                // Next player means, the human player finish his turn -> only condition can do the Undo
+                if(message.equals(MessageConstant.nextPlayer)){
+                    this.enableUndo(true);
+                }
             } else {  // else draw one or draw two or draw five or draw color, not guilty draw five, not guilty draw color
                 this.setUpButtonsState(true, false);
             }
@@ -165,6 +174,22 @@ public class UnoView extends JFrame {
     private void setUpButtonsState(boolean drawButton, boolean nextButton){
         this.infoPanel.setDrawOneState(drawButton);
         this.infoPanel.setNextPlayerState(nextButton);
+    }
+
+    /**
+     * enableUndo calls method in infoPanel to disable or enable Undo button
+     * @param isEnable
+     */
+    public void enableUndo(boolean isEnable){
+        this.infoPanel.setUndoState(isEnable);
+    }
+
+    /**
+     * enableRedo calls method in infoPanel to disable or enable Redo button
+     * @param isEnable
+     */
+    public void enableRedo(boolean isEnable){
+        this.infoPanel.setRedoState(isEnable);
     }
 
     /**
