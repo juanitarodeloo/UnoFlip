@@ -29,7 +29,7 @@ public class UnoModel {
     private int needToDraw = 0;  // the number of cards the player need to draw
     private String nextMessage;  // Message Constant
     private PlayerModel roundWinner = null;  // The winner of the current round
-    private int initNumOfCards = 7; //changed for testing
+    private int initNumOfCards = 7; //change for testing
     private UnoView unoView;
     private boolean valid_wild_draw_two_or_color; //holds whether the wild draw two/color was played properly
 
@@ -173,11 +173,10 @@ public class UnoModel {
      */
     public void playerAction(int cardIndex) {
         //System.out.println("In here, card index: " + cardIndex);
-
         if (cardIndex >= 0) {  // If player plays a card
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))) {  // If the card is valid
                 this.unoView.playCard(cardIndex);  // updates the UNO game view
-                System.out.println("previous Color: " + this.previousColor);
+                //System.out.println("previous Color: " + this.previousColor);
                 this.playACard(this.currentPlayer.getHand().get(cardIndex));  // do/record the card action
             } else { // If the player plays an invalid card
                 // Display the message and allow the player to draw or play a card again.
@@ -253,7 +252,7 @@ public class UnoModel {
         this.topCard = playedCard;  // Update top card
         this.targetColor = playedSide.getColor();  // update target color
         this.needToDraw = 0;  // Reset the cards that next player needs to draw to 0
-        System.out.println("Previous color: " + this.previousColor);
+        //System.out.println("Previous color: " + this.previousColor);
 
         if (this.isLastCard()) {  // If the played card is the last card in current player's hand
             this.roundWinner = this.currentPlayer;  // current player is the winner of this round
@@ -349,8 +348,8 @@ public class UnoModel {
      * @return
      */
     public CardModel pickCardForAI(PlayerModel aiPlayer) {
-        System.out.println("Current top card: " + topCard.toString(isLight));
-        System.out.println("Current target color: " + targetColor.toString());
+        //System.out.println("Current top card: " + topCard.toString(isLight));
+        //System.out.println("Current target color: " + targetColor.toString());
         System.out.println("Next player: " + aiPlayer.getName() + "\nHand Before: ");
         for (int i = 0; i < aiPlayer.getHand().size(); i++) {
             System.out.print(aiPlayer.getHand().get(i).toString(isLight) + ", ");
@@ -361,7 +360,7 @@ public class UnoModel {
                 return aiPlayer.getHand().get(i);
             }
         }
-        System.out.println("Nothing matched! ");
+        //System.out.println("Nothing matched! ");
         drawCards(aiPlayer, 1);
         this.unoView.addNewCard(this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1).getCard(this.isLight));  // add card to display
 
@@ -383,7 +382,7 @@ public class UnoModel {
         for (CardModel card : currentPlayer.getHand()) {
             if (card.getCard(this.isLight).getType() == prevTopCard.getCard(this.isLight).getType() ||
                     card.getCard(this.isLight).getColor() == this.previousColor) {
-                System.out.println("Top card: " + topCard.toString() + " matches this card in hand: " + card.getCard(this.isLight).toString());
+                //System.out.println("Top card: " + topCard.toString() + " matches this card in hand: " + card.getCard(this.isLight).toString());
                 return false;
             }
         }
@@ -397,7 +396,7 @@ public class UnoModel {
         if (this.nextMessage == null) {
             this.nextMessage = MessageConstant.normalTurn; // or some other default message constant
         }
-        System.out.println("skip number before: " + this.numSkip);
+        //System.out.println("skip number before: " + this.numSkip);
         // If next player is in skip turn
         if (this.nextMessage.equals(MessageConstant.skipTurn) || this.nextMessage.equals(MessageConstant.aISkipped)) {
             if (this.numSkip == 0) {  // if the skip turn finished -> current player is skipped, next player is normal
@@ -411,7 +410,7 @@ public class UnoModel {
                 }
             }
         }
-        System.out.println("skip number after: " + this.numSkip);
+        //System.out.println("skip number after: " + this.numSkip);
         // Update current player
         this.currentPlayer = this.players.get(this.getNextPlayerIndex(this.players.indexOf(this.currentPlayer)));
 
@@ -432,19 +431,19 @@ public class UnoModel {
      * AITurn does the things that AI need to do for this turn (draw cards or plays a card)
      */
     public void AITurn() {
-        System.out.println("in AI turn");
+        //System.out.println("in AI turn");
         if (this.nextMessage.equals(MessageConstant.normalTurn)) {  // If Ai can draw or play a card
             CardModel playedCard = this.pickCardForAI(this.currentPlayer);  // AI plays a card or draw a card
             if (playedCard != null) {
-                System.out.println("AI plays a card");
+                //System.out.println("AI plays a card");
                 this.unoView.playCard(this.currentPlayer.getHand().indexOf(playedCard));  // updates the UNO game view
                 this.playACard(playedCard);  // AI plays card
             } else {
-                System.out.println("AI draws a card");
+                //System.out.println("AI draws a card");
                 this.unoView.updateGameMessageAndButtons(MessageConstant.aIPickedUp);
             }
         } else {  // If AI needs to do something -> not a normal turn
-            System.out.println("AI handle an action");
+            //System.out.println("AI handle an action");
             this.handleAIReaction();
         }
     }
@@ -455,7 +454,7 @@ public class UnoModel {
     public void AIChooseColor() {
         CardSideModel.Color[] colors = this.getColourChoices();
         Random random = new Random();
-        System.out.println("color length " + colors.length);
+        //System.out.println("color length " + colors.length);
         int newColorIndex = random.nextInt(colors.length);
         this.targetColor = colors[newColorIndex];
     }
@@ -471,7 +470,7 @@ public class UnoModel {
             System.out.print(this.currentPlayer.getHand().get(i).toString(isLight) + ", ");
         }
         System.out.println("\n");
-        if (this.nextMessage.equals(MessageConstant.drawOneTurn)) {
+        if(this.nextMessage.equals(MessageConstant.drawOneTurn)) {
             drawCards(this.currentPlayer, 1);
             AIMessage = MessageConstant.aIDrawOne;
         } else if (this.nextMessage.equals(MessageConstant.wildDrawTwoTurn)) {
@@ -529,7 +528,7 @@ public class UnoModel {
             if (this.drawUntilColor) {  // if challenge draw color
                 this.drawColorAction(prevPlayer);
                 this.unoView.updateGameMessageAndButtons(MessageConstant.guiltyColor);
-                System.out.println("finish draw color");
+                //System.out.println("finish draw color");
             } else {  // if challenge draw two
                 //add two cards to the prev player hand
                 this.drawCards(prevPlayer, 2);
@@ -548,7 +547,7 @@ public class UnoModel {
         while (true) {
             this.drawCards(player, 1);  // previous player draw one card
             CardModel justDraw = player.getHand().get(player.getHand().size() - 1);
-            System.out.println("previous/AI draw: " + justDraw.getCard(this.isLight).toString());
+            //System.out.println("previous/AI draw: " + justDraw.getCard(this.isLight).toString());
             if (justDraw.getCard(isLight).getColor() == this.targetColor) {
                 this.drawUntilColor = false;
                 break;
@@ -574,6 +573,38 @@ public class UnoModel {
                 return players.get(players.indexOf(currentPlayer) + 1); //tested
             }
         }
+    }
+
+    /**
+     * replayGame() starts the game from the beginning
+     */
+    public void replayGame(){
+        System.out.println("\nstarting a new game!");
+        System.out.println("Deck size before: " + myDeck.getSize());
+        System.out.println("Player hands before: ");
+        for(PlayerModel p: this.players){
+            System.out.println("\nScore before: " + p.getScore());
+            System.out.println("\n" + p.getName() + " hand:");
+
+            for (int i = 0; i < p.getHand().size(); i++) {
+                System.out.print(p.getHand().get(i).toString(isLight) + ", ");
+            }
+        }
+        myDeck = new DeckModel();
+        players = new ArrayList<>();
+        this.roundNum = 1;
+        this.initPlayers();
+        this.initRound();
+        this.unoView.clearPlayerPoints(players.size());
+        System.out.println("\n\nPlayer hands after: ");
+        for(PlayerModel p: this.players){
+            System.out.println("Score after: " + p.getScore());
+            System.out.println("\n" + p.getName() + " hand:");
+            for (int i = 0; i < p.getHand().size(); i++) {
+                System.out.print(p.getHand().get(i).toString(isLight) + ", ");
+            }
+        }
+        System.out.println("Deck size after: " + myDeck.getSize());
     }
 
     /**
@@ -772,15 +803,6 @@ public class UnoModel {
     }
 
     /**
-     * Sets the winner of the round.
-     *
-     * @param roundWinner the round winner to be set
-     */
-    public void setRoundWinner(PlayerModel roundWinner) {
-        this.roundWinner = roundWinner;
-    }
-
-    /**
      * Sets the clockwise rotation state.
      *
      * @param isClockWise the clockwise state to be set
@@ -844,15 +866,6 @@ public class UnoModel {
     }
 
     /**
-     * Gets the initial number of cards.
-     *
-     * @return the initial number of cards
-     */
-    public int getInitNumOfCards() {
-        return this.initNumOfCards;
-    }
-
-    /**
      * Sets the initial number of cards.
      *
      * @param initNumOfCards the initial number of cards to be set
@@ -869,20 +882,6 @@ public class UnoModel {
      */
     public List<CardModel> getPlayerHand(PlayerModel player) {
         return player.getHand();
-    }
-
-    /**
-     * Checks if the game is finished.
-     *
-     * @return true if the game is finished, false otherwise
-     */
-    public boolean isGameFinished() {
-        for (PlayerModel player : players) {
-            if (player.getScore() >= 500) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

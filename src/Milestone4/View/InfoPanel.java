@@ -26,6 +26,8 @@ public class InfoPanel extends JPanel{
     private JLabel currentPlayer = new JLabel();
     private JButton drawOne = new JButton("Draw One");
     private JButton nextPlayer = new JButton("Next Player");
+
+    private JButton replayGame = new JButton("Replay");
     private UnoController controller;
 
     private Image backgroundImage;
@@ -164,7 +166,7 @@ public class InfoPanel extends JPanel{
      */
     public void initGameInfo(){
         JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(7, 1));
+        gamePanel.setLayout(new GridLayout(8, 1));
 
         // Add the components to the gamePanel
         gamePanel.add(this.roundLabel);
@@ -174,9 +176,12 @@ public class InfoPanel extends JPanel{
         gamePanel.add(this.currentPlayer);
         this.drawOne.addActionListener(this.controller);
         gamePanel.add(this.drawOne);
+        this.replayGame.addActionListener(this.controller);
+        gamePanel.add(replayGame);
         this.nextPlayer.addActionListener(this.controller);
         gamePanel.add(this.nextPlayer);
         this.add(gamePanel);
+
     }
 
     /**
