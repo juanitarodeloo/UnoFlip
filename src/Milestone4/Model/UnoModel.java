@@ -48,11 +48,7 @@ public class UnoModel {
     // The undoEvent should be set to null if the next player is AI or the next player is skipped.
     // If the undoEvent is null -> the undo button is set to disabled in the view.
     private DoEvent undoEvent = null;
-    // number of cards the player draw in the turn -> only used for undo and redo!!!
-    // Not the same as needToDraw attribute!!!
-    // Reset to 0 in nextPlayer method
-    private int numOfDraw = 0;
-    private boolean isDrawCard = false;
+    private boolean isDrawCard = false;  // indicate if the player draw a card in the turn, set to false in nextPlayer
 
 
     /**
@@ -844,15 +840,6 @@ public class UnoModel {
     }
 
     /**
-     * Sets the winner of the round.
-     *
-     * @param roundWinner the round winner to be set
-     */
-    public void setRoundWinner(PlayerModel roundWinner) {
-        this.roundWinner = roundWinner;
-    }
-
-    /**
      * Sets the clockwise rotation state.
      *
      * @param isClockWise the clockwise state to be set
@@ -916,15 +903,6 @@ public class UnoModel {
     }
 
     /**
-     * Gets the initial number of cards.
-     *
-     * @return the initial number of cards
-     */
-    public int getInitNumOfCards() {
-        return this.initNumOfCards;
-    }
-
-    /**
      * Sets the initial number of cards.
      *
      * @param initNumOfCards the initial number of cards to be set
@@ -943,19 +921,6 @@ public class UnoModel {
         return player.getHand();
     }
 
-    /**
-     * Checks if the game is finished.
-     *
-     * @return true if the game is finished, false otherwise
-     */
-    public boolean isGameFinished() {
-        for (PlayerModel player : players) {
-            if (player.getScore() >= 500) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Sets the next message for testing purposes.
@@ -1010,7 +975,6 @@ public class UnoModel {
                     this.previousColor, this.needToDraw, this.numSkip, this.valid_wild_draw_two_or_color,
                     this.drawUntilColor, this.nextMessage);  // Set redoEvent - store current game info
             if (this.isDrawCard) {  // If the player draw card in this turn
-                System.out.println("number of draw in undo: " + this.numOfDraw);
                 System.out.println("hand size in undo: " + this.currentPlayer.getHand().size());
                 // remove the drawn card and add to the top of the deck
                 CardModel drawnCard = this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1);

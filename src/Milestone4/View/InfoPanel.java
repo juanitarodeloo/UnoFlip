@@ -168,7 +168,7 @@ public class InfoPanel extends JPanel{
      */
     public void initGameInfo(){
         JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(8, 1));
+        gamePanel.setLayout(new GridLayout(9, 1));
 
         // Add the components to the gamePanel
         gamePanel.add(this.roundLabel);
@@ -178,16 +178,16 @@ public class InfoPanel extends JPanel{
         gamePanel.add(this.currentPlayer);
         this.drawOne.addActionListener(this.controller);
         gamePanel.add(this.drawOne);
-        this.replayGame.addActionListener(this.controller);
-        gamePanel.add(replayGame);
-        this.nextPlayer.addActionListener(this.controller);
-        gamePanel.add(this.nextPlayer);
         this.undo.addActionListener(this.controller);
         this.redo.addActionListener(this.controller);
         JPanel doPanel = new JPanel(new GridLayout(1,2));
         doPanel.add(this.undo);
         doPanel.add(this.redo);
         gamePanel.add(doPanel);
+        this.nextPlayer.addActionListener(this.controller);
+        gamePanel.add(this.nextPlayer);
+        this.replayGame.addActionListener(this.controller);
+        gamePanel.add(replayGame);
         this.add(gamePanel);
 
     }
