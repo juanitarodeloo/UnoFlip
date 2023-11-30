@@ -110,5 +110,6 @@ public class PlayerModel {
     public boolean isHuman() {
         return isHuman;
     }
+
 }
 

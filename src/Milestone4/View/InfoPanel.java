@@ -28,6 +28,8 @@ public class InfoPanel extends JPanel{
     private JButton nextPlayer = new JButton("Next Player");
 
     private JButton replayGame = new JButton("Replay");
+    private JButton undo = new JButton("Undo");
+    private JButton redo = new JButton("Redo");
     private UnoController controller;
 
     private Image backgroundImage;
@@ -166,7 +168,7 @@ public class InfoPanel extends JPanel{
      */
     public void initGameInfo(){
         JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(8, 1));
+        gamePanel.setLayout(new GridLayout(9, 1));
 
         // Add the components to the gamePanel
         gamePanel.add(this.roundLabel);
@@ -176,10 +178,16 @@ public class InfoPanel extends JPanel{
         gamePanel.add(this.currentPlayer);
         this.drawOne.addActionListener(this.controller);
         gamePanel.add(this.drawOne);
-        this.replayGame.addActionListener(this.controller);
-        gamePanel.add(replayGame);
+        this.undo.addActionListener(this.controller);
+        this.redo.addActionListener(this.controller);
+        JPanel doPanel = new JPanel(new GridLayout(1,2));
+        doPanel.add(this.undo);
+        doPanel.add(this.redo);
+        gamePanel.add(doPanel);
         this.nextPlayer.addActionListener(this.controller);
         gamePanel.add(this.nextPlayer);
+        this.replayGame.addActionListener(this.controller);
+        gamePanel.add(replayGame);
         this.add(gamePanel);
 
     }
@@ -243,6 +251,22 @@ public class InfoPanel extends JPanel{
      */
     public void setNextPlayerState(boolean isEnable){
         this.nextPlayer.setEnabled(isEnable);
+    }
+
+    /**
+     * setUndoState disables or enables the Undo button
+     * @param isEnable
+     */
+    public void setUndoState(boolean isEnable){
+        this.undo.setEnabled(isEnable);
+    }
+
+    /**
+     * setRedoState disables or enables the Redo button
+     * @param isEnable
+     */
+    public void setRedoState(boolean isEnable){
+        this.redo.setEnabled(isEnable);
     }
 
     /**
