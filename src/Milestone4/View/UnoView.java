@@ -23,7 +23,7 @@ public class UnoView extends JFrame {
 
     public UnoView(){
         this.model = new Milestone4.Model.UnoModel();
-        controller = new UnoController(model);
+        controller = new UnoController(model, this);
         this.model.setUnoView(this);
         this.initUNOView();
 
@@ -272,6 +272,26 @@ public class UnoView extends JFrame {
         this.infoPanel.updateScore(e.getWinnerIndex(), e.getWinner().getScore());  // Update the winner's score
         // Round finish confirm dialog
         this.finishConfirm(e);
+    }
+
+    /**
+     * clearPlayerPoints() resets all the player points in the info panel
+     * @param numOfPlayers
+     */
+    public void clearPlayerPoints(int numOfPlayers){
+        for(int i = 0; i < numOfPlayers; i++){
+            this.infoPanel.updateScore(i, 0);
+        }
+    }
+
+    /**
+     * confirmReplay() pops up a confirmation window for the user to select if they want to restart the game
+     */
+    public void confirmReplay(){
+        int result = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to restart the game?", "Replay Confirmation",
+                JOptionPane.YES_NO_OPTION);
+        this.controller.handleReplayGame(result);
     }
 
     /**

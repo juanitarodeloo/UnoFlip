@@ -26,6 +26,8 @@ public class InfoPanel extends JPanel{
     private JLabel currentPlayer = new JLabel();
     private JButton drawOne = new JButton("Draw One");
     private JButton nextPlayer = new JButton("Next Player");
+
+    private JButton replayGame = new JButton("Replay");
     private JButton undo = new JButton("Undo");
     private JButton redo = new JButton("Redo");
     private UnoController controller;
@@ -176,6 +178,8 @@ public class InfoPanel extends JPanel{
         gamePanel.add(this.currentPlayer);
         this.drawOne.addActionListener(this.controller);
         gamePanel.add(this.drawOne);
+        this.replayGame.addActionListener(this.controller);
+        gamePanel.add(replayGame);
         this.nextPlayer.addActionListener(this.controller);
         gamePanel.add(this.nextPlayer);
         this.undo.addActionListener(this.controller);
@@ -185,6 +189,7 @@ public class InfoPanel extends JPanel{
         doPanel.add(this.redo);
         gamePanel.add(doPanel);
         this.add(gamePanel);
+
     }
 
     /**

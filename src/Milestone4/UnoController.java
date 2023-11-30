@@ -7,6 +7,7 @@ package Milestone4;
 
 import Milestone4.Model.CardSideModel;
 import Milestone4.Model.UnoModel;
+import Milestone4.View.UnoView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,8 +17,11 @@ public class UnoController implements ActionListener{
     private UnoModel model;
     private int numOfPlayers;
 
-    public UnoController(UnoModel model){
+    private UnoView view;
+
+    public UnoController(UnoModel model, UnoView view){
         this.model = model;
+        this.view = view;
     }
 
     @Override
@@ -43,6 +47,10 @@ public class UnoController implements ActionListener{
                 case "Next Player":  // If the player clicks Next Player button
                     this.model.nextPlayer();
                     break;
+                case "Replay":
+                    System.out.println("replay was clicked");
+                    this.view.confirmReplay();
+                    break;
                 case "Undo":  // If the player clicks Undo
                     System.out.println("click undo");
                     this.model.playerUndo();
@@ -66,6 +74,12 @@ public class UnoController implements ActionListener{
     public void handleChallengeAccepted(int decision){
         if(decision == 0){
             this.model.challengeAccepted();
+        }
+    }
+
+    public void handleReplayGame(int decision){
+        if(decision == 0){
+            this.model.replayGame();
         }
     }
 
