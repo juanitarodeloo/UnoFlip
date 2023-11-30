@@ -132,9 +132,6 @@ public class UnoView extends JFrame {
      * @param message
      */
     public void updateGameMessageAndButtons(String message){
-        // redo only enable after undo
-        // if undo draw five and choose to draw, after the first draw, redo should be disable
-        this.enableRedo(false);
         if (message.equals(Milestone4.Model.MessageConstant.normalTurn) ||
                 (message.equals(Milestone4.Model.MessageConstant.invalidCard)) ||
                 (message.equals(Milestone4.Model.MessageConstant.guiltyTwo)) ||
@@ -154,10 +151,6 @@ public class UnoView extends JFrame {
                     message.equals(Milestone4.Model.MessageConstant.aIdrawColor) ||
                     message.equals(Milestone4.Model.MessageConstant.aIDrawTwo)) {
                 this.setUpButtonsState(false, true);
-                // Next player means, the human player finish his turn -> only condition can do the Undo
-                if(message.equals(MessageConstant.nextPlayer)){
-                    this.enableUndo(true);
-                }
             } else {  // else draw one or draw two or draw five or draw color, not guilty draw five, not guilty draw color
                 this.setUpButtonsState(true, false);
             }

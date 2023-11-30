@@ -52,7 +52,7 @@ public class UnoModel {
     // Not the same as needToDraw attribute!!!
     // Reset to 0 in nextPlayer method
     private int numOfDraw = 0;
-    private boolean addDrawNum = false;  // if true, increase numOfDraw
+    private boolean isDrawCard = false;
 
 
     /**
@@ -195,8 +195,12 @@ public class UnoModel {
      * @param cardIndex  played card index
      */
     public void playerAction(int cardIndex) {
-        //System.out.println("In here, card index: " + cardIndex);
 
+        this.unoView.enableRedo(false);  // disable redo button
+        //System.out.println("In here, card index: " + cardIndex);
+        if(this.nextMessage.equals(MessageConstant.normalTurn)){  // if this turn is normal turn
+            this.unoView.enableUndo(true);  // enable undo button
+        }
         if (cardIndex >= 0) {  // If player plays a card
             if (this.validateCard(this.currentPlayer.getHand().get(cardIndex))) {  // If the card is valid
                 this.unoView.playCard(cardIndex);  // updates the UNO game view
@@ -207,8 +211,8 @@ public class UnoModel {
                 this.unoView.updateGameMessageAndButtons(MessageConstant.invalidCard);
             }
         } else {  // If player draw a card
-            if(this.addDrawNum){  // Draw before undo
-                this.numOfDraw += 1;  // update number of cards the player has drawn
+            if(this.nextMessage.equals(MessageConstant.normalTurn)){
+                this.isDrawCard = true;  // if player draw a card in normal turn, set to true
             }
             this.drawCards(currentPlayer, 1);
             // Get the card the player just drawn
@@ -439,8 +443,7 @@ public class UnoModel {
         System.out.println("skip number after: " + this.numSkip);
         // Update current player
         this.currentPlayer = this.players.get(this.getNextPlayerIndex(this.players.indexOf(this.currentPlayer)));
-        this.numOfDraw = 0; // Reset number of cards the player has drawn to 0
-        this.addDrawNum = true;
+        this.isDrawCard = false;  // Reset to false
 
         // If the next player is human and the turn is not skip
         if (this.currentPlayer.isHuman() && !(this.nextMessage.equals(MessageConstant.skipTurn) ||
@@ -970,20 +973,17 @@ public class UnoModel {
      * playerUndo sets the game state back to when the player did nothing.
      */
     public void playerUndo(){
-        this.addDrawNum = false;
         if (this.undoEvent != null) {  // Undo event must not be null -> just for ouble check
             this.redoEvent = new DoEvent(this, this.topCard, this.isClockWise, this.isLight, this.targetColor,
                     this.previousColor, this.needToDraw, this.numSkip, this.valid_wild_draw_two_or_color,
                     this.drawUntilColor, this.nextMessage);  // Set redoEvent - store current game info
-            if (this.numOfDraw > 0) {  // If the player draw card(s) in this turn
+            if (this.isDrawCard) {  // If the player draw card in this turn
                 System.out.println("number of draw in undo: " + this.numOfDraw);
                 System.out.println("hand size in undo: " + this.currentPlayer.getHand().size());
-                // remove each drawn card and add to the top of the deck
-                for (int i = 0; i < this.numOfDraw; i++) {
-                    CardModel drawnCard = this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1);
-                    this.currentPlayer.playCard(drawnCard);
-                    this.myDeck.addToTop(drawnCard);
-                }
+                // remove the drawn card and add to the top of the deck
+                CardModel drawnCard = this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1);
+                this.currentPlayer.playCard(drawnCard);
+                this.myDeck.addToTop(drawnCard);
             }else { // else the player must play a card  (if the player is skipped, cannot do undo and redo)
                 // Add current top card back to player's hand
                 this.currentPlayer.pickUpCard(this.topCard);
@@ -998,14 +998,11 @@ public class UnoModel {
     }
 
     public void playerRedo(){
-        if (this.numOfDraw > 0){  // If player draw cards before undo
+        if (this.isDrawCard){  // If player draw cards before undo
             // remove each drawn card from deck and add back to player's hand
-            this.drawCards(this.currentPlayer, this.numOfDraw);
-            for (int i = 0; i < this.numOfDraw; i++) {  // add each card back to view
-                CardModel drawnCard = this.currentPlayer.getHand().
-                        get(this.currentPlayer.getHand().size() - this.numOfDraw + i);
-                this.unoView.addNewCard(drawnCard.getCard(this.isLight));
-            }
+            this.drawCards(this.currentPlayer, 1);
+            CardModel drawnCard = this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1);
+            this.unoView.addNewCard(drawnCard.getCard(this.isLight));  // add  card back to view
         }else {  // If player play a card
             // remove the card from player's hand
             // the removed card is the card the player played, which is the top card in redo event
@@ -1024,6 +1021,7 @@ public class UnoModel {
         this.unoView.updateGameMessageAndButtons(MessageConstant.nextPlayer);
         this.unoView.setAfterPlayACard(this.targetColor, this.topCard.getCard(this.isLight),
                 this.directionString(), this.sideString());  // Update played card and color
+        this.unoView.enableUndo(true);  // enable undo
     }
     
 
