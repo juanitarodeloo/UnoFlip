@@ -112,14 +112,6 @@ public class DeckModel {
 
     }
 
-//    /**
-//     * shuffle() randomizes the order of the cards using the Collections utility class
-//     */
-//    public void shuffle() {
-//
-//        Collections.shuffle(cards);
-//    }
-
     /**
      * getSize() gets the curr size of deck
      * @return int
@@ -131,5 +123,13 @@ public class DeckModel {
 
     public void setDeck(LinkedList<CardModel> testDeck) {
         this.deck = testDeck; // Replace the current deck with the test deck
+    }
+
+    /**
+     * addToTop inserts the card to the top of the deck
+     * @param addedCard
+     */
+    public void addToTop(CardModel addedCard){
+        this.cards.add(0, addedCard);
     }
 }

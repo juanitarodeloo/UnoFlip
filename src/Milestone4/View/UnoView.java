@@ -23,7 +23,7 @@ public class UnoView extends JFrame {
 
     public UnoView(){
         this.model = new Milestone4.Model.UnoModel();
-        controller = new UnoController(model);
+        controller = new UnoController(model, this);
         this.model.setUnoView(this);
         this.initUNOView();
 
@@ -110,6 +110,8 @@ public class UnoView extends JFrame {
         }
 
         this.updateGameMessageAndButtons(e.getMessage());  // Update instructions and button states
+        this.enableUndo(false);  // disable undo
+        this.enableRedo(false);  // disable redo
         // If it is wild draw two turn or wild  draw color turn and current player is human -> ask for challenge
         if ((e.getMessage().equals(Milestone4.Model.MessageConstant.wildDrawTwoTurn) ||
                 e.getMessage().equals(Milestone4.Model.MessageConstant.drawColor)) && e.getCurrPlayer().isHuman()) {
@@ -165,6 +167,22 @@ public class UnoView extends JFrame {
     private void setUpButtonsState(boolean drawButton, boolean nextButton){
         this.infoPanel.setDrawOneState(drawButton);
         this.infoPanel.setNextPlayerState(nextButton);
+    }
+
+    /**
+     * enableUndo calls method in infoPanel to disable or enable Undo button
+     * @param isEnable
+     */
+    public void enableUndo(boolean isEnable){
+        this.infoPanel.setUndoState(isEnable);
+    }
+
+    /**
+     * enableRedo calls method in infoPanel to disable or enable Redo button
+     * @param isEnable
+     */
+    public void enableRedo(boolean isEnable){
+        this.infoPanel.setRedoState(isEnable);
     }
 
     /**
@@ -254,6 +272,26 @@ public class UnoView extends JFrame {
         this.infoPanel.updateScore(e.getWinnerIndex(), e.getWinner().getScore());  // Update the winner's score
         // Round finish confirm dialog
         this.finishConfirm(e);
+    }
+
+    /**
+     * clearPlayerPoints() resets all the player points in the info panel
+     * @param numOfPlayers
+     */
+    public void clearPlayerPoints(int numOfPlayers){
+        for(int i = 0; i < numOfPlayers; i++){
+            this.infoPanel.updateScore(i, 0);
+        }
+    }
+
+    /**
+     * confirmReplay() pops up a confirmation window for the user to select if they want to restart the game
+     */
+    public void confirmReplay(){
+        int result = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to restart the game?", "Replay Confirmation",
+                JOptionPane.YES_NO_OPTION);
+        this.controller.handleReplayGame(result);
     }
 
     /**
