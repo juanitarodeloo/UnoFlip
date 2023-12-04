@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
+import java.io.Serializable;
+
 
 public class PlayerHandPanel extends JScrollPane{
     // PlayerHandPanel contains all cards in a player's hand.

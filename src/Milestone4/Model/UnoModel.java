@@ -1020,6 +1020,30 @@ public class UnoModel {
         this.unoView.enableUndo(true);  // enable undo
     }
 
+    public CardSideModel.Color getPrevColor() {
+        return this.previousColor;
+    }
+
+    public boolean isDrawUntilColor() {
+        return this.drawUntilColor;
+    }
+
+    public int getNumSkip() {
+        return this.numSkip;
+    }
+
+    public int getNeedToDraw() {
+        return this.needToDraw;
+    }
+
+    public String getNextMessage() {
+        return this.nextMessage;
+    }
+
+    public boolean isValidWildDrawTwoOrColor() {
+        return this.valid_wild_draw_two_or_color;
+    }
+
 
 
 }

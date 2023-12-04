@@ -6,11 +6,17 @@ package Milestone4.View;
 
 import Milestone4.Model.MessageConstant;
 import Milestone4.Model.CardSideModel;
+import Milestone4.Model.UnoModel;
 import Milestone4.UnoController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+
+
 
 public class UnoView extends JFrame {
     private static final int FRAME_WIDTH = 1200;
@@ -21,11 +27,17 @@ public class UnoView extends JFrame {
     private GamePanel gamePanel;  // main game panel contains top card, instructions, target color and cards in hand
     private InfoPanel infoPanel;  // Info game panel contains the number of player and corresponding information
 
+    private JMenuBar menuBar;
+    private JMenuItem loadMenuItem;
+    private JMenuItem saveMenuItem;
+
     public UnoView(){
         this.model = new Milestone4.Model.UnoModel();
         controller = new UnoController(model, this);
+
         this.model.setUnoView(this);
         this.initUNOView();
+        initMenuBar();
 
     }
 
@@ -59,6 +71,24 @@ public class UnoView extends JFrame {
         this.gamePanel.setBorder(BorderFactory.createLineBorder(Color.black, 3)); // For testing
         this.gamePanel.setVisible(false); // It's invisible until the game starts
 
+    }
+
+    private void initMenuBar(){
+        menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+        loadMenuItem = new JMenuItem("Load");
+        //loadMenuItem.addActionListener(e -> loadGame());
+        fileMenu.add(loadMenuItem);
+
+        // Save menu item
+        saveMenuItem = new JMenuItem("Save");
+        saveMenuItem.addActionListener(e -> saveGame());
+        fileMenu.add(saveMenuItem);
+
+        // Set the menu bar
+        setJMenuBar(menuBar);
     }
 
     /**
@@ -317,8 +347,29 @@ public class UnoView extends JFrame {
         return this.lastMessage;
     }
 
+    private void saveGame() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Game State");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".xml")) {
+                fileToSave = new File(filePath + ".xml");
+            }
+            controller.saveGame(fileToSave); // Pass the selected File to the controller
+        }
+    }
+
+
 
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> new UnoView());
     }
+
+
+
 }

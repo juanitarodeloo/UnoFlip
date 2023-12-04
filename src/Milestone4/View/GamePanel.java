@@ -10,6 +10,8 @@ import Milestone4.Model.UnoModel;
 import Milestone4.UnoController;
 
 import javax.swing.*;
+import java.io.Serializable;
+
 import java.awt.*;
 import java.util.ArrayList;
 

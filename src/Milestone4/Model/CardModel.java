@@ -41,4 +41,12 @@ public class CardModel {
             return this.darkSide.toString();
         }
     }
+
+    public CardSideModel getLightSide() {
+        return this.lightSide;
+    }
+
+    public CardSideModel getDarkSide() {
+        return this.darkSide;
+    }
 }

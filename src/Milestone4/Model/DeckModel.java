@@ -132,4 +132,16 @@ public class DeckModel {
     public void addToTop(CardModel addedCard){
         this.cards.add(0, addedCard);
     }
+
+    public List<CardModel> getCards() {
+        return this.cards;
+    }
+
+    public List<CardSideModel> getLightSides() {
+        return this.lightSides;
+    }
+
+    public List<CardSideModel> getDarkSides() {
+        return this.darkSides;
+    }
 }
