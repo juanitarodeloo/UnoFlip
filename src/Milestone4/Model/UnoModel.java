@@ -7,10 +7,34 @@ package Milestone4.Model;
 
 import Milestone4.View.UnoView;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class UnoModel {
     private ArrayList<PlayerModel> players;
@@ -63,6 +87,7 @@ public class UnoModel {
 
     /**
      * directionToString converts the direction information to String
+     *
      * @return game direction in string
      */
     public String directionString() {
@@ -75,6 +100,7 @@ public class UnoModel {
 
     /**
      * sideString converts the card side information to String
+     *
      * @return
      */
     public String sideString() {
@@ -87,6 +113,7 @@ public class UnoModel {
 
     /**
      * setUnoView assigns unoView
+     *
      * @param unoView
      */
     public void setUnoView(UnoView unoView) {
@@ -131,6 +158,7 @@ public class UnoModel {
     /**
      * Sets the chosen target color after a wild card is played.
      * This method should be called when a player chooses a color after playing a wild card.
+     *
      * @param targetColor the color chosen by the player.
      */
     public void setTargetColor(CardSideModel.Color targetColor) {
@@ -167,8 +195,9 @@ public class UnoModel {
 
     /**
      * drawCards() implements when a player draws one or two card from the deck
-     * @param player  the player who will draw card
-     * @param NumOfCards  the number of cards that player wants to draw
+     *
+     * @param player     the player who will draw card
+     * @param NumOfCards the number of cards that player wants to draw
      */
     private void drawCards(PlayerModel player, int NumOfCards) {
         for (int i = 0; i < NumOfCards; i++) {
@@ -179,6 +208,7 @@ public class UnoModel {
 
     /**
      * getTargetCard is used to draw the beginning card in each round
+     *
      * @return the drawn card
      */
     public CardModel getTargetCard() {
@@ -188,13 +218,14 @@ public class UnoModel {
 
     /**
      * playerAction receives the action from the player -> draw a card or play a card
-     * @param cardIndex  played card index
+     *
+     * @param cardIndex played card index
      */
     public void playerAction(int cardIndex) {
 
         this.unoView.enableRedo(false);  // disable redo button
         //System.out.println("In here, card index: " + cardIndex);
-        if(this.nextMessage.equals(MessageConstant.normalTurn)){  // if this turn is normal turn
+        if (this.nextMessage.equals(MessageConstant.normalTurn)) {  // if this turn is normal turn
             this.unoView.enableUndo(true);  // enable undo button
         }
         if (cardIndex >= 0) {  // If player plays a card
@@ -207,7 +238,7 @@ public class UnoModel {
                 this.unoView.updateGameMessageAndButtons(MessageConstant.invalidCard);
             }
         } else {  // If player draw a card
-            if(this.nextMessage.equals(MessageConstant.normalTurn)){
+            if (this.nextMessage.equals(MessageConstant.normalTurn)) {
                 this.isDrawCard = true;  // if player draw a card in normal turn, set to true
             }
             this.drawCards(currentPlayer, 1);
@@ -239,6 +270,7 @@ public class UnoModel {
 
     /**
      * validateCard() validates if the card played is a valid move based on the previous card on the table.
+     *
      * @param cardPlayed The card that the player wishes to play.
      * @return true if the cardPlayed is a valid move, otherwise false.
      */
@@ -264,6 +296,7 @@ public class UnoModel {
 
     /**
      * playACard() implement the corresponding card action
+     *
      * @param playedCard the card which will be implemented
      */
     public void playACard(CardModel playedCard) {
@@ -371,6 +404,7 @@ public class UnoModel {
 
     /**
      * pickCardForAI chooses played card for AI player
+     *
      * @param aiPlayer
      * @return
      */
@@ -403,6 +437,7 @@ public class UnoModel {
 
     /**
      * validate_wild_draw_two determines if the wild_draw_two or wild_draw_color is valid or not
+     *
      * @return
      */
     public boolean validate_wild_draw_two_or_color(CardModel prevTopCard) {
@@ -444,11 +479,11 @@ public class UnoModel {
 
         // If the next player is human and the turn is not skip
         if (this.currentPlayer.isHuman() && !(this.nextMessage.equals(MessageConstant.skipTurn) ||
-                this.nextMessage.equals(MessageConstant.aISkipped))){
+                this.nextMessage.equals(MessageConstant.aISkipped))) {
             this.undoEvent = new DoEvent(this, this.topCard, this.isClockWise, this.isLight, this.targetColor,
                     this.previousColor, this.needToDraw, this.numSkip, this.valid_wild_draw_two_or_color,
                     this.drawUntilColor, this.nextMessage);  // Set undoEvent - store current game info
-        }else {
+        } else {
             this.undoEvent = null;
         }
 
@@ -536,7 +571,8 @@ public class UnoModel {
 
     /**
      * nextPlayer() calculate and return the next player's index
-     * @param curPlayIndex  the current player's index in
+     *
+     * @param curPlayIndex the current player's index in
      * @return the index of the player who play the next turn
      */
     int getNextPlayerIndex(int curPlayIndex) {
@@ -578,6 +614,7 @@ public class UnoModel {
 
     /**
      * drawColorAction allows the player keep drawing cards until get the target color
+     *
      * @param player
      */
     public void drawColorAction(PlayerModel player) {
@@ -594,6 +631,7 @@ public class UnoModel {
 
     /**
      * getPrecPlayer returns previous player
+     *
      * @return
      */
     public PlayerModel getPrevPlayer() {
@@ -615,11 +653,11 @@ public class UnoModel {
     /**
      * replayGame() starts the game from the beginning
      */
-    public void replayGame(){
+    public void replayGame() {
         System.out.println("\nstarting a new game!");
         System.out.println("Deck size before: " + myDeck.getSize());
         System.out.println("Player hands before: ");
-        for(PlayerModel p: this.players){
+        for (PlayerModel p : this.players) {
             System.out.println("\nScore before: " + p.getScore());
             System.out.println("\n" + p.getName() + " hand:");
 
@@ -634,7 +672,7 @@ public class UnoModel {
         this.initRound();
         this.unoView.clearPlayerPoints(players.size());
         System.out.println("\n\nPlayer hands after: ");
-        for(PlayerModel p: this.players){
+        for (PlayerModel p : this.players) {
             System.out.println("Score after: " + p.getScore());
             System.out.println("\n" + p.getName() + " hand:");
             for (int i = 0; i < p.getHand().size(); i++) {
@@ -646,6 +684,7 @@ public class UnoModel {
 
     /**
      * isLastCard checks if the current player plays all cards in hand
+     *
      * @return if the player has no cards in hand
      */
     public boolean isLastCard() {
@@ -654,7 +693,8 @@ public class UnoModel {
 
     /**
      * getCardPoint() returns the point for a input card type
-     * @param cardType  the type of the uno card
+     *
+     * @param cardType the type of the uno card
      * @return the point of the uno card
      */
     public int getCardPoint(CardSideModel.Type cardType) {
@@ -730,6 +770,7 @@ public class UnoModel {
 
     /**
      * getDrawMessage returns the message constant depends number of cards the player needs to draw
+     *
      * @return
      */
     public String getDrawMessage() {
@@ -930,7 +971,6 @@ public class UnoModel {
     public void setNextMessage(String nextMessage) {
         this.nextMessage = nextMessage;
     }
-
     /**
      * Gets the UnoView instance for testing purposes.
      *
@@ -951,9 +991,10 @@ public class UnoModel {
 
     /**
      * updateGameState updates the uno model information.
+     *
      * @param doEvent
      */
-    public void updateGameState(DoEvent doEvent){
+    public void updateGameState(DoEvent doEvent) {
         this.topCard = doEvent.getTopCard();
         this.isClockWise = doEvent.isClockwise();
         this.isLight = doEvent.isLight();
@@ -962,14 +1003,14 @@ public class UnoModel {
         this.needToDraw = doEvent.getNumOfDraw();
         this.numSkip = doEvent.getNumOfSkip();
         this.valid_wild_draw_two_or_color = doEvent.isValidWild();
-        this.drawUntilColor = doEvent.isDrawColor() ;
+        this.drawUntilColor = doEvent.isDrawColor();
         this.nextMessage = doEvent.getMessage();
     }
 
     /**
      * playerUndo sets the game state back to when the player did nothing.
      */
-    public void playerUndo(){
+    public void playerUndo() {
         if (this.undoEvent != null) {  // Undo event must not be null -> just for ouble check
             this.redoEvent = new DoEvent(this, this.topCard, this.isClockWise, this.isLight, this.targetColor,
                     this.previousColor, this.needToDraw, this.numSkip, this.valid_wild_draw_two_or_color,
@@ -980,7 +1021,7 @@ public class UnoModel {
                 CardModel drawnCard = this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1);
                 this.currentPlayer.playCard(drawnCard);
                 this.myDeck.addToTop(drawnCard);
-            }else { // else the player must play a card  (if the player is skipped, cannot do undo and redo)
+            } else { // else the player must play a card  (if the player is skipped, cannot do undo and redo)
                 // Add current top card back to player's hand
                 this.currentPlayer.pickUpCard(this.topCard);
                 this.unoView.addNewCard(this.topCard.getCard(this.isLight));
@@ -993,13 +1034,13 @@ public class UnoModel {
         }
     }
 
-    public void playerRedo(){
-        if (this.isDrawCard){  // If player draw cards before undo
+    public void playerRedo() {
+        if (this.isDrawCard) {  // If player draw cards before undo
             // remove each drawn card from deck and add back to player's hand
             this.drawCards(this.currentPlayer, 1);
             CardModel drawnCard = this.currentPlayer.getHand().get(this.currentPlayer.getHand().size() - 1);
             this.unoView.addNewCard(drawnCard.getCard(this.isLight));  // add  card back to view
-        }else {  // If player play a card
+        } else {  // If player play a card
             // remove the card from player's hand
             // the removed card is the card the player played, which is the top card in redo event
 
@@ -1007,7 +1048,7 @@ public class UnoModel {
             this.unoView.playCard(this.currentPlayer.getHand().indexOf(this.redoEvent.getTopCard()));
             this.currentPlayer.playCard(this.redoEvent.getTopCard());  // remove from hand
 
-            if (this.redoEvent.isLight() != this.isLight){  // If play flip card -> update card side
+            if (this.redoEvent.isLight() != this.isLight) {  // If play flip card -> update card side
                 this.unoView.updateHandSides(this.redoEvent.isLight(), this.currentPlayer.getHand());
             }
         }
@@ -1044,6 +1085,173 @@ public class UnoModel {
         return this.valid_wild_draw_two_or_color;
     }
 
+    public void saveGame(File file) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<UnoGame>\n");
 
+            writer.write("\t<ListOfPlayers>\n");
+            for (PlayerModel player : getPlayers()) {
+                writer.write("\t\t<Player>\n");
+                writer.write("\t\t\t<name>" + escapeXml(player.getName()) + "</name>\n");
+                writer.write("\t\t\t<Hand>\n");
+                for (CardModel card : player.getHand()) {
+                    writer.write("\t\t\t\t<Card>\n");
+                    writer.write("\t\t\t\t\t<lightside>\n");
+                    writer.write("\t\t\t\t\t\t<Color>" + card.getLightSide().getColor() + "</Color>\n");
+                    writer.write("\t\t\t\t\t\t<Type>" + card.getLightSide().getType() + "</Type>\n");
+                    writer.write("\t\t\t\t\t</lightside>\n");
+                    writer.write("\t\t\t\t\t<darkside>\n");
+                    writer.write("\t\t\t\t\t\t<Color>" + card.getDarkSide().getColor() + "</Color>\n");
+                    writer.write("\t\t\t\t\t\t<Type>" + card.getDarkSide().getType() + "</Type>\n");
+                    writer.write("\t\t\t\t\t</darkside>\n");
+                    writer.write("\t\t\t\t</Card>\n");
+                }
+                writer.write("\t\t\t</Hand>\n");
+                writer.write("\t\t\t<Score>" + player.getScore() + "</Score>\n");
+                writer.write("\t\t\t<isHuman>" + player.isHuman() + "</isHuman>\n");
+                writer.write("\t\t</Player>\n");
+            }
+            writer.write("\t</ListOfPlayers>\n");
+
+            writer.write("\t<Deck>\n");
+            writer.write("\t\t<listOfCards>\n");
+            for (CardModel card : getMyDeck().getCards()) {
+                writer.write("\t\t\t<Card>\n");
+                writer.write("\t\t\t\t<lightside>\n");
+                writer.write("\t\t\t\t\t<Color>" + card.getLightSide().getColor() + "</Color>\n");
+                writer.write("\t\t\t\t\t<Type>" + card.getLightSide().getType() + "</Type>\n");
+                writer.write("\t\t\t\t</lightside>\n");
+                writer.write("\t\t\t\t<darkside>\n");
+                writer.write("\t\t\t\t\t<Color>" + card.getDarkSide().getColor() + "</Color>\n");
+                writer.write("\t\t\t\t\t<Type>" + card.getDarkSide().getType() + "</Type>\n");
+                writer.write("\t\t\t\t</darkside>\n");
+                writer.write("\t\t\t</Card>\n");
+            }
+            writer.write("\t\t</listOfCards>\n");
+            writer.write("\t</Deck>\n");
+
+            writer.write("\t<currentPlayer>" + getCurrentPlayer().getName() + "</currentPlayer>\n");
+            writer.write("\t<roundNum>" + getRoundNum() + "</roundNum>\n");
+            writer.write("\t<isLight>" + isLight() + "</isLight>\n");
+            writer.write("\t<isClockWise>" + getIsClockWise() + "</isClockWise>\n");
+            writer.write("\t<targetColor>" + getTargetColor() + "</targetColor>\n");
+            writer.write("\t<prevColor>" + getPrevColor() + "</prevColor>\n");
+
+            writer.write("\t<TopCard>\n");
+            writer.write("\t\t<lightside>\n");
+            writer.write("\t\t\t<Color>" + getTopCard().getLightSide().getColor() + "</Color>\n");
+            writer.write("\t\t\t<Type>" + getTopCard().getLightSide().getType() + "</Type>\n");
+            writer.write("\t\t</lightside>\n");
+            writer.write("\t\t<darkside>\n");
+            writer.write("\t\t\t<Color>" + getTopCard().getDarkSide().getColor() + "</Color>\n");
+            writer.write("\t\t\t<Type>" + getTopCard().getDarkSide().getType() + "</Type>\n");
+            writer.write("\t\t</darkside>\n");
+            writer.write("\t</TopCard>\n");
+
+            writer.write("\t<drawUntilColor>" + isDrawUntilColor() + "</drawUntilColor>\n");
+            writer.write("\t<numSkip>" + getNumSkip() + "</numSkip>\n");
+            writer.write("\t<isLight>" + isLight() + "</isLight>\n");
+            writer.write("\t<isClockWise>" + getIsClockWise() + "</isClockWise>\n");
+            writer.write("\t<currentPlayer>" + getCurrentPlayer().getName() + "</currentPlayer>\n");
+            writer.write("\t<roundNum>" + getRoundNum() + "</roundNum>\n");
+            writer.write("\t<needToDraw>" + getNeedToDraw() + "</needToDraw>\n");
+            writer.write("\t<nextMessage>" + escapeXml(getNextMessage()) + "</nextMessage>\n");
+
+            // Assuming getRoundWinner() returns a PlayerModel. If it's just an index or name, adjust accordingly.
+            String roundWinnerName = getRoundWinner() != null ? getRoundWinner().getName() : "None";
+            writer.write("\t<roundWinner>" + escapeXml(roundWinnerName) + "</roundWinner>\n");
+
+            // Assuming this is a boolean or similar simple type.
+            writer.write("\t<valid_wild_draw_two_or_color>" + isValidWildDrawTwoOrColor() + "</valid_wild_draw_two_or_color>\n");
+
+            writer.write("</UnoGame>");
+            writer.close(); // Make sure to close the writer to flush everything to the file
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+    }
+
+    private String escapeXml(String input) {
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
+
+    public void loadGame(String filename) {
+        File file = new File(filename);
+
+        // Ensure the file exists and is readable
+        if (!file.exists() || !file.canRead()) {
+            System.err.println("The file does not exist or cannot be read: " + filename);
+            return;
+        }
+
+        try {
+            // Initialize a document builder
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+
+            // Process players
+            NodeList playerNodes = doc.getElementsByTagName("Player");
+            List<PlayerModel> players = new ArrayList<>();
+            for (int i = 0; i < playerNodes.getLength(); i++) {
+                Node playerNode = playerNodes.item(i);
+                if (playerNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element playerElement = (Element) playerNode;
+                    String playerName = playerElement.getElementsByTagName("name").item(0).getTextContent();
+                    int playerScore = Integer.parseInt(playerElement.getElementsByTagName("Score").item(0).getTextContent());
+                    boolean isHuman = Boolean.parseBoolean(playerElement.getElementsByTagName("isHuman").item(0).getTextContent());
+
+                    // Process player hand
+                    NodeList cardNodes = playerElement.getElementsByTagName("Card");
+                    List<CardModel> hand = new ArrayList<>();
+                    for (int j = 0; j < cardNodes.getLength(); j++) {
+                        Node cardNode = cardNodes.item(j);
+                        if (cardNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element cardElement = (Element) cardNode;
+                            CardSideModel lightSide = parseCardSide((Element) cardElement.getElementsByTagName("lightside").item(0));
+                            CardSideModel darkSide = parseCardSide((Element) cardElement.getElementsByTagName("darkside").item(0));
+                            hand.add(new CardModel(lightSide, darkSide));
+                        }
+                    }
+
+                    PlayerModel player = new PlayerModel(playerName, isHuman);
+                    player.setHand((ArrayList<CardModel>) hand);
+                    player.setScore(playerScore);
+                    players.add(player);
+                }
+            }
+            setPlayers(players); // Assuming a method exists to set players in UnoModel
+
+            // Additional game state processing can be added here as needed, e.g., current player, round number, etc.
+            // ...
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private CardSideModel parseCardSide(Element sideElement) {
+        String color = sideElement.getElementsByTagName("Color").item(0).getTextContent();
+        String type = sideElement.getElementsByTagName("Type").item(0).getTextContent();
+        return new CardSideModel(CardSideModel.Color.valueOf(color), CardSideModel.Type.valueOf(type));
+    }
+
+
+    /**
+     * Sets the list of players in the game.
+     *
+     * @param players The new list of players.
+     */
+    public void setPlayers(List<PlayerModel> players) {
+        this.players = new ArrayList<>(players);
+    }
 
 }

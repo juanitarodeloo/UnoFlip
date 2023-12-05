@@ -73,23 +73,22 @@ public class UnoView extends JFrame {
 
     }
 
-    private void initMenuBar(){
+    private void initMenuBar() {
         menuBar = new JMenuBar();
-
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
+
         loadMenuItem = new JMenuItem("Load");
-        //loadMenuItem.addActionListener(e -> loadGame());
+        loadMenuItem.addActionListener(e -> controller.loadGame());
         fileMenu.add(loadMenuItem);
 
-        // Save menu item
         saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.addActionListener(e -> saveGame());
+        saveMenuItem.addActionListener(e -> controller.promptUserToSaveGame());
         fileMenu.add(saveMenuItem);
 
-        // Set the menu bar
         setJMenuBar(menuBar);
     }
+
 
     /**
      * initInfoPanel initializes the information panel and add it to the main frame
@@ -347,24 +346,9 @@ public class UnoView extends JFrame {
         return this.lastMessage;
     }
 
-    private void saveGame() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save Game State");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
-
-        int userSelection = fileChooser.showSaveDialog(this);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            String filePath = fileToSave.getAbsolutePath();
-            if (!filePath.toLowerCase().endsWith(".xml")) {
-                fileToSave = new File(filePath + ".xml");
-            }
-            controller.saveGame(fileToSave); // Pass the selected File to the controller
-        }
+    private void triggerLoadGame() {
+        controller.loadGame();
     }
-
-
 
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> new UnoView());

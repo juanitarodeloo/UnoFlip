@@ -13,6 +13,7 @@ public class PlayerModel {
      */
     private String name;
     private ArrayList<CardModel> hand;
+
     private int score;
 
     private boolean isHuman;
@@ -111,5 +112,23 @@ public class PlayerModel {
         return isHuman;
     }
 
-}
+    /**
+     * Sets the player's hand of cards.
+     *
+     * @param hand The new hand of cards.
+     */
+    public void setHand(ArrayList<CardModel> hand) {
+        this.hand = hand; // Assign the new hand of cards
+    }
 
+
+    /**
+     * Sets the player's score.
+     *
+     * @param score The new score.
+     */
+    public void setScore(int score) {
+        this.score = score; // Assign the new score
+    }
+
+}
