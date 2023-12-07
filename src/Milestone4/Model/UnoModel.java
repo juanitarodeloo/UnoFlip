@@ -15,26 +15,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class UnoModel {
     private ArrayList<PlayerModel> players;
@@ -785,16 +769,28 @@ public class UnoModel {
         }
     }
 
+    /**
+     * saveNumOfHumanPlayers() saves the number of human players selected from the user
+     * @param numOfHumanPlayers
+     */
     public void saveNumOfHumanPlayers(int numOfHumanPlayers) {
         //System.out.println(" In model, num of human players: " + numOfHumanPlayers);
         this.numOfHumanPlayers = numOfHumanPlayers;
     }
 
+    /**
+     * saveNumOfAIPlayers() saves the number of AI players selected from the user
+     * @param numOfAIPlayers
+     */
     public void saveNumOfAIPlayers(int numOfAIPlayers) {
         //System.out.println(" In model, num of AI players: " + numOfAIPlayers);
         this.numOfAIplayers = numOfAIPlayers;
     }
 
+    /**
+     * getTargetColor() returns the current target colour
+     * @return
+     */
     public CardSideModel.Color getTargetColor() {
         return this.targetColor;
     }
@@ -1061,30 +1057,59 @@ public class UnoModel {
         this.unoView.enableUndo(true);  // enable undo
     }
 
+    /**
+     * getPrevColor() returns the previous target colour
+     * @return
+     */
     public CardSideModel.Color getPrevColor() {
         return this.previousColor;
     }
 
+    /**
+     * isDrawUntilColor() returns true if the card played is a draw color card
+     * @return
+     */
     public boolean isDrawUntilColor() {
         return this.drawUntilColor;
     }
 
+    /**
+     * getNumSkip() returns the number of skips the card requires
+     * @return
+     */
     public int getNumSkip() {
         return this.numSkip;
     }
 
+    /**
+     * getNeedToDraw() returns the number of cards the next player needs to draw
+     * @return
+     */
     public int getNeedToDraw() {
         return this.needToDraw;
     }
 
+    /**
+     * getNextMessage() returns the current message
+     * @return
+     */
     public String getNextMessage() {
         return this.nextMessage;
     }
 
+    /**
+     * isValidWildDrawTwoOrColor() returns true if the wild draw two card played is valid,
+     * false otherwise
+     * @return
+     */
     public boolean isValidWildDrawTwoOrColor() {
         return this.valid_wild_draw_two_or_color;
     }
 
+    /**
+     * saveGame() serializes the game
+     * @param file
+     */
     public void saveGame(File file) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -1174,6 +1199,11 @@ public class UnoModel {
         }
     }
 
+    /**
+     * escapeXml() is used to serialize the game status
+     * @param input
+     * @return
+     */
     private String escapeXml(String input) {
         return input.replace("&", "&amp;")
                 .replace("<", "&lt;")
@@ -1182,6 +1212,10 @@ public class UnoModel {
                 .replace("'", "&apos;");
     }
 
+    /**
+     * loadGame() deserializes the game
+     * @param filename
+     */
     public void loadGame(String filename) {
         File file = new File(filename);
 
@@ -1236,6 +1270,11 @@ public class UnoModel {
         }
     }
 
+    /**
+     * parseCardSide() returns the card color and type of the given side of a card
+     * @param sideElement
+     * @return
+     */
     private CardSideModel parseCardSide(Element sideElement) {
         String color = sideElement.getElementsByTagName("Color").item(0).getTextContent();
         String type = sideElement.getElementsByTagName("Type").item(0).getTextContent();

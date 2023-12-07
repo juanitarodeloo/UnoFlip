@@ -84,6 +84,10 @@ public class UnoController implements ActionListener{
         }
     }
 
+    /**
+     * handleReplayGame() handles the user's reaction to replay the current game
+     * @param decision
+     */
     public void handleReplayGame(int decision){
         if(decision == 0){
             this.model.replayGame();
@@ -99,10 +103,9 @@ public class UnoController implements ActionListener{
     }
 
 
-
-
-
-    // This method will be called when the user wants to save the game from the UI.
+    /**
+     * promptUserToSaveGame() is called when the user wants to save the game from the UI.
+     */
     public void promptUserToSaveGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Game State");
@@ -120,6 +123,9 @@ public class UnoController implements ActionListener{
         }
     }
 
+    /**
+     * loadGame() is called when a user wants to load a game
+     */
     public void loadGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Load Game State");

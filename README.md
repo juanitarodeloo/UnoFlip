@@ -35,42 +35,55 @@ based on the cards remaining in their opponents' hands:
 5) Winning: The first player to accumulate 500 points across multiple rounds wins the game.
 
 ## Updates:
-Milestone 3 introduces advanced features and enhancements to further develop the game.
+Milestone 4 introduces advanced features and enhancements to further develop the game.
 
-### Uno Flip Integration:
+### Undo/Redo Functionality
+* The game now offers a user-friendly interface to allow players to undo and redo moves which is indicated
+* by buttons being enabled and disabled
 
-The game now includes Uno Flip cards with unique rules and scoring mechanisms, enriching the gameplay experience and offering more variety.
+### Replay Game
+* The game now allows players to restart the game faultlessly from the beginning
+* This is indicated by the score of each player being restarted and the game starts at the first player: H1
+
+### Save Game
+* The game now allows players to save the current game
+* This is done by the user selecting a location for an XML file that contains the game information
+
+### Load Game
+* The game now includes the ability for the user to select to load a game from an XML file
+
+## Uno Flip Integration:
+
+The game includes Uno Flip cards with unique rules and scoring mechanisms, enriching the gameplay experience and offering more variety.
 - AI Player Capability:
 
-The game can now support an arbitrary number of AI players.
+The game supports an arbitrary number of AI players.
 - AI players are designed for flexibility with multiple strategies for gameplay.
 - Strategies include generating all possible legal moves and selecting the highest-scoring move to simulate intelligent gameplay.
 - Simplified rules such as "The first valid card will be placed" can be employed for quick AI decision-making.
 
 MVC Architecture Expansion:
 
-- The Model component has been expanded with new classes for AI and Uno Flip integration.
-- UnoModel has been updated to handle AI logic, managing interactions between AI players and the game state.
+- The Model component has classes for AI and Uno Flip integration.
+- UnoModel handles AI logic, managing interactions between AI players and the game state.
 - Additional tests in UnoModelTest ensure the robustness of AI functionalities.
 
 GUI Enhancements:
 
-- Existing GUI components have been refined to accommodate the new Uno Flip cards and AI interactions.
+- Existing GUI components accommodate the new Uno Flip cards and AI interactions.
 - The View component remains responsible for rendering the user interface, now with added elements for AI gameplay visualization.
 
 Classes and Files:
 
-- New classes such as CardSideModel and DeckModel have been introduced in the Model package for handling the two-sided nature of Uno Flip cards.
-- MessageConstant has been updated with new constants to support AI game messaging.
-- The View package remains largely unchanged, with updates to existing components to reflect the Uno Flip and AI integration.
-  Cards:
+- CardSideModel and DeckModel are in Model package for handling the two-sided nature of Uno Flip cards.
+- MessageConstant includes constants to support AI game messaging.
 
 Colors and Sides:
 
-- The game now features a dual-sided card mechanic with a light side and a dark side.
+- The game features a dual-sided card mechanic with a light side and a dark side.
 - Light Side Colors: The traditional Red, Green, Yellow, and Blue cards have been retained from the standard Uno deck.
 - Dark Side Colors: A new addition to the game, introducing a darker palette for each color to represent the flip side of the cards. Orange, purple, pink and teal.
-- Flips: Existing light cards now have a corresponding dark side, which players can switch to using specific flip card actions, adding a strategic layer to the game.
+- Flips: Existing light cards have a corresponding dark side, which players can switch to using specific flip card actions, adding a strategic layer to the game.
 
 Action Cards:
 
@@ -201,6 +214,24 @@ UnoProject contains:
         * InfoPanel
         * PlayerHandPanel
         * PlayerInfoPanel
+        * UnoView: Now displays AI actions and Uno Flip transitions
+  * Milestone4: stores code from Milestone 4
+    * Model/: updated and new model class components for Milestone 3
+      * CardModel: Updated with dark and light side card implementations.
+      * CardSideModel: New class to handle the properties of the dual-sided cards.
+      * DeckModel: Enhanced to manage dual-sided cards.
+      * DoEvent: Event specific to the redo function
+      * MessageConstant: Updated constants to accommodate new game rules.
+      * PlayerModel: Now includes logic for AI player interactions.
+      * UnoFinishEvent: Events specific to the end-game scenarios, including AI outcomes.
+      * UnoGameEvent: New events related to Uno Flip actions.
+      * UnoModel: Core game logic, now with integrated AI decision-making.
+      * UnoModelTest: Unit tests for verifying the functionality of the UnoModel with AI integration.
+      * View/: updated view class components for Milestone 3
+        * GamePanel
+        * InfoPanel
+        * PlayerHandPanel
+        * PlayerInfoPanel
         * UnoView: Now displays AI actions and Uno Flip transitions.
 * README: stores game setup, instruction, updates, authors, and more.
 * SYSC 3110 Project.pdf: stores project instructions
@@ -208,63 +239,19 @@ UnoProject contains:
 * UnoProject.iml: file created by IntelliJ
 
 
-## Data Structure Explanation:
+## Known Issues:
 
-### CardModel Class:
-* The Card class is made up of two enums, one to represent the Colour and one to represent the Type of the card.
-  We chose to use enums since they are the easiest to extend and maintain. We know we will need to add colours and
-  types in later milestones of this project, so using enums was essential for these attributes. For this milestone,
-  there are a set amount of colours and types so we did not want to choose a data structure that allowed for dynamic
-  setting and changing of these attributes. They are also type safe, which means that every time we compare them,
-  they are guaranteed to not produce an incompatible type error.
+### Load Game
 
-### PlayerModel Class:
-* Each player has a hand of cards which are represented by an ArrayList. We thought this would be the best data
-  structure since the number of cards a player has in their hand is constantly changing every round, so the ability
-  to dynamically change this was essential. They start with a fixed length but as the game progresses they draw cards
-  and put down cards. They needed the ability to play whatever card they wanted to so random access was another
-  requirement for the data structure, and ArrayLists provide this in an efficient manner.
-
-### DeckModel Class:
-* We chose to represent the deck object as an ArrayLists of cards because we wanted the ability to dynamically add and
-  remove from this structure. We also wanted the ability to check the size and how many cards the deck contains in a
-  moment of time. We also wanted to ability to search for elements using the indexOf() method in order to draw from the
-  top of the deck. ArrayLists are the simplest data structure that met all of our requirements for the deck.
-
-### UnoModel Class:
-* The MainGame class is made up of two main data structures that contain the group of players and the group of cards
-  that make up the discard pile. Both of these lists are ArrayLists because we needed to dynamically control the size
-  of both lists. The players list depending on how many players the user entered, which we have no control over so this
-  needed to be dynamically set. The player list also needed to be able to be randomly accessed since the first player
-  is chosen at random. ArrayList provides an O(1) constant time to access elements by index, so this would be done
-  efficiently. The discard list is constantly being added to during the duration of the game and emptied at the end,
-  so the ability to change the size with the clear() method was a main reason why we chose to use an ArrayList for this
-  list.
-
-### MessageConstant Class:
-* The MessageConstant class is made up of static final strings because it will never change and a single copy of it can be used throughout the program.
-
-### UnoFinishEvent / UnoGameEvent Classes:
-* Both of the these classes extend the EventObject class because it will act as events that occur during the game. The UnoGameEvent
-  class handles events that occur during the game and the UnoFinishEvent class handles the events when a game finishes.
-  When these events occur, the model changes in some way so this is reflected in the model which then updates the view accordingly.
-
-### UnoView
-* The UnoView class is the main frame of the game, it extends a JFrame and holds all the GUI components. The GUI is made up of two main
-  panels: a GamePanel and a InfoPanel. These are their own classes to keep the code organized. Both the GamePanel and the InfoPanel
-  extend JPanels and they contain other panels and other Java Swing components. The player's hand is represented by a JPanel,
-  it is in a class called PlayerHandPanel. A player's information such as their name and their current score is stored in a class called
-  PlayerInfoPanel.
+* Description: The load game is not fully operational. While the game state can be successfully loaded and saved within the model,
+there is an issue with updating the view to display the loaded game. As a temporary measure to maintain consistency in 
+displayed game, the changes that the loaded game would make in the model have been commented out. Consequently, the loaded
+game is not reflected in the GUI, and players may not see the correct state of the game upon loading. 
 
 
-* Overall, we primarily chose ArrayLists for the list type data structure in our program because they are the most
-  memory efficient and provide the most built-in functionality which would allow us to focus more on the logic of the
-  game, and less on the individual data structures ability.
-
-## Roadmap Ahead
-The goal of this project is to extend the current functionality to include the rest of the cards in Uno Flip and to incorporate AI.
-The cards in Uno Flip are double-sided so this will be added in the next release of this game. For the AI capabilities,
-the game will offer a number of AI players. This will allow single users to play with a computer instead of real people.
+* Workaround: As a workaround, users can still successfully load and resume their saved games, as the game state is currently
+maintained in the model. However, the visual representation of the loaded game may not be accurate due to the commented-out
+changes in the view. 
 
 
 ## Milestone 1 Authors:
@@ -289,6 +276,7 @@ Rebecca Li:
 * Wrote MainGame tests
 
 ## Milestone 2 Authors:
+
 Ayman Kamran:
 * Added the images of the cards at the bottom panel of the interface
 * Added the image of the top card to show its actual design
@@ -336,3 +324,21 @@ Juanita Rodelo:
 Rebecca Li:
 * Worked on adding UnoFlip functionality
 * Worked on AI Implementation
+
+
+## Milestone 4 authors:
+
+Adham Elmahi:
+* Save game capabilities
+* Load game capabilities
+
+Ayman Kamran:
+* Save game capabilities
+* Load game capabilities
+
+Juanita Rodelo:
+* Replay game capabilities
+* README
+
+Rebecca Li:
+* Redo/Undo capabilities 
